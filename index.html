@@ -207,6 +207,42 @@ body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var
 .form-field input { width:100%; padding:8px 10px; border:2px solid #E5E7EB; border-radius:8px; font-size:14px; outline:none; }
 .form-field input:focus { border-color:var(--primary); }
 
+/* PLURAL WORD CARDS */
+.plural-cards { display:grid; grid-template-columns:1fr; gap:8px; margin:10px 0; }
+.plural-card { background:white; border-radius:10px; padding:12px; border:2px solid #E5E7EB; text-align:left; }
+.plural-card .pc-header { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+.plural-card .pc-article { font-size:10px; font-weight:700; text-transform:uppercase; padding:2px 6px; border-radius:4px; }
+.plural-card .pc-article.der { color:#1E40AF; background:#DBEAFE; }
+.plural-card .pc-article.die { color:#9D174D; background:#FCE7F3; }
+.plural-card .pc-article.das { color:#92400E; background:#FEF3C7; }
+.plural-card .pc-word { font-size:17px; font-weight:800; }
+.plural-card .pc-plural { font-size:13px; color:var(--text-light); font-style:italic; }
+.plural-card .pc-example { font-size:12px; color:var(--text); margin-top:6px; padding:6px 8px; background:#F8FAFC; border-radius:6px; border-left:3px solid var(--accent); }
+.plural-card .pc-example .pc-es { color:var(--text-light); font-size:11px; }
+.plural-card .pc-rule { display:inline-block; padding:1px 6px; border-radius:4px; font-size:9px; font-weight:700; background:var(--accent-light); color:var(--accent); }
+.plural-card .pc-audio { float:right; }
+
+/* FLOATING DICTIONARY */
+.dict-fab { position:fixed; bottom:24px; right:16px; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#4338CA,#6366F1); color:white; border:none; font-size:26px; cursor:pointer; box-shadow:0 4px 20px rgba(67,56,202,0.4); z-index:999; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+.dict-fab:hover { transform:scale(1.1); }
+.dict-panel { position:fixed; bottom:0; left:0; right:0; top:0; background:rgba(0,0,0,0.5); z-index:100; display:none; }
+.dict-panel.open { display:flex; align-items:flex-end; justify-content:center; }
+.dict-content { background:var(--bg); width:100%; max-width:520px; max-height:85vh; border-radius:20px 20px 0 0; padding:16px; overflow-y:auto; animation:slideUp 0.3s ease; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.dict-search { width:100%; padding:12px 14px; border:2px solid #E5E7EB; border-radius:12px; font-size:16px; outline:none; margin-bottom:12px; }
+.dict-search:focus { border-color:#6366F1; }
+.dict-result { background:white; border-radius:10px; padding:12px; border:1px solid #E5E7EB; margin-bottom:8px; }
+.dict-result .dr-word { font-size:18px; font-weight:800; }
+.dict-result .dr-article { font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px; margin-right:4px; }
+.dict-result .dr-article.der { color:#1E40AF; background:#DBEAFE; }
+.dict-result .dr-article.die { color:#9D174D; background:#FCE7F3; }
+.dict-result .dr-article.das { color:#92400E; background:#FEF3C7; }
+.dict-result .dr-es { font-size:13px; color:var(--text-light); margin-top:2px; }
+.dict-result .dr-pron { font-size:11px; color:var(--text-light); font-style:italic; }
+.dict-result .dr-plural { font-size:12px; color:var(--secondary); font-weight:600; margin-top:3px; }
+.dict-result .dr-cat { font-size:10px; color:var(--accent); font-weight:600; }
+.dict-count { font-size:12px; color:var(--text-light); margin-bottom:8px; }
+
 .next-btn { margin-top:10px; padding:8px 24px; border-radius:20px; border:none; background:var(--secondary); color:white; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
 .next-btn:hover { transform:translateY(-1px); background:#1B4332; }
 
@@ -508,6 +544,19 @@ body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var
   <div class="tab-content" id="tab-progress"></div>
 </div>
 
+<button class="dict-fab" onclick="toggleDict()" title="Diccionario">📖</button>
+<div class="dict-panel" id="dictPanel" onclick="if(event.target===this)toggleDict()">
+  <div class="dict-content">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="font-size:18px;font-weight:800">📖 Diccionario</div>
+      <button style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light)" onclick="toggleDict()">✕</button>
+    </div>
+    <input class="dict-search" id="dictSearch" type="text" placeholder="Buscar en español o alemán..." oninput="searchDict()" autocomplete="off">
+    <div class="dict-count" id="dictCount"></div>
+    <div id="dictResults"></div>
+  </div>
+</div>
+
 <script>window.onerror=function(m,u,l,c,e){document.body.innerHTML='<div style="padding:40px;font-family:monospace;color:red;background:white"><h2>Error linea '+l+'</h2><pre>'+m+'</pre></div>';}</script>
 <script src="data-a1.js"></script>
 <script src="data-a2.js"></script>
@@ -714,7 +763,7 @@ function getReviewWords(){
   return all;
 }
 
-let state={cat:Object.keys(getActiveVocab())[0],selectedCats:[...Object.keys(getActiveVocab())],mode:"quiz",current:0,score:0,streak:0,total:0,correct:0,mistakes:[],words:[],round:10,answered:false,started:false};
+let state={cat:Object.keys(getActiveVocab())[0],selectedCats:[Object.keys(getActiveVocab())[0]],mode:"quiz",current:0,score:0,streak:0,total:0,correct:0,mistakes:[],words:[],round:10,answered:false,started:false};
 
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function escapeStr(s){return s.replace(/'/g,"\\'").replace(/"/g,'\\"');}
@@ -1204,6 +1253,31 @@ function getActivePlurals() {
 }
 
 function renderPlurals(area, w) {
+  const useWriteMode = Math.random() < 0.4;
+
+  if (useWriteMode) {
+    const pluralNoun = w.plural.replace(/^die\s+/i, '');
+    area.innerHTML = `
+      ${state.streak >= 3 ? `<div class="streak-indicator ${state.streak >= 5 ? 'hot' : ''}">🔥 ${state.streak}</div>` : ''}
+      <div class="emoji-display">${w.emoji}</div>
+      <div class="plural-card" style="margin-bottom:12px;border-color:var(--primary)">
+        <div class="pc-article ${w.singular.startsWith('der')?'der':w.singular.startsWith('die')?'die':'das'}">${w.singular.startsWith('der')?'masculino':w.singular.startsWith('die')?'femenino':'neutro'}</div>
+        <div class="pc-word">${w.singular}</div>
+        <div class="pc-es">${w.es}</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px">die _______</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px">Escribe el sustantivo en plural</div>
+      <div class="input-area">
+        <input class="text-input" id="pluralWriteInput" type="text" placeholder="Escribe el plural..." autocomplete="off" autofocus>
+        <button class="check-btn" onclick="checkPluralWrite()">Comprobar ✓</button>
+      </div>
+      <div id="feedback"></div>`;
+    const inp = document.getElementById('pluralWriteInput');
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkPluralWrite(); });
+    setTimeout(() => inp.focus(), 100);
+    return;
+  }
+
   const allPlurals = getActivePlurals();
   let opts = [w.plural];
   while (opts.length < 4) {
@@ -1219,6 +1293,34 @@ function renderPlurals(area, w) {
     <div style="font-size:13px;color:var(--text-light);margin-bottom:12px">¿Cuál es el plural?</div>
     <div class="options">${opts.map(o => `<button class="option-btn" onclick="checkPlural(this,'${escapeStr(o)}','${escapeStr(w.plural)}')">${o}</button>`).join('')}</div>
     <div id="feedback"></div>`;
+}
+
+function checkPluralWrite() {
+  if (state.answered) return;
+  const inp = document.getElementById('pluralWriteInput');
+  const val = inp.value.trim();
+  if (!val) return;
+  state.answered = true; state.total++;
+  const w = state.words[state.current];
+  const pluralNoun = w.plural.replace(/^die\s+/i, '');
+  const ok = normalize(val) === normalize(pluralNoun) || normalize('die ' + val) === normalize(w.plural);
+  const fb = document.getElementById('feedback');
+  const speakText = w.singular + ', ' + w.plural;
+  inp.disabled = true;
+  document.querySelector('.check-btn').disabled = true;
+  if (ok) {
+    inp.classList.add('correct'); state.correct++; state.streak++;
+    const pts = 15 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
+    speak(w.plural);
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.singular} → ${w.plural}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>`;
+    setTimeout(() => nextWord(), 800);
+  } else {
+    inp.classList.add('wrong'); state.streak = 0; state.mistakes.push({de: w.singular + ' → ' + w.plural, es: w.es, emoji: w.emoji});
+    speak(w.plural);
+    fb.innerHTML = `<div class="feedback wrong">❌ Tu respuesta: <strong>die ${val}</strong><br>Correcto: <strong>${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>${getPluralTip(w)}`;
+    fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
+  }
+  updateStats();
 }
 
 function getPluralTip(w) {
@@ -2390,6 +2492,48 @@ steps:[
 <tr><td class="highlight">sin cambio</td><td>das Mädchen → die Mädchen</td><td>Terminados en -er, -en, -el, -chen, -lein</td></tr>
 </table>
 <div class="tip-box"><span class="tip-icon">💡</span><span>El artículo plural es siempre <strong>die</strong>, sin importar el género original. ¡Esa es la buena noticia!</span></div>`},
+{type:"teach",title:"Fichas: singular → plural",content:`
+<div class="lc-explain">Estudia cada ficha como en un diccionario. Fíjate en el artículo, el plural y el ejemplo en contexto:</div>
+<div class="plural-cards">
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Hund</span><span class="pc-plural">pl.: die Hunde</span><span class="pc-rule">-e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Hund, die Hunde',this)">🔊</button></div>
+<div class="pc-example"><strong>Ich habe einen Hund.</strong> Mein Nachbar hat zwei <strong>Hunde</strong>.<br><span class="pc-es">Tengo un perro. Mi vecino tiene dos perros.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Kind</span><span class="pc-plural">pl.: die Kinder</span><span class="pc-rule">-er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Kind, die Kinder',this)">🔊</button></div>
+<div class="pc-example"><strong>Das Kind</strong> spielt im Garten. Die <strong>Kinder</strong> spielen zusammen.<br><span class="pc-es">El niño juega en el jardín. Los niños juegan juntos.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Buch</span><span class="pc-plural">pl.: die Bücher</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Buch, die Bücher',this)">🔊</button></div>
+<div class="pc-example">Ich lese ein <strong>Buch</strong>. Sie hat viele <strong>Bücher</strong>.<br><span class="pc-es">Leo un libro. Ella tiene muchos libros.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Stuhl</span><span class="pc-plural">pl.: die Stühle</span><span class="pc-rule">-̈e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Stuhl, die Stühle',this)">🔊</button></div>
+<div class="pc-example">Der <strong>Stuhl</strong> ist kaputt. Wir brauchen neue <strong>Stühle</strong>.<br><span class="pc-es">La silla está rota. Necesitamos sillas nuevas.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Blume</span><span class="pc-plural">pl.: die Blumen</span><span class="pc-rule">-n</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Blume, die Blumen',this)">🔊</button></div>
+<div class="pc-example">Die <strong>Blume</strong> ist schön. Im Garten gibt es viele <strong>Blumen</strong>.<br><span class="pc-es">La flor es bonita. En el jardín hay muchas flores.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Zeitung</span><span class="pc-plural">pl.: die Zeitungen</span><span class="pc-rule">-en</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Zeitung, die Zeitungen',this)">🔊</button></div>
+<div class="pc-example">Ich lese die <strong>Zeitung</strong>. Er kauft zwei <strong>Zeitungen</strong>.<br><span class="pc-es">Leo el periódico. Él compra dos periódicos.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Auto</span><span class="pc-plural">pl.: die Autos</span><span class="pc-rule">-s</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Auto, die Autos',this)">🔊</button></div>
+<div class="pc-example">Das <strong>Auto</strong> ist neu. Auf dem Parkplatz stehen viele <strong>Autos</strong>.<br><span class="pc-es">El coche es nuevo. En el parking hay muchos coches.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Mädchen</span><span class="pc-plural">pl.: die Mädchen</span><span class="pc-rule">—</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Mädchen, die Mädchen',this)">🔊</button></div>
+<div class="pc-example">Das <strong>Mädchen</strong> lacht. Die <strong>Mädchen</strong> spielen Fußball.<br><span class="pc-es">La chica se ríe. Las chicas juegan fútbol.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Mann</span><span class="pc-plural">pl.: die Männer</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Mann, die Männer',this)">🔊</button></div>
+<div class="pc-example">Der <strong>Mann</strong> arbeitet. Die <strong>Männer</strong> trinken Kaffee.<br><span class="pc-es">El hombre trabaja. Los hombres beben café.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Mutter</span><span class="pc-plural">pl.: die Mütter</span><span class="pc-rule">-̈</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Mutter, die Mütter',this)">🔊</button></div>
+<div class="pc-example">Meine <strong>Mutter</strong> kocht gut. Alle <strong>Mütter</strong> sind eingeladen.<br><span class="pc-es">Mi madre cocina bien. Todas las madres están invitadas.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Haus</span><span class="pc-plural">pl.: die Häuser</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Haus, die Häuser',this)">🔊</button></div>
+<div class="pc-example">Das <strong>Haus</strong> ist groß. In der Straße gibt es alte <strong>Häuser</strong>.<br><span class="pc-es">La casa es grande. En la calle hay casas antiguas.</span></div></div>
+
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Telefon</span><span class="pc-plural">pl.: die Telefone</span><span class="pc-rule">-e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Telefon, die Telefone',this)">🔊</button></div>
+<div class="pc-example">Das <strong>Telefon</strong> klingelt. Im Büro gibt es drei <strong>Telefone</strong>.<br><span class="pc-es">El teléfono suena. En la oficina hay tres teléfonos.</span></div></div>
+
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Lee cada ejemplo en voz alta. Intenta adivinar el plural <strong>antes</strong> de mirar la respuesta. La memoria activa funciona mejor que la pasiva.</span></div>`},
 {type:"teach",title:"Trucos para adivinar el plural",content:`
 <div class="lc-explain">No son reglas 100% seguras, pero funcionan en la mayoría de casos:</div>
 <div class="example-box">
@@ -4671,6 +4815,87 @@ function closeExam() {
   const timerEl = document.getElementById('examTimer');
   if (timerEl) timerEl.remove();
   renderExamTab();
+}
+
+// DICTIONARY
+function buildDictIndex() {
+  const allVocab = [];
+  const pluralMap = {};
+  const addPlurals = (arr) => { if(arr) arr.forEach(p => { const noun = p.singular.replace(/^(der|die|das)\s+/i,''); pluralMap[noun.toLowerCase()] = p; }); };
+  addPlurals(typeof PLURALS_A1 !== 'undefined' ? PLURALS_A1 : []);
+  addPlurals(typeof PLURALS_A2 !== 'undefined' ? PLURALS_A2 : []);
+
+  const processVocab = (vocab, level) => {
+    Object.entries(vocab).forEach(([cat, words]) => {
+      words.forEach(w => {
+        const noun = w.de.replace(/^(der|die|das)\s+/i, '');
+        const pl = pluralMap[noun.toLowerCase()];
+        allVocab.push({
+          de: w.de, es: w.es, article: w.article || '', emoji: w.emoji || '',
+          pron: w.pron || '', cat: cat, level: level,
+          plural: pl ? pl.plural : '', pluralRule: pl ? pl.rule : ''
+        });
+      });
+    });
+  };
+  if (typeof VOCAB_A1 !== 'undefined') processVocab(VOCAB_A1, 'A1');
+  if (typeof VOCAB_A2 !== 'undefined') processVocab(VOCAB_A2, 'A2');
+  return allVocab;
+}
+
+let dictIndex = null;
+
+function toggleDict() {
+  const panel = document.getElementById('dictPanel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    if (!dictIndex) dictIndex = buildDictIndex();
+    document.getElementById('dictSearch').value = '';
+    document.getElementById('dictResults').innerHTML = '';
+    document.getElementById('dictCount').textContent = dictIndex.length + ' palabras disponibles';
+    setTimeout(() => document.getElementById('dictSearch').focus(), 100);
+  }
+}
+
+function searchDict() {
+  if (!dictIndex) dictIndex = buildDictIndex();
+  const q = document.getElementById('dictSearch').value.trim().toLowerCase();
+  const results = document.getElementById('dictResults');
+  const count = document.getElementById('dictCount');
+
+  if (q.length < 2) {
+    results.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px">Escribe al menos 2 letras para buscar</div>';
+    count.textContent = dictIndex.length + ' palabras disponibles';
+    return;
+  }
+
+  const matches = dictIndex.filter(w =>
+    w.es.toLowerCase().includes(q) || w.de.toLowerCase().includes(q)
+  ).slice(0, 30);
+
+  count.textContent = matches.length + ' resultado' + (matches.length !== 1 ? 's' : '');
+
+  if (matches.length === 0) {
+    results.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px">No se encontraron resultados</div>';
+    return;
+  }
+
+  results.innerHTML = matches.map(w => {
+    const artClass = w.article === 'der' ? 'der' : w.article === 'die' ? 'die' : w.article === 'das' ? 'das' : '';
+    const artLabel = w.article === 'der' ? 'masc.' : w.article === 'die' ? 'fem.' : w.article === 'das' ? 'neutro' : '';
+    return `<div class="dict-result">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span style="font-size:20px">${w.emoji}</span>
+        ${artClass ? `<span class="dr-article ${artClass}">${artLabel}</span>` : ''}
+        <span class="dr-word">${w.de}</span>
+        <button class="speak-btn sm" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)">🔊</button>
+      </div>
+      <div class="dr-es">🇪🇸 ${w.es}</div>
+      ${w.pron ? `<div class="dr-pron">${w.pron}</div>` : ''}
+      ${w.plural ? `<div class="dr-plural">pl.: ${w.plural} ${w.pluralRule ? '<span style="font-size:10px;color:var(--accent)">(' + w.pluralRule + ')</span>' : ''}</div>` : ''}
+      <div class="dr-cat">${w.cat} · ${w.level}</div>
+    </div>`;
+  }).join('');
 }
 
 // HOME TAB
