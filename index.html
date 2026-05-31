@@ -3506,7 +3506,8 @@ function matchSelect(side, idx) {
       renderLessonView();
       setTimeout(() => {
         const fb = document.getElementById('lessonQuizFb');
-        if (fb) fb.innerHTML = `<div class="feedback correct" style="margin-top:10px">✅ ¡Todas las parejas conectadas!</div><button class="next-btn" onclick="nextLessonQuizQ()" style="margin-top:8px">Siguiente →</button>`;
+        if (fb) fb.innerHTML = `<div class="feedback correct" style="margin-top:10px">✅ ¡Todas las parejas conectadas!</div>`;
+        setTimeout(() => nextLessonQuizQ(), 800);
       }, 100);
       return;
     }
