@@ -5200,7 +5200,7 @@ const LESSON_VOCAB_MAP = {
   reflexive_verbs:['Sentimientos 💭'],trennbar_untrennbar:['Verbos A2 🔧'],
 };
 
-let lessonMemState = { cards: [], flipped: [], matched: [], locked: false };
+let lessonMemState = { cards: [], flipped: [], matched: [], locked: false, previewPhase: true };
 
 function getLessonVocabWords(lesson) {
   const cats = LESSON_VOCAB_MAP[lesson.id] || [];
@@ -5219,8 +5219,30 @@ function renderLessonMemory(lesson) {
       cards.push({ id: i * 2, pairId: i, type: 'emoji', emoji: w.emoji, es: w.es, word: w });
       cards.push({ id: i * 2 + 1, pairId: i, type: 'de', de: w.de, word: w });
     });
-    lessonMemState = { cards: shuffle(cards), flipped: [], matched: [], locked: false };
+    lessonMemState = { cards: shuffle(cards), flipped: [], matched: [], locked: false, previewPhase: true };
+    setTimeout(() => {
+      lessonMemState.previewPhase = false;
+      renderLessonView();
+    }, 4000);
   }
+
+  if (lessonMemState.previewPhase) {
+    const cardsHtml = lessonMemState.cards.map(c => {
+      const content = c.type === 'emoji'
+        ? `<div class="mb-emoji">${c.emoji}</div><div class="mb-text">${c.es}</div>`
+        : `<div class="mb-text" style="font-size:11px;font-weight:800">${c.de}</div>`;
+      return `<div class="memory-card flipped">
+        <div class="memory-card-inner">
+          <div class="memory-face memory-front">?</div>
+          <div class="memory-face memory-back">${content}</div>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div style="font-size:14px;font-weight:700;text-align:center;margin-bottom:6px;color:var(--primary)">👀 ¡Memoriza las parejas!</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:8px;text-align:center">Las cartas se voltearán en unos segundos...</div>
+      <div class="memory-grid" style="grid-template-columns:repeat(4,1fr)">${cardsHtml}</div>`;
+  }
+
   if (lessonMemState.matched.length === lessonMemState.cards.length) {
     return `<div style="text-align:center;padding:16px">
       <div style="font-size:36px;margin-bottom:6px">🎉</div>
