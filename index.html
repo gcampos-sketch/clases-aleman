@@ -3210,7 +3210,9 @@ function closeLessonView(){
 function renderLessonView(){
   const el=document.getElementById('tab-home');
   const lesson=LESSONS[lessonState.currentLesson];
+  if(!lesson){closeLessonView();return;}
   const step=lesson.steps[lessonState.currentStep];
+  if(!step){closeLessonView();return;}
   const totalSteps=lesson.steps.length;
   const pct=((lessonState.currentStep+1)/totalSteps)*100;
 
