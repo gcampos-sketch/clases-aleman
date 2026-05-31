@@ -207,6 +207,22 @@ body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var
 .form-field input { width:100%; padding:8px 10px; border:2px solid #E5E7EB; border-radius:8px; font-size:14px; outline:none; }
 .form-field input:focus { border-color:var(--primary); }
 
+/* LESSON NOTES */
+.notes-toggle { display:flex; align-items:center; gap:6px; padding:8px 12px; border:1px dashed #CBD5E1; border-radius:8px; background:transparent; cursor:pointer; font-size:12px; font-weight:600; color:var(--text-light); margin-top:12px; width:100%; transition:all 0.2s; }
+.notes-toggle:hover { border-color:var(--primary); color:var(--primary); }
+.notes-toggle.has-notes { border-color:var(--accent); background:var(--accent-light); color:var(--accent); border-style:solid; }
+.notes-toolbar { display:flex; gap:2px; padding:4px; background:#F1F5F9; border:1px solid #E5E7EB; border-bottom:none; border-radius:8px 8px 0 0; margin-top:6px; flex-wrap:wrap; }
+.notes-toolbar button { width:30px; height:28px; border:none; background:transparent; border-radius:4px; cursor:pointer; font-size:13px; font-weight:700; color:var(--text); transition:all 0.15s; }
+.notes-toolbar button:hover { background:#E2E8F0; }
+.notes-toolbar button.active { background:#CBD5E1; }
+.notes-editor { width:100%; min-height:80px; padding:10px; border:1px solid #E5E7EB; border-radius:0 0 8px 8px; font-size:13px; font-family:inherit; outline:none; background:#FFFEF5; line-height:1.6; overflow-y:auto; max-height:200px; }
+.notes-editor:focus { border-color:var(--accent); }
+.notes-editor:empty::before { content:attr(data-placeholder); color:#94A3B8; font-style:italic; }
+.notes-saved { font-size:10px; color:var(--correct); font-weight:600; margin-top:3px; animation:fadeIn 0.3s; }
+.notes-summary { background:white; border-radius:10px; padding:14px; border:1px solid #E5E7EB; margin-bottom:10px; }
+.notes-summary .ns-title { font-size:13px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+.notes-summary .ns-text { font-size:12px; color:var(--text); line-height:1.5; }
+
 /* PLURAL WORD CARDS */
 .plural-cards { display:grid; grid-template-columns:1fr; gap:8px; margin:10px 0; }
 .plural-card { background:white; border-radius:10px; padding:12px; border:2px solid #E5E7EB; text-align:left; }
@@ -1745,6 +1761,19 @@ function renderProgressTab(){
       <h3>📜 Historial de Sesiones</h3>
       <div class="prog-card">${sessHtml}</div>
     </div>
+    <div class="prog-section">
+      <h3 style="display:flex;align-items:center;justify-content:space-between">📝 Mis Apuntes <button class="rc-btn" onclick="downloadNotes()" style="font-size:11px">📥 Descargar</button></h3>
+      ${renderAllNotes()}
+    </div>
+    <div class="prog-section">
+      <h3>💾 Respaldo de progreso</h3>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px">Guarda una copia de todo tu progreso (XP, lecciones, notas, estadísticas). Úsalo para restaurar si cambias de navegador o limpias caché.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="rc-btn" onclick="exportProgress()" style="flex:1;padding:10px;font-size:13px;font-weight:700">📤 Exportar progreso</button>
+        <label class="rc-btn" style="flex:1;padding:10px;font-size:13px;font-weight:700;text-align:center;cursor:pointer">📥 Importar progreso<input type="file" accept=".json" onchange="importProgress(event)" style="display:none"></label>
+      </div>
+      <div id="backupMsg" style="margin-top:6px"></div>
+    </div>
     <button class="reset-btn" onclick="if(confirm('¿Borrar todo el progreso?')){localStorage.removeItem('deutschA1');data=defaultData();renderLevelBar();renderProgressTab();renderCategories();renderModes();}">Reiniciar progreso</button>`;
 }
 
@@ -3162,7 +3191,11 @@ function renderLessonView(){
 
   let contentHtml='';
   if(step.type==='teach'){
+    const noteKey = lesson.id;
+    const hasNotes = getLessonNotes(noteKey).length > 0;
     contentHtml=`${step.content}
+    <button class="notes-toggle ${hasNotes?'has-notes':''}" onclick="toggleLessonNotes('${noteKey}')">📝 ${hasNotes?'Mis apuntes':'Tomar apuntes'}</button>
+    <div id="lessonNotesArea" style="display:none"></div>
     <div class="lesson-nav">
       ${lessonState.currentStep>0?'<button class="lesson-nav-btn prev" onclick="lessonPrev()">← Anterior</button>':''}
       <button class="lesson-nav-btn next" onclick="lessonNext()">${lessonState.currentStep<totalSteps-1?'Siguiente →':'Finalizar ✓'}</button>
@@ -4815,6 +4848,144 @@ function closeExam() {
   const timerEl = document.getElementById('examTimer');
   if (timerEl) timerEl.remove();
   renderExamTab();
+}
+
+// LESSON NOTES
+function getLessonNotes(lessonId) {
+  if (!data.lessonNotes) data.lessonNotes = {};
+  return data.lessonNotes[lessonId] || '';
+}
+
+function saveLessonNotes(lessonId, text) {
+  if (!data.lessonNotes) data.lessonNotes = {};
+  data.lessonNotes[lessonId] = text;
+  saveData();
+}
+
+function toggleLessonNotes(lessonId) {
+  const area = document.getElementById('lessonNotesArea');
+  if (!area) return;
+  if (area.style.display === 'none') {
+    const notes = getLessonNotes(lessonId);
+    area.style.display = 'block';
+    area.innerHTML = `
+      <div class="notes-toolbar">
+        <button onclick="noteFormat('bold')" title="Negrita"><b>B</b></button>
+        <button onclick="noteFormat('italic')" title="Cursiva"><i>I</i></button>
+        <button onclick="noteFormat('underline')" title="Subrayado"><u>U</u></button>
+        <button onclick="noteFormat('strikeThrough')" title="Tachado"><s>S</s></button>
+        <button onclick="noteFormat('insertUnorderedList')" title="Lista">•</button>
+        <button onclick="noteHighlight()" title="Resaltar" style="background:#FEF08A">🖍</button>
+      </div>
+      <div class="notes-editor" id="notesEditor" contenteditable="true" data-placeholder="Escribe tus apuntes aquí...">${notes}</div>
+      <div id="notesSavedMsg"></div>`;
+    const editor = document.getElementById('notesEditor');
+    let saveTimeout;
+    editor.addEventListener('input', () => {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        saveLessonNotes(lessonId, editor.innerHTML);
+        const msg = document.getElementById('notesSavedMsg');
+        if (msg) { msg.innerHTML = '<span class="notes-saved">✓ Guardado</span>'; setTimeout(() => { if(msg) msg.innerHTML = ''; }, 1500); }
+      }, 500);
+    });
+    editor.focus();
+  } else {
+    area.style.display = 'none';
+  }
+}
+
+function noteFormat(cmd) {
+  document.execCommand(cmd, false, null);
+  document.getElementById('notesEditor').focus();
+}
+
+function noteHighlight() {
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0 && !sel.isCollapsed) {
+    const parent = sel.anchorNode.parentElement;
+    if (parent && parent.style && parent.style.backgroundColor && parent.style.backgroundColor.includes('254')) {
+      document.execCommand('hiliteColor', false, 'transparent');
+    } else {
+      document.execCommand('hiliteColor', false, '#FEF08A');
+    }
+  }
+  document.getElementById('notesEditor').focus();
+}
+
+function renderAllNotes() {
+  if (!data.lessonNotes) return '<div style="font-size:13px;color:var(--text-light);padding:10px">No tienes apuntes todavía. Toma notas dentro de cada lección.</div>';
+  const entries = Object.entries(data.lessonNotes).filter(([k, v]) => v && v.trim().length > 0);
+  if (entries.length === 0) return '<div style="font-size:13px;color:var(--text-light);padding:10px">No tienes apuntes todavía. Toma notas dentro de cada lección.</div>';
+  return entries.map(([lessonId, text]) => {
+    const lesson = LESSONS.find(l => l.id === lessonId);
+    const title = lesson ? lesson.icon + ' ' + lesson.title : lessonId;
+    return `<div class="notes-summary">
+      <div class="ns-title">${title}</div>
+      <div class="ns-text">${text}</div>
+    </div>`;
+  }).join('');
+}
+
+function downloadNotes() {
+  if (!data.lessonNotes) return;
+  const entries = Object.entries(data.lessonNotes).filter(([k, v]) => v && v.trim().length > 0);
+  if (entries.length === 0) { alert('No tienes apuntes todavía.'); return; }
+  let text = '📝 MIS APUNTES — Deutsch Lernspiel\n';
+  text += '═══════════════════════════════════\n\n';
+  entries.forEach(([lessonId, notes]) => {
+    const lesson = LESSONS.find(l => l.id === lessonId);
+    const title = lesson ? lesson.icon + ' ' + lesson.title : lessonId;
+    text += '── ' + title + ' ──\n';
+    const plainNotes = notes.replace(/<br\s*\/?>/gi, '\n').replace(/<\/?(b|strong)>/gi, '*').replace(/<\/?(i|em)>/gi, '_').replace(/<\/?(u)>/gi, '').replace(/<[^>]+>/g, '').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+    text += plainNotes + '\n\n';
+  });
+  text += '\nGenerado el ' + new Date().toLocaleDateString('es-CL') + '\n';
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'mis-apuntes-aleman.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function exportProgress() {
+  const exportData = JSON.parse(JSON.stringify(data));
+  exportData._exportDate = new Date().toISOString();
+  exportData._version = 'DeutschLernspiel_v1';
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'deutsch-progreso-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const msg = document.getElementById('backupMsg');
+  if (msg) msg.innerHTML = '<span class="notes-saved">✓ Progreso exportado correctamente</span>';
+}
+
+function importProgress(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!imported.xp && imported.xp !== 0) { alert('Archivo no válido.'); return; }
+      if (!confirm('¿Restaurar progreso desde este archivo? Esto reemplazará tu progreso actual.')) return;
+      Object.assign(data, imported);
+      delete data._exportDate;
+      delete data._version;
+      saveData();
+      renderLevelBar();
+      renderProgressTab();
+      const msg = document.getElementById('backupMsg');
+      if (msg) msg.innerHTML = '<span class="notes-saved">✓ Progreso restaurado correctamente — ' + (imported.xp || 0) + ' XP, ' + (imported.completedLessons ? imported.completedLessons.length : 0) + ' lecciones</span>';
+    } catch(err) {
+      alert('Error al leer el archivo: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
 }
 
 // DICTIONARY
