@@ -241,6 +241,29 @@ body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var
 /* FLOATING DICTIONARY */
 .dict-fab { position:fixed; bottom:24px; right:16px; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#4338CA,#6366F1); color:white; border:none; font-size:26px; cursor:pointer; box-shadow:0 4px 20px rgba(67,56,202,0.4); z-index:999; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
 .dict-fab:hover { transform:scale(1.1); }
+
+/* MEMORY GAME */
+.memory-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:10px 0; }
+.memory-card { aspect-ratio:1; border-radius:10px; cursor:pointer; perspective:600px; }
+.memory-card-inner { position:relative; width:100%; height:100%; transition:transform 0.4s; transform-style:preserve-3d; }
+.memory-card.flipped .memory-card-inner { transform:rotateY(180deg); }
+.memory-card.matched .memory-card-inner { transform:rotateY(180deg); }
+.memory-card.matched { opacity:0.7; pointer-events:none; }
+.memory-face { position:absolute; inset:0; backface-visibility:hidden; border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px; border:2px solid #E5E7EB; }
+.memory-front { background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; font-size:24px; }
+.memory-back { background:white; transform:rotateY(180deg); text-align:center; }
+.memory-back .mb-emoji { font-size:22px; }
+.memory-back .mb-text { font-size:10px; font-weight:700; line-height:1.2; margin-top:2px; }
+.memory-card.matched .memory-face.memory-back { border-color:var(--correct); background:var(--correct-bg); }
+.memory-summary-word { display:flex; align-items:center; gap:8px; padding:8px 10px; background:white; border-radius:8px; border:1px solid #E5E7EB; margin-bottom:6px; }
+.memory-summary-word .msw-emoji { font-size:24px; }
+.memory-summary-word .msw-de { font-size:14px; font-weight:700; }
+.memory-summary-word .msw-es { font-size:12px; color:var(--text-light); }
+.memory-summary-word .msw-btn { margin-left:auto; padding:4px 10px; border-radius:6px; border:1px solid var(--correct); background:var(--correct-bg); color:#065F46; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.memory-summary-word .msw-btn:hover { background:var(--correct); color:white; }
+.memory-summary-word .msw-btn.saved { background:var(--correct); color:white; pointer-events:none; }
+.learned-chart { height:20px; background:#E5E7EB; border-radius:10px; overflow:hidden; margin:8px 0; }
+.learned-fill { height:100%; background:linear-gradient(90deg,var(--correct),var(--secondary)); border-radius:10px; transition:width 0.5s; }
 .dict-panel { position:fixed; bottom:0; left:0; right:0; top:0; background:rgba(0,0,0,0.5); z-index:100; display:none; }
 .dict-panel.open { display:flex; align-items:flex-end; justify-content:center; }
 .dict-content { background:var(--bg); width:100%; max-width:520px; max-height:85vh; border-radius:20px 20px 0 0; padding:16px; overflow-y:auto; animation:slideUp 0.3s ease; }
@@ -1761,6 +1784,7 @@ function renderProgressTab(){
       <h3>📜 Historial de Sesiones</h3>
       <div class="prog-card">${sessHtml}</div>
     </div>
+    ${renderLearnedWordsSection()}
     <div class="prog-section">
       <h3 style="display:flex;align-items:center;justify-content:space-between">📝 Mis Apuntes <button class="rc-btn" onclick="downloadNotes()" style="font-size:11px">📥 Descargar</button></h3>
       ${renderAllNotes()}
@@ -3175,6 +3199,7 @@ function toggleTranslationsInLessons(){
 
 function openLesson(idx){
   lessonState.currentLesson=idx;lessonState.currentStep=0;lessonState.quizIndex=0;lessonState.quizCorrect=0;lessonState.quizTotal=0;lessonState.missedQs=[];lessonState.retryMode=false;
+  lessonMemState={cards:[],flipped:[],matched:[],locked:false};
   renderLessonsTab();
 }
 
@@ -3200,6 +3225,8 @@ function renderLessonView(){
       ${lessonState.currentStep>0?'<button class="lesson-nav-btn prev" onclick="lessonPrev()">← Anterior</button>':''}
       <button class="lesson-nav-btn next" onclick="lessonNext()">${lessonState.currentStep<totalSteps-1?'Siguiente →':'Finalizar ✓'}</button>
     </div>`;
+  } else if(step.type==='memory'){
+    contentHtml=renderLessonMemory(lesson);
   } else if(step.type==='quiz'){
     contentHtml=renderLessonQuiz(step);
   }
@@ -3536,7 +3563,7 @@ function nextLessonQuizQ(){
 function lessonPrev(){if(lessonState.currentStep>0){lessonState.currentStep--;renderLessonView();}}
 function lessonNext(){
   const lesson=LESSONS[lessonState.currentLesson];
-  if(lessonState.currentStep<lesson.steps.length-1){lessonState.currentStep++;lessonState.quizIndex=0;lessonState.quizCorrect=0;lessonState.quizTotal=0;lessonState.missedQs=[];lessonState.retryMode=false;renderLessonView();}
+  if(lessonState.currentStep<lesson.steps.length-1){lessonState.currentStep++;lessonState.quizIndex=0;lessonState.quizCorrect=0;lessonState.quizTotal=0;lessonState.missedQs=[];lessonState.retryMode=false;lessonMemState={cards:[],flipped:[],matched:[],locked:false};renderLessonView();}
   else{
     if(!data.completedLessons)data.completedLessons=[];
     if(!data.completedLessons.includes(lesson.id)){data.completedLessons.push(lesson.id);data.xp+=20;saveData();renderLevelBar();}
@@ -3873,6 +3900,17 @@ lines:[
 // Tag all lessons/readings with A1 if not already tagged
 LESSONS.forEach(l => { if (!l.level) l.level = 'A1'; });
 READINGS.forEach(r => { if (!r.level) r.level = 'A1'; });
+
+// Inject memory step before quiz in each lesson
+LESSONS.forEach(l => {
+  const hasMemory = l.steps.some(s => s.type === 'memory');
+  if (!hasMemory) {
+    const quizIdx = l.steps.findIndex(s => s.type === 'quiz');
+    if (quizIdx >= 0) {
+      l.steps.splice(quizIdx, 0, { type: 'memory', title: '🧠 Vocabulario: Memorice' });
+    }
+  }
+});
 
 function getActiveLessons() { return LESSONS.filter(l => l.level === getActiveLevel()); }
 function getActiveReadings() { return READINGS.filter(r => r.level === getActiveLevel()); }
@@ -4989,6 +5027,256 @@ function importProgress(event) {
   event.target.value = '';
 }
 
+// MEMORY GAME
+let memoryState = { cards: [], flipped: [], matched: [], words: [], locked: false, moves: 0, playing: false };
+
+function getUnlearnedWords() {
+  if (!data.learnedWords) data.learnedWords = [];
+  const allWords = Object.values(getActiveVocab()).flat();
+  const unlearned = allWords.filter(w => !data.learnedWords.includes(w.de));
+  return unlearned.length > 0 ? unlearned : allWords;
+}
+
+function startMemoryGame() {
+  const words = shuffle(getUnlearnedWords()).slice(0, 6);
+  const cards = [];
+  words.forEach((w, i) => {
+    cards.push({ id: i * 2, pairId: i, type: 'emoji', emoji: w.emoji, es: w.es, word: w });
+    cards.push({ id: i * 2 + 1, pairId: i, type: 'de', de: w.de, word: w });
+  });
+  memoryState = { cards: shuffle(cards), flipped: [], matched: [], words: words, locked: false, moves: 0, playing: true };
+  renderMemoryGame();
+}
+
+function renderMemoryGame() {
+  const el = document.getElementById('memoryGameArea');
+  if (!el) return;
+  if (!memoryState.playing) {
+    el.innerHTML = `<div style="text-align:center;padding:16px">
+      <div style="font-size:36px;margin-bottom:8px">🧠</div>
+      <div style="font-size:16px;font-weight:800;margin-bottom:4px">Juego de Memoria</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:12px">Encuentra las parejas emoji ↔ palabra en alemán. Aprende vocabulario nuevo de forma visual.</div>
+      <div style="font-size:11px;color:var(--accent);font-weight:600;margin-bottom:12px">${getUnlearnedWords().length} palabras por aprender</div>
+      <button class="start-btn" style="font-size:14px" onclick="startMemoryGame()">Jugar ▶</button>
+    </div>`;
+    return;
+  }
+  if (memoryState.matched.length === memoryState.cards.length) {
+    renderMemorySummary();
+    return;
+  }
+  const cardsHtml = memoryState.cards.map(c => {
+    const isFlipped = memoryState.flipped.includes(c.id);
+    const isMatched = memoryState.matched.includes(c.id);
+    const content = c.type === 'emoji'
+      ? `<div class="mb-emoji">${c.emoji}</div><div class="mb-text">${c.es}</div>`
+      : `<div class="mb-text" style="font-size:12px;font-weight:800">${c.de}</div>`;
+    return `<div class="memory-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}" onclick="flipMemoryCard(${c.id})">
+      <div class="memory-card-inner">
+        <div class="memory-face memory-front">?</div>
+        <div class="memory-face memory-back">${content}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <span style="font-size:12px;font-weight:700">🧠 Memoria</span>
+    <span style="font-size:11px;color:var(--text-light)">${memoryState.matched.length / 2}/${memoryState.words.length} parejas · ${memoryState.moves} movimientos</span>
+  </div>
+  <div class="memory-grid">${cardsHtml}</div>`;
+}
+
+function flipMemoryCard(id) {
+  if (memoryState.locked) return;
+  if (memoryState.flipped.includes(id)) return;
+  if (memoryState.matched.includes(id)) return;
+  memoryState.flipped.push(id);
+  renderMemoryGame();
+  if (memoryState.flipped.length === 2) {
+    memoryState.locked = true;
+    memoryState.moves++;
+    const [a, b] = memoryState.flipped.map(fid => memoryState.cards.find(c => c.id === fid));
+    if (a.pairId === b.pairId) {
+      memoryState.matched.push(a.id, b.id);
+      memoryState.flipped = [];
+      memoryState.locked = false;
+      speak(a.word.de);
+      setTimeout(() => renderMemoryGame(), 300);
+    } else {
+      setTimeout(() => {
+        memoryState.flipped = [];
+        memoryState.locked = false;
+        renderMemoryGame();
+      }, 1000);
+    }
+  }
+}
+
+function renderMemorySummary() {
+  const el = document.getElementById('memoryGameArea');
+  if (!el) return;
+  if (!data.learnedWords) data.learnedWords = [];
+  const wordsHtml = memoryState.words.map(w => {
+    const alreadySaved = data.learnedWords.includes(w.de);
+    return `<div class="memory-summary-word">
+      <span class="msw-emoji">${w.emoji}</span>
+      <div><div class="msw-de">${w.de} <button class="speak-btn sm" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)">🔊</button></div><div class="msw-es">${w.es}</div></div>
+      <button class="msw-btn ${alreadySaved ? 'saved' : ''}" onclick="markWordLearned('${escapeStr(w.de)}',this)" ${alreadySaved ? 'disabled' : ''}>${alreadySaved ? '✓ Aprendida' : 'Ya la sé ✓'}</button>
+    </div>`;
+  }).join('');
+  const totalWords = Object.values(getActiveVocab()).flat().length;
+  const learnedCount = data.learnedWords.filter(w => Object.values(getActiveVocab()).flat().some(v => v.de === w)).length;
+  el.innerHTML = `<div style="text-align:center;padding:10px 0">
+    <div style="font-size:36px;margin-bottom:6px">🎉</div>
+    <div style="font-size:16px;font-weight:800;margin-bottom:2px">¡Completado en ${memoryState.moves} movimientos!</div>
+    <div style="font-size:12px;color:var(--text-light);margin-bottom:12px">Marca las que ya aprendiste:</div>
+  </div>
+  ${wordsHtml}
+  <div style="margin-top:12px;padding:10px;background:white;border-radius:10px;border:1px solid #E5E7EB">
+    <div style="font-size:12px;font-weight:700;margin-bottom:4px">Vocabulario ${getActiveLevel()}: ${learnedCount}/${totalWords} aprendidas</div>
+    <div class="learned-chart"><div class="learned-fill" style="width:${Math.round(learnedCount/totalWords*100)}%"></div></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="start-btn" style="font-size:13px;flex:1;background:#94A3B8;box-shadow:none" onclick="memoryState.playing=false;renderMemoryGame()">Volver</button>
+    <button class="start-btn" style="font-size:13px;flex:1" onclick="startMemoryGame()">Otra ronda ▶</button>
+  </div>`;
+}
+
+function markWordLearned(de, btn) {
+  if (!data.learnedWords) data.learnedWords = [];
+  if (!data.learnedWords.includes(de)) {
+    data.learnedWords.push(de);
+    data.xp += 5;
+    saveData();
+    renderLevelBar();
+  }
+  btn.textContent = '✓ Aprendida';
+  btn.classList.add('saved');
+  btn.disabled = true;
+  const totalWords = Object.values(getActiveVocab()).flat().length;
+  const learnedCount = data.learnedWords.filter(w => Object.values(getActiveVocab()).flat().some(v => v.de === w)).length;
+  const chart = document.querySelector('.learned-fill');
+  if (chart) chart.style.width = Math.round(learnedCount / totalWords * 100) + '%';
+  const label = document.querySelector('.learned-chart')?.previousElementSibling;
+  if (label) label.textContent = `Vocabulario ${getActiveLevel()}: ${learnedCount}/${totalWords} aprendidas`;
+}
+
+function renderLearnedWordsSection() {
+  if (!data.learnedWords || data.learnedWords.length === 0) return '';
+  const allWords = Object.values(getActiveVocab()).flat();
+  const learned = allWords.filter(w => data.learnedWords.includes(w.de));
+  if (learned.length === 0) return '';
+  const totalWords = allWords.length;
+  const pct = Math.round(learned.length / totalWords * 100);
+  return `<div class="prog-section">
+    <h3>📗 Palabras aprendidas (${learned.length}/${totalWords})</h3>
+    <div class="learned-chart"><div class="learned-fill" style="width:${pct}%"></div></div>
+    <div style="font-size:12px;color:var(--text-light);margin-bottom:10px">${pct}% del vocabulario ${getActiveLevel()}</div>
+    <div class="prog-card" style="max-height:300px;overflow-y:auto">${learned.map(w =>
+      `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid #F1F5F9;font-size:12px">
+        <span>${w.emoji}</span>
+        <span style="font-weight:700;flex:1">${w.de}</span>
+        <span style="color:var(--text-light)">${w.es}</span>
+        <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button>
+      </div>`
+    ).join('')}</div>
+  </div>`;
+}
+
+// LESSON MEMORY (mini memorice inside lessons)
+const LESSON_VOCAB_MAP = {
+  pronouns:['Saludos 👋'],greetings:['Saludos 👋'],articles:['Familia 👨‍👩‍👧','Casa 🏠'],
+  sein_haben:['Familia 👨‍👩‍👧','Adjetivos 📏'],w_fragen:['Saludos 👋','Supervivencia 🆘'],
+  colors:['Ropa 👕'],restaurant:['Comida 🍎','Bebidas ☕'],zahlen:['Números 🔢'],
+  time:['Números 🔢'],phonetics:['Saludos 👋'],separable:['Verbos ⚡','Verbos cotidianos 🔄'],
+  routine:['Verbos cotidianos 🔄','Comida 🍎'],aduso:['Adverbios y conectores 🔗'],
+  possessive:['Familia 👨‍👩‍👧'],days_months:['Partes del día 🌅'],
+  modal_verbs:['Verbos ⚡'],negation:['Adjetivos 📏'],
+  accusative:['Comida 🍎','Ropa 👕'],dative:['Transporte 🚗','Casa 🏠'],
+  regular_verbs:['Verbos ⚡','Verbos cotidianos 🔄'],plurals_lesson:['Animales 🐾','Casa 🏠'],
+  zahlen_gross:['Números 🔢'],writing:['Supervivencia 🆘'],
+  praeteritum:['Verbos ⚡'],perfekt:['Verbos A2 🔧'],
+  wechsel:['Casa 🏠','Vivienda 🏘️'],konjunktivII:['Hobbys 🎨'],
+  nebensaetze:['Profesiones 💼'],komparativ:['Adjetivos 📏'],
+  reflexive_verbs:['Sentimientos 💭'],trennbar_untrennbar:['Verbos A2 🔧'],
+};
+
+let lessonMemState = { cards: [], flipped: [], matched: [], locked: false };
+
+function getLessonVocabWords(lesson) {
+  const cats = LESSON_VOCAB_MAP[lesson.id] || [];
+  const v = getActiveVocab();
+  let words = [];
+  cats.forEach(c => { if (v[c]) words = words.concat(v[c]); });
+  if (words.length < 4) words = Object.values(v).flat();
+  return shuffle(words).slice(0, 4);
+}
+
+function renderLessonMemory(lesson) {
+  if (!lessonMemState.cards.length || lessonMemState.matched.length === lessonMemState.cards.length) {
+    const words = getLessonVocabWords(lesson);
+    const cards = [];
+    words.forEach((w, i) => {
+      cards.push({ id: i * 2, pairId: i, type: 'emoji', emoji: w.emoji, es: w.es, word: w });
+      cards.push({ id: i * 2 + 1, pairId: i, type: 'de', de: w.de, word: w });
+    });
+    lessonMemState = { cards: shuffle(cards), flipped: [], matched: [], locked: false };
+  }
+  if (lessonMemState.matched.length === lessonMemState.cards.length) {
+    return `<div style="text-align:center;padding:16px">
+      <div style="font-size:36px;margin-bottom:6px">🎉</div>
+      <div style="font-size:16px;font-weight:800;margin-bottom:10px">¡Vocabulario completado!</div>
+      <div class="lesson-nav"><button class="lesson-nav-btn next" onclick="lessonNext()">Siguiente →</button></div>
+    </div>`;
+  }
+  const cardsHtml = lessonMemState.cards.map(c => {
+    const isFlipped = lessonMemState.flipped.includes(c.id);
+    const isMatched = lessonMemState.matched.includes(c.id);
+    const content = c.type === 'emoji'
+      ? `<div class="mb-emoji">${c.emoji}</div><div class="mb-text">${c.es}</div>`
+      : `<div class="mb-text" style="font-size:11px;font-weight:800">${c.de}</div>`;
+    return `<div class="memory-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}" onclick="flipLessonMemCard(${c.id})">
+      <div class="memory-card-inner">
+        <div class="memory-face memory-front">?</div>
+        <div class="memory-face memory-back">${content}</div>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div style="font-size:13px;color:var(--text-light);margin-bottom:8px;text-align:center">Encuentra las 4 parejas para continuar</div>
+    <div class="memory-grid" style="grid-template-columns:repeat(4,1fr)">${cardsHtml}</div>
+    <div style="font-size:11px;color:var(--text-light);margin-top:6px;text-align:center">${lessonMemState.matched.length / 2}/4 parejas</div>`;
+}
+
+function flipLessonMemCard(id) {
+  if (lessonMemState.locked) return;
+  if (lessonMemState.flipped.includes(id)) return;
+  if (lessonMemState.matched.includes(id)) return;
+  lessonMemState.flipped.push(id);
+  renderLessonView();
+  if (lessonMemState.flipped.length === 2) {
+    lessonMemState.locked = true;
+    const [a, b] = lessonMemState.flipped.map(fid => lessonMemState.cards.find(c => c.id === fid));
+    if (a.pairId === b.pairId) {
+      lessonMemState.matched.push(a.id, b.id);
+      lessonMemState.flipped = [];
+      lessonMemState.locked = false;
+      speak(a.word.de);
+      setTimeout(() => {
+        if (lessonMemState.matched.length === lessonMemState.cards.length) {
+          setTimeout(() => lessonNext(), 800);
+        } else {
+          renderLessonView();
+        }
+      }, 400);
+    } else {
+      setTimeout(() => {
+        lessonMemState.flipped = [];
+        lessonMemState.locked = false;
+        renderLessonView();
+      }, 1000);
+    }
+  }
+}
+
 // DICTIONARY
 function buildDictIndex() {
   const allVocab = [];
@@ -5163,6 +5451,9 @@ function renderLessonsBelow(){
   const activeLessons=getActiveLessons();
   const completedLessons=data.completedLessons||[];
   const doneCount=activeLessons.filter(l=>completedLessons.includes(l.id)).length;
+
+  el.innerHTML+=`<div class="home-card" style="margin-bottom:14px"><div id="memoryGameArea"></div></div>`;
+  renderMemoryGame();
 
   el.innerHTML+=`<div class="prog-section"><h3>📚 Lecciones ${getActiveLevel()}</h3>
     <div style="font-size:13px;color:var(--text-light);margin-bottom:14px">${doneCount}/${activeLessons.length} completadas</div>
