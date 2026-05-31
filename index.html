@@ -3322,7 +3322,7 @@ function renderLessonQuiz(step){
 
   if (q.type === 'match') {
     if (!lessonState.matchState) {
-      const shuffledRight = shuffle([...q.pairs.map(p => p.right)]);
+      const shuffledRight = shuffle(q.pairs.map((p, i) => ({ val: p.right, origIdx: i })));
       lessonState.matchState = { selected: null, matched: [], wrongPair: null, shuffledRight };
     }
     const ms = lessonState.matchState;
@@ -3331,11 +3331,10 @@ function renderLessonQuiz(step){
       const cls = isMatched ? 'matched' : (ms.selected && ms.selected.side === 'left' && ms.selected.idx === i ? 'selected' : '');
       return `<div class="match-item ${cls}" data-side="left" data-idx="${i}" onclick="matchSelect('left',${i})">${p.left}</div>`;
     }).join('');
-    const rightItems = ms.shuffledRight.map((val, i) => {
-      const origIdx = q.pairs.findIndex(p => p.right === val);
-      const isMatched = ms.matched.includes(origIdx);
+    const rightItems = ms.shuffledRight.map((item, i) => {
+      const isMatched = ms.matched.includes(item.origIdx);
       const cls = isMatched ? 'matched' : (ms.selected && ms.selected.side === 'right' && ms.selected.idx === i ? 'selected' : '');
-      return `<div class="match-item ${cls}" data-side="right" data-idx="${i}" onclick="matchSelect('right',${i})">${val}</div>`;
+      return `<div class="match-item ${cls}" data-side="right" data-idx="${i}" onclick="matchSelect('right',${i})">${item.val}</div>`;
     }).join('');
     return `<div class="quiz-in-lesson">${header}
       <div style="font-size:14px;font-weight:600;margin-bottom:12px;text-align:center">${q.q}</div>
@@ -3522,9 +3521,8 @@ function matchSelect(side, idx) {
   }
   const leftIdx = side === 'left' ? idx : ms.selected.idx;
   const rightIdx = side === 'right' ? idx : ms.selected.idx;
-  const rightVal = ms.shuffledRight[rightIdx];
-  const correctRightVal = q.pairs[leftIdx].right;
-  if (rightVal === correctRightVal) {
+  const rightOrigIdx = ms.shuffledRight[rightIdx].origIdx;
+  if (leftIdx === rightOrigIdx) {
     ms.matched.push(leftIdx);
     ms.selected = null;
     if (ms.matched.length === q.pairs.length) {
