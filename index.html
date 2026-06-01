@@ -1110,12 +1110,12 @@ function checkQuiz(btn,selected,correct){
     btn.classList.add("correct");state.correct++;state.streak++;
     const pts=10+(state.streak>1?state.streak*2:0);state.score+=pts;
     updateWordStat(w,true);updateSRS(getWordKey(w),true);
-    speak(w.de);
+    speak(w.de);logError('Vocabulario',w.de,true);
     fb.innerHTML=`<div class="feedback correct">✅ ¡Correcto! +${pts} XP ${state.streak>2?'🔥 Racha de '+state.streak:''}<br><small>${w.de} ${w.pron}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle">🔊</button></div>`;
   } else {
     btn.classList.add("wrong");state.streak=0;state.mistakes.push(w);
     updateWordStat(w,false);updateSRS(getWordKey(w),false);
-    speak(w.de);
+    speak(w.de);logError('Vocabulario',w.es+' → '+w.de,false);
     fb.innerHTML=`<div class="feedback wrong">❌ Incorrecto. La respuesta es: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle">🔊</button></div>${getGrammarTip(w,'quiz')}`;
   }
   updateStats();
@@ -1151,12 +1151,12 @@ function checkWrite(){
     inp.classList.add("correct");state.correct++;state.streak++;
     const pts=15+(state.streak>1?state.streak*3:0);state.score+=pts;
     updateWordStat(w,true);updateSRS(getWordKey(w),true);
-    speak(w.de);
+    speak(w.de);logError('Escritura',w.de,true);
     fb.innerHTML=`<div class="feedback correct">✅ ¡Correcto! +${pts} XP ${state.streak>2?'🔥 Racha de '+state.streak:''}<br><small>${w.de} ${w.pron}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
   } else {
     inp.classList.add("wrong");state.streak=0;state.mistakes.push(w);
     updateWordStat(w,false);updateSRS(getWordKey(w),false);
-    speak(w.de);
+    speak(w.de);logError('Escritura',val+'→'+w.de,false);
     fb.innerHTML=`<div class="feedback wrong">❌ Incorrecto. Tu respuesta: <strong>${val}</strong><br>Correcto: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'write',val)}`;
   }
   updateStats();fb.innerHTML+=`<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -1225,12 +1225,12 @@ function checkDictation() {
   if (ok) {
     inp.classList.add("correct"); state.correct++; state.streak++;
     const pts = 20 + (state.streak > 1 ? state.streak * 3 : 0); state.score += pts;
-    updateWordStat(w, true); updateSRS(getWordKey(w), true);
+    updateWordStat(w, true); updateSRS(getWordKey(w), true);logError('Dictado',w.de,true);
     fb.innerHTML = `<div class="feedback correct">✅ ¡Perfecto! +${pts} XP ${state.streak > 2 ? '🔥 Racha de ' + state.streak : ''}<br><small>${w.de} — ${w.es}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
   } else {
     inp.classList.add("wrong"); state.streak = 0; state.mistakes.push(w);
     updateWordStat(w, false); updateSRS(getWordKey(w), false);
-    speak(w.de);
+    speak(w.de);logError('Dictado',val+'→'+w.de,false);
     fb.innerHTML = `<div class="feedback wrong">❌ Escribiste: <strong>${val}</strong><br>Correcto: <strong>${w.de}</strong> — ${w.es} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'dictation',val)}`;
   }
   updateStats();
@@ -1270,12 +1270,12 @@ function checkArticle(btn, selected, correct, fullWord) {
     btn.classList.add("correct"); state.correct++; state.streak++;
     const pts = 12 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
     updateWordStat(w, true); updateSRS(getWordKey(w), true);
-    speak(w.de);
+    speak(w.de);logError('Artículos (der/die/das)',w.de,true);
     fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.de}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
   } else {
     btn.classList.add("wrong"); state.streak = 0; state.mistakes.push(w);
     updateWordStat(w, false); updateSRS(getWordKey(w), false);
-    speak(w.de);
+    speak(w.de);logError('Artículos (der/die/das)',selected+'→'+correct+': '+w.de,false);
     fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <span class="genre-tag ${correct}">${correct}</span> <strong>${w.de}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'articles')}`;
   }
   updateStats();
@@ -1393,11 +1393,11 @@ function checkPlural(btn, selected, correct) {
   if (selected === correct) {
     btn.classList.add('correct'); state.correct++; state.streak++;
     const pts = 12 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
-    speak(w.plural);
+    speak(w.plural);logError('Plurales',w.singular+'→'+w.plural,true);
     fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.singular} → ${w.plural}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>`;
   } else {
     btn.classList.add('wrong'); state.streak = 0; state.mistakes.push({de: w.singular + ' → ' + w.plural, es: w.es, emoji: w.emoji});
-    speak(w.plural);
+    speak(w.plural);logError('Plurales',w.singular+': '+selected+'→'+w.plural,false);
     fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>.<br>Correcto: <strong>${w.singular} → ${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>${getPluralTip(w)}`;
   }
   updateStats();
@@ -1452,12 +1452,12 @@ function checkCases(btn, selected, correctIdx) {
   if (selected === correct) {
     btn.classList.add('correct'); state.correct++; state.streak++;
     const pts = 15 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
-    speak(fullSentence);
+    speak(fullSentence);logError('Casos ('+w.case+')',fullSentence,true);
     fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)">🔊</button><br><small>${fullSentence}</small></div>`;
   } else {
     btn.classList.add('wrong'); state.streak = 0;
     state.mistakes.push({de: fullSentence, es: w.es + ' (' + w.case + ')', emoji: '⚖️'});
-    speak(fullSentence);
+    speak(fullSentence);logError('Casos ('+w.case+')',selected+'→'+correct,false);
     fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <strong>${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)">🔊</button><br><small>${fullSentence}</small></div>${getCaseTip(w)}`;
   }
   updateStats();
@@ -1553,11 +1553,11 @@ function checkConjugation(btn, selected, correct) {
   if (selected === correct) {
     btn.classList.add('correct'); state.correct++; state.streak++;
     const pts = 14 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
-    speak(fullForm);
+    speak(fullForm);logError('Conjugación',q.verb.inf+': '+fullForm,true);
     fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${q.pronoun} ${correct}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)">🔊</button></div>`;
   } else {
     btn.classList.add('wrong'); state.streak = 0; state.mistakes.push({de: q.verb.inf, es: q.verb.es + ' (' + q.pronoun + ' → ' + correct + ')', emoji: '🔀'});
-    speak(fullForm);
+    speak(fullForm);logError('Conjugación',q.verb.inf+': '+q.pronoun+' '+selected+'→'+correct,false);
     fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <strong>${q.pronoun} ${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)">🔊</button></div>${getConjTip(q.verb, q.pronoun)}`;
   }
   updateStats();
@@ -1645,12 +1645,12 @@ function checkSentence() {
     zone.classList.add('correct');
     state.correct++; state.streak++;
     const pts = 18 + (state.streak > 1 ? state.streak * 3 : 0); state.score += pts;
-    speak(w.de);
+    speak(w.de);logError('Oraciones',w.de,true);
     fb.innerHTML = `<div class="feedback correct">✅ ¡Perfecto! +${pts} XP ${state.streak > 2 ? '🔥 Racha de ' + state.streak : ''}<br><small>${w.de}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
   } else {
     zone.classList.add('wrong');
     state.streak = 0; state.mistakes.push(w);
-    speak(w.de);
+    speak(w.de);logError('Oraciones',(w.hint||'')+': '+userAnswer+'→'+correctAnswer,false);
     fb.innerHTML = `<div class="feedback wrong">❌ Orden incorrecto<br>Tu respuesta: <strong>${userAnswer}</strong><br>Correcto: <strong>${correctAnswer}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'sentences')}`;
   }
   updateStats();
@@ -1779,6 +1779,11 @@ function renderProgressTab(){
     <div class="prog-section">
       <h3>📂 Progreso por Categoría</h3>
       <div class="prog-card">${catHtml}</div>
+    </div>
+    <div class="prog-section">
+      <h3>🔴 Mis errores frecuentes</h3>
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:8px">Últimas 2 semanas — enfócate en lo que más te cuesta</div>
+      ${renderErrorStats()}
     </div>
     <div class="prog-section">
       <h3>📜 Historial de Sesiones</h3>
@@ -3333,7 +3338,10 @@ function renderLessonQuiz(step){
 
   if (q.type === 'match') {
     if (!lessonState.matchState) {
-      const shuffledRight = shuffle(q.pairs.map((p, i) => ({ val: p.right, origIdx: i })));
+      let shuffledRight = q.pairs.map((p, i) => ({ val: p.right, origIdx: i }));
+      let attempts = 0;
+      do { shuffledRight = shuffle(shuffledRight); attempts++; }
+      while (attempts < 10 && shuffledRight.every((item, i) => item.origIdx === i));
       lessonState.matchState = { selected: null, matched: [], wrongPair: null, shuffledRight };
     }
     const ms = lessonState.matchState;
@@ -4423,7 +4431,7 @@ function renderListeningSection() {
 
 function openListening(idx) {
   listenState = { current: idx, phase: 'listen', quizIndex: 0, quizCorrect: 0, quizDone: false, plays: 0 };
-  renderReadingTab();
+  renderExamTab();
 }
 
 function renderListeningView() {
@@ -4543,7 +4551,7 @@ function renderWritingSection() {
 
 function openWritingExercise(idx) {
   writeState = { current: idx, submitted: false };
-  renderReadingTab();
+  renderExamTab();
 }
 
 function renderWritingView() {
@@ -4896,6 +4904,48 @@ function closeExam() {
   const timerEl = document.getElementById('examTimer');
   if (timerEl) timerEl.remove();
   renderExamTab();
+}
+
+// ERROR TRACKING
+function logError(category, detail, correct) {
+  if (!data.errorLog) data.errorLog = [];
+  data.errorLog.push({ cat: category, detail: detail, correct: correct, date: Date.now() });
+  if (data.errorLog.length > 200) data.errorLog = data.errorLog.slice(-200);
+  saveData();
+}
+
+function getErrorStats() {
+  if (!data.errorLog || data.errorLog.length === 0) return [];
+  const cats = {};
+  const twoWeeksAgo = Date.now() - 14 * 24 * 60 * 60 * 1000;
+  data.errorLog.filter(e => e.date > twoWeeksAgo).forEach(e => {
+    if (!cats[e.cat]) cats[e.cat] = { total: 0, errors: 0, examples: [] };
+    cats[e.cat].total++;
+    if (!e.correct) {
+      cats[e.cat].errors++;
+      if (cats[e.cat].examples.length < 3) cats[e.cat].examples.push(e.detail);
+    }
+  });
+  return Object.entries(cats)
+    .map(([cat, d]) => ({ cat, errors: d.errors, total: d.total, pct: Math.round(d.errors / d.total * 100), examples: d.examples }))
+    .filter(d => d.errors > 0)
+    .sort((a, b) => b.errors - a.errors);
+}
+
+function renderErrorStats() {
+  const stats = getErrorStats();
+  if (stats.length === 0) return '<div style="font-size:13px;color:var(--text-light);padding:10px">¡Sin errores frecuentes en las últimas 2 semanas! Sigue así.</div>';
+  return stats.slice(0, 8).map(s => {
+    const color = s.pct >= 50 ? 'var(--wrong)' : s.pct >= 30 ? 'var(--accent)' : 'var(--text-light)';
+    return `<div style="padding:8px 10px;background:white;border-radius:8px;border:1px solid #E5E7EB;margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;font-weight:700">${s.cat}</span>
+        <span style="font-size:12px;font-weight:700;color:${color}">${s.errors} errores / ${s.total} intentos (${s.pct}%)</span>
+      </div>
+      <div style="height:4px;background:#E5E7EB;border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:${100-s.pct}%;background:${s.pct>=50?'var(--wrong)':'var(--correct)'};border-radius:2px"></div></div>
+      ${s.examples.length > 0 ? `<div style="font-size:10px;color:var(--text-light);margin-top:4px">Ej: ${s.examples.join(' · ')}</div>` : ''}
+    </div>`;
+  }).join('');
 }
 
 // LESSON NOTES
