@@ -128,6 +128,11 @@ export const Route = createFileRoute("/api/tts")({
       // lets the browser/CDN cache the result.
       GET: async ({ request }) => {
         const url = new URL(request.url);
+        if (url.searchParams.has("capabilities")) {
+          return Response.json({ enabled: Boolean(process.env["LOVABLE_API_KEY"]) }, {
+            headers: { "Cache-Control": "no-store" },
+          });
+        }
         const params = normalize({
           text: url.searchParams.get("text") ?? "",
           rate: url.searchParams.get("rate") ?? undefined,

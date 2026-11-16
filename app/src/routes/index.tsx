@@ -3,6 +3,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+import { ProgressSync, type SyncStatus, type Progress, parseProgress } from "@/lib/progress-sync";
+
 const STORAGE_KEY = "deutschA1";
 
 export const Route = createFileRoute("/")({
@@ -38,15 +40,6 @@ export const Route = createFileRoute("/")({
   component: LearnPage,
 });
 
-function readLocal(): Record<string, unknown> | null {
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as Record<string, unknown>;
-  } catch {
-    return null;
-  }
-}
 
 function LearnPage() {
   const navigate = useNavigate();
@@ -55,158 +48,111 @@ function LearnPage() {
   const [signedIn, setSignedIn] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-  const lastSaved = useRef<string>("");
-  const remoteUpdatedAt = useRef<number>(0);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>("checking");
+  const [iframeVersion, setIframeVersion] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const syncRef = useRef<ProgressSync | null>(null);
 
-  // 1. Si hay sesión, carga perfil + avance de la nube ANTES de que arranque el juego.
-  //    Sin sesión, el juego arranca igual con el avance local.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const { data: userData } = await supabase.auth.getUser();
         const user = userData.user;
-        if (user) {
-          if (!cancelled) {
-            setSignedIn(true);
-            setEmail(user.email ?? null);
-          }
-
-          const [{ data: profile }, { data: progress }] = await Promise.all([
-            supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle(),
-            supabase
-              .from("learning_progress")
-              .select("data, updated_at")
-              .eq("user_id", user.id)
-              .maybeSingle(),
-          ]);
-
-          const remote = (progress?.data ?? null) as Record<string, unknown> | null;
-          remoteUpdatedAt.current = progress?.updated_at ? Date.parse(progress.updated_at) : 0;
-
-          let state: Record<string, unknown> | null = null;
-          if (remote && Object.keys(remote).length > 0) {
-            state = remote;
-          } else {
-            state = readLocal();
-          }
-
-          // Nombre: perfil → nombre del juego → parte antes de la @
-          const metaName =
-            (user.user_metadata?.['display_name'] as string | undefined) ??
-            (user.user_metadata?.['full_name'] as string | undefined);
-          const name =
-            profile?.display_name?.trim() ||
-            metaName?.trim() ||
-            (typeof state?.['userName'] === "string" ? (state['userName'] as string).trim() : "") ||
-            (user.email ? user.email.split("@")[0]! : "");
-          if (!cancelled) setDisplayName(name || null);
-
-          // Sembramos el nombre en el avance para no volver a pedirlo en el onboarding.
-          if (name && state && !state['userName']) state['userName'] = name;
-
-          if (state) {
-            const serialized = JSON.stringify(state);
-            window.localStorage.setItem(STORAGE_KEY, serialized);
-            lastSaved.current = serialized;
-          } else {
-            lastSaved.current = "";
-          }
-        } else {
-          lastSaved.current = window.localStorage.getItem(STORAGE_KEY) ?? "";
-        }
+        if (!user || cancelled) return;
+        setSignedIn(true);
+        setEmail(user.email ?? null);
+        const coordinator = new ProgressSync({
+          userId: user.id,
+          storage: window.localStorage,
+          onStatus: status => { if (!cancelled) setSyncStatus(status); },
+          onRemote: () => { if (!cancelled) setIframeVersion(v => v + 1); },
+          store: {
+            read: async () => {
+              const { data, error } = await supabase.from("learning_progress")
+                .select("data, updated_at").eq("user_id", user.id).maybeSingle();
+              if (error) throw error;
+              return data ? { data: parseProgress(JSON.stringify(data.data)), updated_at: data.updated_at } : null;
+            },
+            write: async (progress: Progress, revision: string | null) => {
+              // Compare-and-set: a stale computer cannot overwrite a newer cloud revision.
+              const values = { user_id: user.id, data: progress as never };
+              const result = revision
+                ? await supabase.from("learning_progress").update({ data: progress as never })
+                    .eq("user_id", user.id).eq("updated_at", revision).select("data, updated_at").maybeSingle()
+                : await supabase.from("learning_progress").insert(values).select("data, updated_at").single();
+              if (result.error?.code === "23505") return null;
+              if (result.error) throw result.error;
+              return result.data ? {
+                data: parseProgress(JSON.stringify(result.data.data)), updated_at: result.data.updated_at,
+              } : null;
+            },
+          },
+        });
+        syncRef.current = coordinator;
+        const { data: profile } = await supabase.from("profiles")
+          .select("display_name").eq("id", user.id).maybeSingle();
+        if (!cancelled) setDisplayName(profile?.display_name?.trim() || user.email?.split("@")[0] || null);
+        await coordinator.initialize();
       } catch {
-        /* si falla la carga remota, arrancamos con el avance local */
+        if (!cancelled) setSyncStatus("error");
+      } finally {
+        if (!cancelled) setReady(true);
       }
-      // Siempre arrancamos el juego, haya sesión o no.
-      if (!cancelled) setReady(true);
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; syncRef.current = null; };
   }, []);
 
-  // 2. Sube los cambios locales a la nube solo si hay sesión.
   useEffect(() => {
     if (!ready || !signedIn) return;
-
-    const push = async () => {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw === lastSaved.current) return;
-
-      const { data: userData } = await supabase.auth.getUser();
-      const user = userData.user;
-      if (!user) return;
-
-      // Si el avance en la nube es más nuevo (otro dispositivo), lo traemos en vez de sobrescribir.
-      const { data: head } = await supabase
-        .from("learning_progress")
-        .select("data, updated_at")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      const headAt = head?.updated_at ? Date.parse(head.updated_at) : 0;
-      if (headAt > remoteUpdatedAt.current) {
-        const remote = (head?.data ?? null) as Record<string, unknown> | null;
-        if (remote && Object.keys(remote).length > 0) {
-          const serialized = JSON.stringify(remote);
-          window.localStorage.setItem(STORAGE_KEY, serialized);
-          lastSaved.current = serialized;
-          remoteUpdatedAt.current = headAt;
-          return;
-        }
-      }
-
-      // Reset dentro del juego: borró el avance local, hay que limpiar también la nube.
-      const parsed = raw ? readLocal() : {};
-      if (!parsed) return;
-
-      setSaving(true);
-      const { error } = await supabase
-        .from("learning_progress")
-        .upsert({ user_id: user.id, data: parsed as never }, { onConflict: "user_id" });
-      if (!error) {
-        lastSaved.current = raw ?? "";
-        remoteUpdatedAt.current = Date.now();
-      }
-      setSaving(false);
+    let debounce: number | undefined;
+    const sync = () => { void syncRef.current?.sync(); };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== STORAGE_KEY && event.key !== null) return;
+      syncRef.current?.markDirty();
+      window.clearTimeout(debounce);
+      debounce = window.setTimeout(sync, 350);
     };
-
-    const interval = window.setInterval(push, 8000);
-    const onHide = () => void push();
-    window.addEventListener("visibilitychange", onHide);
-    window.addEventListener("pagehide", onHide);
+    const onVisibility = () => sync();
+    const interval = window.setInterval(sync, 5000);
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("online", sync);
+    window.addEventListener("focus", sync);
+    document.addEventListener("visibilitychange", onVisibility);
+    sync(); // Upload guest progress immediately when the cloud account is empty.
     return () => {
-      window.clearInterval(interval);
-      window.removeEventListener("visibilitychange", onHide);
-      window.removeEventListener("pagehide", onHide);
-      void push();
+      window.clearInterval(interval); window.clearTimeout(debounce);
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("online", sync);
+      window.removeEventListener("focus", sync);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [ready, signedIn]);
 
   async function handleSignOut() {
-    const parsed = readLocal();
-    const { data: userData } = await supabase.auth.getUser();
-    if (parsed && userData.user) {
-      try {
-        await supabase
-          .from("learning_progress")
-          .upsert({ user_id: userData.user.id, data: parsed as never }, { onConflict: "user_id" });
-      } catch {
-        /* ignore malformed local state */
-      }
-    }
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    setSignedIn(false);
-    setDisplayName(null);
-    setEmail(null);
+    setLeaving(true);
+    // Keep the session and local copy if the final save fails or needs a conflict choice.
+    const saved = await syncRef.current?.sync();
+    if (!saved) { setLeaving(false); return; }
+    await queryClient.cancelQueries(); queryClient.clear();
+    const { error } = await supabase.auth.signOut();
+    if (error) { setSyncStatus("error"); setLeaving(false); return; }
+    syncRef.current = null;
+    setSignedIn(false); setDisplayName(null); setEmail(null); setLeaving(false);
   }
+
+  const syncLabel = {
+    checking: "Comprobando el avance…",
+    pending: "Cambios pendientes de guardar",
+    saving: "Guardando en tu cuenta…",
+    saved: "Avance confirmado en la nube",
+    error: "No se pudo sincronizar · copia local conservada",
+    conflict: "Hay avances distintos en dos computadores",
+  }[syncStatus];
 
   return (
     <div className="flex h-[100dvh] flex-col bg-background">
-      <header className="flex items-center justify-between border-b border-border gap-3 px-4 py-2.5 lg:px-9 lg:py-3">
+      <header className="flex flex-wrap items-center justify-between border-b border-border gap-3 px-4 py-2.5 lg:px-9 lg:py-3">
         <div className="flex min-w-0 items-center gap-3">
           <Link
             to="/"
@@ -214,8 +160,8 @@ function LearnPage() {
           >
             Deutsch
           </Link>
-          <span className="hidden text-xs text-muted-foreground sm:inline">
-            {signedIn ? (saving ? "Guardando…" : "Avance sincronizado") : "Avance guardado en este dispositivo"}
+          <span className="text-xs text-muted-foreground" role="status" aria-live="polite">
+            {signedIn ? syncLabel : "Avance guardado solo en este dispositivo"}
           </span>
         </div>
         <div className="flex min-w-0 items-center gap-3">
@@ -231,10 +177,19 @@ function LearnPage() {
               )}
               <button
                 type="button"
+                onClick={() => void syncRef.current?.sync()}
+                disabled={syncStatus === "saving" || leaving}
+                className="ds-focus rounded-lg border border-border px-3 py-1.5 text-xs disabled:opacity-50"
+              >
+                Guardar ahora
+              </button>
+              <button
+                type="button"
+                disabled={leaving}
                 onClick={handleSignOut}
                 className="ds-focus rounded-lg border border-border px-3 py-1.5 text-[11px] font-semibold text-foreground transition-colors duration-150 hover:bg-accent"
               >
-                Salir
+                {leaving ? "Guardando…" : "Salir"}
               </button>
             </>
           ) : (
@@ -248,9 +203,17 @@ function LearnPage() {
           )}
         </div>
       </header>
+      {signedIn && syncStatus === "conflict" && (
+        <div className="flex flex-wrap items-center gap-3 border-b border-border bg-card px-4 py-3 text-sm" role="alert">
+          <span>Hay cambios en este computador y en la nube. Conservamos una copia antes de cambiar el avance.</span>
+          <button className="ds-focus rounded border border-border px-3 py-2" onClick={() => void syncRef.current?.resolve("remote")}>Cargar avance de la nube</button>
+          <button className="ds-focus rounded bg-primary px-3 py-2 text-primary-foreground" onClick={() => void syncRef.current?.resolve("local")}>Guardar el de este computador</button>
+        </div>
+      )}
       <div className="min-h-0 flex-1">
         {ready ? (
           <iframe
+            key={iframeVersion}
             src="/lernspiel/index.html"
             title="Deutsch Lernspiel"
             className="h-full w-full border-0"

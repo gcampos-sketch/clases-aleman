@@ -16,3 +16,13 @@ Configurar en Render las variables `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `
 El audio usa la voz alemana del navegador como alternativa. La síntesis de Lovable requiere `LOVABLE_API_KEY` en el servidor; esta exportación no incluye esa credencial. Para confirmaciones de registro y recuperación de contraseña, el nuevo origen debe estar permitido en la configuración de redirecciones del proveedor de autenticación.
 
 El progreso local pertenece a cada origen. El avance guardado en otro dominio no se transfiere automáticamente al enlace nuevo; el avance en la nube se recupera al entrar a la misma cuenta.
+
+
+## Comprobación de audio y avance
+
+- El cliente consulta `/api/tts?capabilities=1` para elegir entre el servidor y la voz alemana del navegador. Si falta la credencial del servidor, usa directamente el navegador, sin fallos 500 repetidos.
+- El reproductor conserva pausa, continuar, detener y secuencias de frases en ambas alternativas.
+- Con sesión iniciada, «Avance confirmado en la nube» aparece después de leer o escribir la versión real del servidor. «Guardar ahora» permite comprobarlo antes de cambiar de computador.
+- Las escrituras comprueban la revisión del servidor. Si dos computadores tienen cambios diferentes, se conservan copias locales y se pide elegir cuál usar.
+- La versión de otro computador se carga también cuando la app ya estaba abierta. Los cambios pendientes sobreviven al cierre del navegador en ese mismo computador.
+- Pruebas automatizadas: `node --experimental-strip-types --test tests/*.test.mjs` desde `app/`.
