@@ -720,6 +720,80 @@ button { touch-action:manipulation; }
   .home-greeting { overflow-wrap:anywhere; }
 }
 
+/* Guided home and progress: show one next step before optional tools. */
+.study-home, .study-progress { display:grid; gap:20px; }
+.study-heading { grid-column:1/-1; margin:0 0 2px; }
+.study-heading h1 { font-size:clamp(24px,2.5vw,32px); line-height:1.25; letter-spacing:-.7px; margin:8px 0 10px; }
+.study-heading p, .study-panel > p, .study-section-heading p { color:var(--text-light); font-size:14px; line-height:1.65; }
+.study-eyebrow { color:var(--brand) !important; font-size:10px !important; font-weight:800; letter-spacing:1.4px; }
+.study-panel { padding:24px; background:var(--card); border:1px solid var(--line); border-radius:16px; min-width:0; }
+.study-panel h2 { font-size:19px; line-height:1.4; margin:4px 0 10px; letter-spacing:-.3px; }
+.next-lesson { display:flex; flex-direction:column; align-items:flex-start; border-top:3px solid var(--brand); }
+.next-lesson h2 { font-size:26px; margin:12px 0; }
+.next-lesson .home-action { margin-top:auto; }
+.next-lesson .study-small { margin:16px 0; }
+.study-secondary { display:inline-flex; justify-content:center; align-items:center; min-height:44px; padding:10px 16px; background:var(--elevated); border:1px solid var(--line); border-radius:10px; color:var(--text); font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; }
+.study-secondary:hover { border-color:var(--brand); }
+.study-link { display:inline-flex; align-items:center; min-height:40px; padding:8px 0; color:var(--brand); font-size:13px; font-weight:700; text-align:left; background:none; border:none; cursor:pointer; }
+.study-link:hover { text-decoration:underline; }
+.study-small { color:var(--text-light); font-size:12px !important; line-height:1.6; margin:10px 0; }
+.practice-shortcuts .study-secondary { width:100%; margin:18px 0 6px; }
+.practice-shortcuts .study-link { display:flex; }
+.home-snapshot { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; padding:20px 24px; border:1px solid var(--line); border-radius:14px; background:var(--glass); grid-column:1/-1; }
+.home-snapshot strong { display:block; font-size:26px; }
+.home-snapshot strong small, .progress-metrics small { color:var(--text-light); font-size:14px; font-weight:500; }
+.home-snapshot span { display:block; font-size:12px; color:var(--text-light); line-height:1.6; margin-top:4px; }
+.home-snapshot .study-link { grid-column:1/-1; min-height:30px; padding:0; }
+.learning-route, .home-extra { grid-column:1/-1; }
+.study-section-heading { display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:12px; }
+.study-section-heading h2 { margin-top:0; }
+.route-percent { font-size:24px; font-weight:800; color:var(--brand); }
+.route-track { height:7px; border-radius:10px; background:var(--line); overflow:hidden; margin:14px 0 20px; }
+.route-track > span { display:block; height:100%; background:var(--brand); border-radius:10px; }
+.route-list { display:grid; gap:10px; }
+.route-lesson { width:100%; min-height:78px; text-align:left; box-shadow:none; padding:14px; border-color:var(--line); }
+.route-lesson:hover { border-color:var(--brand); background:var(--elevated); }
+.route-lesson .lc-title, .route-lesson .lc-desc { display:block; }
+.route-lesson .lc-title { font-size:14px; }
+.route-lesson .lc-desc { font-size:12px; margin-top:4px; line-height:1.4; }
+.route-lesson .lc-icon { font-size:24px; }
+.route-status { margin-left:auto; font-size:11px; color:var(--brand); flex-shrink:0; }
+.study-panel summary, .study-details summary { cursor:pointer; font-size:14px; font-weight:700; min-height:32px; line-height:1.6; }
+.study-panel[open] summary, .study-details[open] summary { margin-bottom:16px; }
+.study-details { margin-top:18px; }
+.progress-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.progress-metrics strong { font-size:34px; color:var(--brand); font-weight:800; }
+.progress-metrics h2 { font-size:14px; margin:8px 0; }
+.progress-metrics p { font-size:12px; line-height:1.6; color:var(--text-light); }
+.progress-empty .home-action { width:auto; padding-inline:20px; margin-top:18px; font-size:14px; }
+.study-week { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px; margin:16px 0; }
+.study-day { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:10px 4px; border-radius:9px; background:var(--glass); border:1px solid var(--line-subtle); font-size:10px; color:var(--text-light); }
+.study-day strong { font-size:16px; color:var(--text); }
+.study-day.is-active { border-color:var(--brand); background:var(--primary-light); color:var(--brand); }
+.study-history-row, .study-category { display:flex; justify-content:space-between; gap:16px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line-subtle); font-size:13px; }
+.study-history-row strong, .study-history-row span { display:block; }
+.study-history-row span { color:var(--text-light); font-size:11px; line-height:1.6; margin-top:4px; }
+.study-history-row > div:last-child { text-align:right; }
+.study-category > span:first-child { flex:1; }
+.study-category > span:nth-child(2) { color:var(--text-light); font-size:11px; }
+.study-actions { display:flex; gap:12px; flex-wrap:wrap; margin:16px 0; }
+@media (min-width:1100px) { .study-home { grid-template-columns:minmax(0,1.35fr) minmax(250px,.85fr); } }
+@media (max-width:600px) {
+  .study-panel { padding:18px; }
+  .home-snapshot { padding:18px; gap:12px; }
+  .home-snapshot strong { font-size:22px; }
+  .home-snapshot span { font-size:10px; }
+  .progress-metrics { grid-template-columns:1fr; }
+  .progress-metrics .study-panel { display:grid; grid-template-columns:90px minmax(0,1fr); column-gap:12px; }
+  .progress-metrics strong { grid-row:1/3; align-self:center; }
+  .study-section-heading { flex-wrap:wrap; gap:8px; }
+  .route-lesson .lc-num { display:none; }
+  .route-lesson { padding:12px; gap:8px; }
+  .route-status { font-size:10px; }
+  .study-category { flex-wrap:wrap; gap:6px; }
+  .study-category > span:first-child { flex-basis:100%; }
+}
+
 </style>
 </head>
 <body>
@@ -736,9 +810,9 @@ button { touch-action:manipulation; }
   <div class="tabs" id="tabBar">
     <button class="tab-btn active" onclick="switchTab('home')">Inicio</button>
     <button class="tab-btn" onclick="switchTab('reading')">Lectura</button>
-    <button class="tab-btn" onclick="switchTab('play')">Juegos</button>
-    <button class="tab-btn" onclick="switchTab('exam')">Examen</button>
-    <button class="tab-btn" onclick="switchTab('progress')">Progreso</button>
+    <button class="tab-btn" onclick="switchTab('play')">Practicar</button>
+    <button class="tab-btn" onclick="switchTab('exam')">Evaluación</button>
+    <button class="tab-btn" onclick="switchTab('progress')">Mi avance</button>
   </div>
 
   </aside>
@@ -780,6 +854,7 @@ button { touch-action:manipulation; }
 <script src="data-a1.js"></script>
 <script src="data-a2.js"></script>
 <script src="audio.js"></script>
+<script src="study-state.js"></script>
 <script>
 
 function speedControlHtml() {
@@ -976,9 +1051,9 @@ function getLevel(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i])return
 function getLevelXP(xp){const lv=getLevel(xp);const cur=LEVELS[lv-1]||0;const nxt=LEVELS[lv]||LEVELS[LEVELS.length-1]+1000;return{level:lv,current:xp-cur,needed:nxt-cur};}
 
 // PERSISTENCE
-function loadData(){try{return JSON.parse(localStorage.getItem('deutschA1'))||defaultData();}catch(e){return defaultData();}}
+function loadData(){try{return StudyState.normalize(JSON.parse(localStorage.getItem('deutschA1')));}catch(e){return StudyState.normalize({});}}
 function saveData(){try{localStorage.setItem('deutschA1',JSON.stringify(data));}catch(e){}}
-function defaultData(){return{xp:0,totalSessions:0,totalCorrect:0,totalAnswered:0,bestStreak:0,wordStats:{},sessions:[],activeDays:[]};}
+function defaultData(){return StudyState.normalize({});}
 let data=loadData();
 
 function getWordKey(w){return w.de;}
@@ -1002,7 +1077,7 @@ function getMasteryLabel(m){return{new:'Nueva',learning:'Aprendiendo',known:'Con
 function getMasteryColor(m){return{new:'var(--text-light)',learning:'var(--accent)',known:'var(--correct)',mastered:'var(--gold)'}[m];}
 
 function recordDay(){
-  const today=new Date().toISOString().slice(0,10);
+  const today=StudyState.dateKey();
   if(!data.activeDays.includes(today)){data.activeDays.push(today);saveData();}
 }
 function getDailyStreak(){
@@ -1012,7 +1087,7 @@ function getDailyStreak(){
   const d=new Date();d.setHours(0,0,0,0);
   for(let i=0;i<60;i++){
     const ds=new Date(d);ds.setDate(ds.getDate()-i);
-    const s=ds.toISOString().slice(0,10);
+    const s=StudyState.dateKey(ds);
     if(days.includes(s))streak++;
     else if(i>0)break;
   }
@@ -1025,13 +1100,14 @@ function getReviewWords(){
   Object.keys(v).forEach(cat=>{
     (v[cat]||[]).forEach(w=>{
       const s=getWordStat(w);
+      if(s.correct+s.wrong===0&&!data.learnedWords.includes(w.de))return;
       const srs=getSRS(getWordKey(w));
       const due=isDue(getWordKey(w));
       if(s.wrong>0||due||(s.correct>0&&s.correct<5))all.push({...w,_cat:cat,_stat:s,_due:due,_priority:due?100+s.wrong:s.wrong-s.correct});
     });
   });
   all.sort((a,b)=>b._priority-a._priority);
-  return all;
+  return [...new Map(all.map(w=>[w.de,w])).values()];
 }
 
 let state={cat:Object.keys(getActiveVocab())[0],selectedCats:[Object.keys(getActiveVocab())[0]],mode:"quiz",current:0,score:0,streak:0,total:0,correct:0,mistakes:[],words:[],round:10,answered:false,started:false};
@@ -1141,9 +1217,9 @@ function renderLevelBar(){
   const pct=Math.min(100,Math.round(info.current/info.needed*100));
   const name=data.userName||'';
   document.getElementById('levelBar').innerHTML=`
-    <div class="level-badge">${info.level}</div>
+    <div class="level-badge" title="Puntos de experiencia">XP</div>
     <div class="level-info">
-      <div class="level-text">${name?name+' · ':''}${t('level')} ${info.level}</div>
+      <div class="level-text">${name?name+' · ':''}Experiencia de práctica</div>
       <div class="xp-text">${data.xp} XP · ${info.current}/${info.needed}</div>
       <div class="xp-bar"><div class="xp-fill" style="width:${pct}%"></div></div>
     </div>
@@ -1154,6 +1230,8 @@ function renderLevelBar(){
 }
 
 function switchTab(id){
+  TTS.stop();
+  if(typeof state !== 'undefined') persistPractice();
   const order=['home','reading','play','exam','progress'];
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',order[i]===id);});
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
@@ -1164,7 +1242,8 @@ function switchTab(id){
   if(id==='reading')renderReadingTab();
   if(id==='exam')renderExamTab();
   if(id==='progress')renderProgressTab();
-  if(id==='play'){renderCategories();renderModes();resetGame();}
+  if(id==='play'){renderCategories();renderModes();if(!state.started)resetGame();}
+  window.scrollTo({top:0,behavior:'instant'});
 }
 
 function renderCategories(){
@@ -1224,6 +1303,8 @@ function renderModes(){
 function selectMode(m){state.mode=m;renderModes();resetGame();setTimeout(()=>{const ga=document.getElementById('gameArea');if(ga)ga.scrollIntoView({behavior:'smooth',block:'center'});},100);}
 
 function resetGame(){
+  persistPractice();
+  state.persisted=null;state.roundId=null;
   state.current=0;state.score=0;state.streak=0;state.total=0;state.correct=0;state.mistakes=[];state.answered=false;state.started=false;
   const v=getActiveVocab();
   if(!state.selectedCats||state.selectedCats.length===0)state.selectedCats=[...Object.keys(v)];
@@ -1247,7 +1328,11 @@ function resetGame(){
   updateStats();updateProgress();showWelcome();
 }
 
+function persistPractice(complete=false){
+  if(StudyState.persistRound(data,state,complete)) { recordDay();saveData();renderLevelBar(); }
+}
 function updateStats(){
+  persistPractice();
   document.getElementById("score").textContent=state.score;
   document.getElementById("streak").textContent=state.streak;
   document.getElementById("accuracy").textContent=(state.total>0?Math.round(state.correct/state.total*100):0)+"%";
@@ -1310,6 +1395,7 @@ function showQuestion(){
   else if(effectiveMode==="conjugation")renderConjugation(area,w);
   else if(effectiveMode==="plurals")renderPlurals(area,w);
   else if(effectiveMode==="cases")renderCases(area,w);
+  area.insertAdjacentHTML('afterbegin',`<p class="study-small round-caption">Pregunta ${state.current+1} de ${state.words.length} · El avance se guarda al responder</p>`);
 }
 
 function renderQuiz(area,w){
@@ -1986,11 +2072,7 @@ function checkSentence() {
 
 function showResults(){
   const pct=Math.round(state.correct/state.total*100);
-  data.xp+=state.score;data.totalSessions++;data.totalCorrect+=state.correct;data.totalAnswered+=state.total;
-  if(state.streak>data.bestStreak)data.bestStreak=state.streak;
-  data.sessions.unshift({date:Date.now(),cat:state.mode==='review'?'Repaso 🔄':state.cat,score:state.score,correct:state.correct,total:state.total,pct});
-  if(data.sessions.length>50)data.sessions=data.sessions.slice(0,50);
-  saveData();renderLevelBar();
+  persistPractice(true);
 
   document.getElementById("progressFill").style.width="100%";
   let emoji,msg;
@@ -2047,90 +2129,44 @@ function renderWordsTab(){
 }
 
 // PROGRESS TAB
+function practiceCategory(index){
+  const keys=Object.keys(getActiveVocab());if(!keys[index])return;
+  state.selectedCats=[keys[index]];state.cat=keys[index];quickStart();
+}
 function renderProgressTab(){
-  const el=document.getElementById('tab-progress');
-  const allWords=Object.values(getActiveVocab()).flat();
-  const counts={new:0,learning:0,known:0,mastered:0};
-  allWords.forEach(w=>{counts[getMastery(getWordStat(w))]++;});
-  const totalW=allWords.length;
-  const learnedPct=Math.round((totalW-counts.new)/totalW*100);
-
-  // Category progress
-  let catHtml=Object.keys(getActiveVocab()).map(c=>{
-    const ws=getActiveVocab()[c];if(!ws)return'';const mast=ws.filter(w=>getMastery(getWordStat(w))==='mastered').length;
-    const p=Math.round(mast/ws.length*100);
-    const col=p===100?'var(--gold)':p>=50?'var(--correct)':p>0?'var(--accent)':'var(--line)';
-    return`<div class="cat-progress"><span class="cp-name">${c}</span><div class="cp-bar"><div class="cp-fill" style="width:${p}%;background:${col}"></div></div><span class="cp-pct" style="color:${col}">${p}%</span></div>`;
-  }).join("");
-
-  // Calendar (last 28 days)
-  let calHtml='';
-  const today=new Date();today.setHours(0,0,0,0);
-  const labels=['L','M','X','J','V','S','D'];
-  calHtml+=labels.map(l=>`<div class="cal-header">${l}</div>`).join('');
-  for(let i=27;i>=0;i--){
-    const d=new Date(today);d.setDate(d.getDate()-i);
-    const ds=d.toISOString().slice(0,10);
-    const isActive=data.activeDays.includes(ds);
-    const isToday=i===0;
-    calHtml+=`<div class="cal-day ${isActive?'active':''} ${isToday?'today':''}">${d.getDate()}</div>`;
-  }
-
-  // Session history
-  let sessHtml='';
-  if(data.sessions.length===0){
-    sessHtml='<div class="empty-state"><div class="es-emoji">📊</div>Juega para ver tu historial</div>';
-  } else {
-    sessHtml=data.sessions.slice(0,15).map(s=>{
-      const d=new Date(s.date);
-      const ds=d.getDate()+'/'+(d.getMonth()+1);
-      const pc=s.pct>=70?'var(--correct)':s.pct>=50?'var(--accent)':'var(--wrong)';
-      return`<div class="history-item"><span class="hi-date">${ds}</span><span class="hi-cat">${s.cat}</span><span class="hi-score">${s.score} XP</span><span class="hi-pct" style="background:${pc}22;color:${pc}">${s.pct}%</span></div>`;
-    }).join("");
-  }
-
-  el.innerHTML=`
-    <div class="prog-section">
-      <h3>📊 Resumen Global</h3>
-      <div class="mastery-grid">
-        <div class="mastery-card"><div class="mc-num" style="color:var(--primary)">${data.totalSessions}</div><div class="mc-label">Sesiones</div></div>
-        <div class="mastery-card"><div class="mc-num" style="color:var(--secondary)">${learnedPct}%</div><div class="mc-label">Vocabulario visto</div></div>
-        <div class="mastery-card"><div class="mc-num" style="color:var(--gold)">${counts.mastered}</div><div class="mc-label">Dominadas</div></div>
-        <div class="mastery-card"><div class="mc-num" style="color:var(--accent)">${data.totalAnswered>0?Math.round(data.totalCorrect/data.totalAnswered*100):0}%</div><div class="mc-label">Precisión total</div></div>
-      </div>
-    </div>
-    <div class="prog-section">
-      <h3>🗓️ Actividad (28 días)</h3>
-      <div class="prog-card"><div class="calendar-grid">${calHtml}</div></div>
-    </div>
-    <div class="prog-section">
-      <h3>📂 Progreso por Categoría</h3>
-      <div class="prog-card">${catHtml}</div>
-    </div>
-    <div class="prog-section">
-      <h3>🔴 Mis errores frecuentes</h3>
-      <div style="font-size:11px;color:var(--text-light);margin-bottom:8px">Últimas 2 semanas — enfócate en lo que más te cuesta</div>
-      ${renderErrorStats()}
-    </div>
-    <div class="prog-section">
-      <h3>📜 Historial de Sesiones</h3>
-      <div class="prog-card">${sessHtml}</div>
-    </div>
-    ${renderLearnedWordsSection()}
-    <div class="prog-section">
-      <h3 style="display:flex;align-items:center;justify-content:space-between">📝 Mis Apuntes <button class="rc-btn" onclick="downloadNotes()" style="font-size:11px">📥 Descargar</button></h3>
-      ${renderAllNotes()}
-    </div>
-    <div class="prog-section">
-      <h3>💾 Respaldo de progreso</h3>
-      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px">Guarda una copia de todo tu progreso (XP, lecciones, notas, estadísticas). Úsalo para restaurar si cambias de navegador o limpias caché.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="rc-btn" onclick="exportProgress()" style="flex:1;padding:10px;font-size:13px;font-weight:700">📤 Exportar progreso</button>
-        <label class="rc-btn" style="flex:1;padding:10px;font-size:13px;font-weight:700;text-align:center;cursor:pointer">📥 Importar progreso<input type="file" accept=".json" onchange="importProgress(event)" style="display:none"></label>
-      </div>
-      <div id="backupMsg" style="margin-top:6px"></div>
-    </div>
-    <button class="reset-btn" onclick="if(confirm('¿Borrar todo el progreso?')){localStorage.removeItem('deutschA1');data=defaultData();renderLevelBar();renderProgressTab();renderCategories();renderModes();}">Reiniciar progreso</button>`;
+  const el=document.getElementById('tab-progress'),s=studySummary(),level=getActiveLevel();
+  const hasActivity=data.totalAnswered>0||s.completed>0||s.practiced>0||data.xp>0||data.activeDays.length>0;
+  const recent=data.sessions.slice(0,5).map(session=>`<div class="study-history-row">
+    <div><strong>${safeText(session.cat)}</strong><span>${new Date(session.date).toLocaleDateString('es-CL',{day:'numeric',month:'short'})} · ${session.completed===false?'Práctica parcial':'Ronda completada'}</span></div>
+    <div><strong>${session.correct}/${session.total}</strong><span>respuestas correctas · ${session.score} XP</span></div></div>`).join('');
+  const categories=Object.entries(getActiveVocab()).map(([category,words],index)=>{
+    const count=words.filter(w=>{const stat=getWordStat(w);return stat.correct+stat.wrong>0||data.learnedWords.includes(w.de);}).length;
+    return `<div class="study-category"><span>${safeText(category)}</span><span>${count} / ${words.length} practicadas</span><button class="study-link" onclick="practiceCategory(${index})">Practicar →</button></div>`;
+  }).join('');
+  let week='';
+  for(let i=6;i>=0;i--){const date=new Date();date.setDate(date.getDate()-i);const key=StudyState.dateKey(date),active=data.activeDays.includes(key);
+    week+=`<div class="study-day ${active?'is-active':''}" aria-label="${date.toLocaleDateString('es-CL')}: ${active?'con actividad':'sin actividad'}"><span>${date.toLocaleDateString('es-CL',{weekday:'short'})}</span><strong>${date.getDate()}</strong><span>${active?'✓':'—'}</span></div>`;}
+  el.innerHTML=`<div class="study-progress">
+    <header class="study-heading"><p class="study-eyebrow">MI AVANCE</p><h1>Así vas en ${level}</h1><p>Las lecciones y palabras corresponden a ${level}. La práctica y la experiencia suman tu actividad de todos los niveles.</p></header>
+    ${!hasActivity?`<section class="study-panel progress-empty"><h2>Tu avance empieza con el primer paso</h2><p>Aún no hay ejercicios ni lecciones registrados. Empieza una lección o responde una pregunta: aquí verás lo que llevas.</p><button class="home-action" onclick="switchTab('home');openNextLesson()">Empezar mi primera lección →</button></section>`:''}
+    <section class="progress-metrics">
+      <div class="study-panel"><strong>${s.completed}<small> / ${s.total}</small></strong><h2>Lecciones completadas</h2><p>${s.lessonPercent}% de tu ruta ${level}</p></div>
+      <div class="study-panel"><strong>${s.practiced}<small> / ${s.words}</small></strong><h2>Palabras practicadas</h2><p>Palabras que respondiste o marcaste como aprendidas.</p></div>
+      <div class="study-panel"><strong>${s.accuracy===null?'—':s.accuracy+'%'}</strong><h2>Aciertos en práctica</h2><p>${data.totalAnswered?`${data.totalCorrect} de ${data.totalAnswered} respuestas correctas.`:'Aparecerá al responder tu primer ejercicio.'}</p></div>
+    </section>
+    <section class="study-panel progress-course"><div class="study-section-heading"><div><h2>${s.next&&(data.lessonPositions[s.next.id]||0)>0?'Tu lección en curso':'Tu siguiente lección'}</h2><p>${s.next?safeText(s.next.title)+((data.lessonPositions[s.next.id]||0)>0?` · Apartado ${data.lessonPositions[s.next.id]+1} de ${s.next.steps.length}`:''):'Completaste la ruta de este nivel.'}</p></div><button class="study-secondary" onclick="openNextLesson()">${s.next?'Continuar la ruta':'Ir a evaluación'} →</button></div>
+      <div class="route-track" role="progressbar" aria-label="Ruta del nivel" aria-valuenow="${s.completed}" aria-valuemin="0" aria-valuemax="${s.total}"><span style="width:${s.lessonPercent}%"></span></div>
+    </section>
+    <section class="study-panel"><h2>Tu actividad reciente</h2><p class="study-small">Últimos 7 días · ${getDailyStreak()} ${getDailyStreak()===1?'día seguido':'días seguidos'} · ${data.totalSessions} rondas completas · ${data.xp} XP acumulados</p><div class="study-week">${week}</div>
+      <p class="study-small">Los XP son puntos de práctica; no equivalen a un nivel de alemán certificado.</p></section>
+    <section class="study-panel"><h2>Últimas prácticas</h2>${recent||'<p class="study-small">Todavía no hay rondas. Las respuestas se guardan aunque salgas antes de completar las 10 preguntas.</p>'}</section>
+    <details class="study-panel"><summary>Vocabulario por categoría</summary><p class="study-small">Practicada significa que ya trabajaste esa palabra. Dominarla requiere acertarla varias veces.</p>${categories}<p class="study-small">${s.mastered} palabras dominadas en este nivel.</p></details>
+    <details class="study-panel"><summary>Qué conviene repasar</summary>${data.errorLog?.length?renderErrorStats():'<p class="study-small">Aún no hay respuestas para detectar qué temas necesitas repasar.</p>'}${renderLearnedWordsSection()}</details>
+    <details class="study-panel"><summary>Mis apuntes</summary>${renderAllNotes()}<button class="study-link" onclick="downloadNotes()">Descargar mis apuntes</button></details>
+    <details class="study-panel"><summary>Copias de seguridad y opciones avanzadas</summary><p class="study-small">Si entras con la misma cuenta en otro computador, puedes recuperar lo guardado en la nube. Antes de cambiar, comprueba el mensaje de guardado en la barra superior. Exportar crea una copia adicional.</p>
+      <div class="study-actions"><button class="study-secondary" onclick="exportProgress()">Exportar copia</button><label class="study-secondary">Importar copia<input type="file" accept=".json" onchange="importProgress(event)" hidden></label></div><div id="backupMsg" role="status"></div>
+      <button class="reset-btn" onclick="if(confirm('¿Borrar todo el progreso de aprendizaje?')){data=defaultData();saveData();state.persisted=null;state.started=false;renderLevelBar();renderProgressTab();renderCategories();renderModes();}">Reiniciar todo mi progreso</button></details>
+  </div>`;
 }
 
 // LESSONS SYSTEM
@@ -3829,9 +3865,14 @@ function toggleTranslationsInLessons(){
 
 
 function openLesson(idx){
-  lessonState.currentLesson=idx;lessonState.currentStep=0;lessonState.quizIndex=0;lessonState.quizCorrect=0;lessonState.quizTotal=0;lessonState.missedQs=[];lessonState.retryMode=false;
+  if(!LESSONS[idx]) return;
+  if(!document.getElementById('tab-home').classList.contains('active')) switchTab('home');
+  const savedStep=data.lessonPositions[LESSONS[idx].id]||0;
+  lessonState.rewardedSteps={};
+  lessonState.currentLesson=idx;lessonState.currentStep=Math.min(savedStep,LESSONS[idx].steps.length-1);lessonState.quizIndex=0;lessonState.quizCorrect=0;lessonState.quizTotal=0;lessonState.missedQs=[];lessonState.retryMode=false;
   lessonMemState={cards:[],flipped:[],matched:[],locked:false};
   renderLessonsTab();
+  window.scrollTo({top:0,behavior:'instant'});
 }
 
 function closeLessonView(){
@@ -3844,6 +3885,9 @@ function renderLessonView(){
   if(!lesson){closeLessonView();return;}
   const step=lesson.steps[lessonState.currentStep];
   if(!step){closeLessonView();return;}
+  if(data.lessonPositions[lesson.id]!==lessonState.currentStep){
+    data.lessonPositions[lesson.id]=lessonState.currentStep;saveData();
+  }
   const totalSteps=lesson.steps.length;
   const pct=((lessonState.currentStep+1)/totalSteps)*100;
 
@@ -3897,7 +3941,13 @@ function renderLessonQuiz(step){
     const passed = pct >= 60;
     const emoji=pct>=90?'🏆':pct>=75?'⭐':pct>=60?'💪':'📚';
     const xpEarned=lessonState.quizCorrect*15;
-    data.xp+=xpEarned;
+    if(!lessonState.rewardedSteps)lessonState.rewardedSteps={};
+    const rewardKey=lessonState.currentStep;
+    if(!lessonState.rewardedSteps[rewardKey]){
+      data.xp+=xpEarned;
+      lessonState.rewardedSteps[rewardKey]=true;
+      recordDay();
+    }
     if(!data.completedLessons)data.completedLessons=[];
     const lid=LESSONS[lessonState.currentLesson].id;
     if(passed && !data.completedLessons.includes(lid))data.completedLessons.push(lid);
@@ -4049,6 +4099,7 @@ function goToNextLesson() {
 }
 
 function retakeLessonQuiz(){
+  if(lessonState.rewardedSteps)delete lessonState.rewardedSteps[lessonState.currentStep];
   lessonState.quizIndex = 0;
   lessonState.quizCorrect = 0;
   lessonState.quizTotal = 0;
@@ -4196,9 +4247,16 @@ function nextLessonQuizQ(){
 
 function lessonPrev(){if(lessonState.currentStep>0){lessonState.currentStep--;renderLessonView();}}
 function lessonNext(){
+  recordDay();
   const lesson=LESSONS[lessonState.currentLesson];
   if(lessonState.currentStep<lesson.steps.length-1){lessonState.currentStep++;lessonState.quizIndex=0;lessonState.quizCorrect=0;lessonState.quizTotal=0;lessonState.missedQs=[];lessonState.retryMode=false;lessonMemState={cards:[],flipped:[],matched:[],locked:false};renderLessonView();}
   else{
+    const finalStep=lesson.steps[lessonState.currentStep];
+    if(finalStep.type==='quiz'&&!data.completedLessons.includes(lesson.id)){
+      renderLessonView();
+      document.querySelector('.lesson-content').insertAdjacentHTML('beforeend','<p role="alert" class="study-small">Completa los ejercicios con al menos un 60% de aciertos para terminar esta lección.</p>');
+      return;
+    }
     if(!data.completedLessons)data.completedLessons=[];
     if(!data.completedLessons.includes(lesson.id)){data.completedLessons.push(lesson.id);data.xp+=20;saveData();renderLevelBar();}
     closeLessonView();
@@ -4920,9 +4978,9 @@ function nextReadingQ() {
 // I18N SYSTEM
 const T = {
   es: {
-    home:"Inicio", games:"Juegos", exam:"Examen",
+    home:"Inicio", games:"Practicar", exam:"Evaluación",
     points:"Puntos", streak:"Racha 🔥", accuracy:"Aciertos",
-    lessons:"Clases", reading:"Lectura", words:"Palabras", play:"Jugar", progress:"Progreso",
+    lessons:"Clases", reading:"Lectura", words:"Palabras", play:"Jugar", progress:"Mi avance",
     howDoYouSay:"¿Cómo se dice en alemán?", writeInGerman:"Escribe la palabra en alemán",
     listenAndWrite:"Escucha y escribe lo que oyes", whatArticle:"¿Qué artículo lleva?",
     correct:"¡Correcto!", incorrect:"Incorrecto", next:"Siguiente →", checkBtn:"Comprobar ✓",
@@ -5855,6 +5913,7 @@ function getUnlearnedWords() {
 }
 
 function startMemoryGame() {
+  recordDay();
   const words = shuffle(getUnlearnedWords()).slice(0, 6);
   const cards = [];
   words.forEach((w, i) => {
@@ -5962,6 +6021,7 @@ function markWordLearned(de, btn) {
   if (!data.learnedWords) data.learnedWords = [];
   if (!data.learnedWords.includes(de)) {
     data.learnedWords.push(de);
+    recordDay();
     data.xp += 5;
     saveData();
     renderLevelBar();
@@ -6200,6 +6260,8 @@ function searchDict() {
 // HOME TAB
 
 function quickStart(mode) {
+  persistPractice();
+  state.mode = mode === 'review' ? 'review' : 'quiz';
   switchTab('play');
   if (mode === 'review') {
     state.mode = 'review';
@@ -6238,79 +6300,58 @@ function quickStart(mode) {
   }, 100);
 }
 
-function renderHomeTab() {
-  const el = document.getElementById('tab-home');
-  const name = data.userName || '';
-  const ds = getDailyStreak();
-  const li = getLevelXP(data.xp);
-  const v = getActiveVocab();
-  const allWords = Object.values(v).flat();
-  const totalWords = allWords.length;
-  const learnedWords = allWords.filter(w => { const s = getWordStat(w); return s.correct > 0; }).length;
-  const dueWords = allWords.filter(w => isDue(getWordKey(w)) && getWordStat(w).correct > 0).length;
-  const pctVocab = totalWords > 0 ? Math.round(learnedWords / totalWords * 100) : 0;
-  const pctXP = Math.min(100, Math.round(li.current / li.needed * 100));
-
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Guten Morgen' : hour < 18 ? 'Guten Tag' : 'Guten Abend';
-
-  let srsSummary = '';
-  if (dueWords > 0) {
-    srsSummary = `<div class="srs-summary" onclick="quickStart('review')" style="cursor:pointer">
-      <span class="srs-icon">🧠</span>
-      <div class="srs-info"><div class="srs-title">${dueWords} palabras para repasar</div>
-      <div class="srs-desc">Tu SRS detectó que estás por olvidarlas</div></div>
-      <span style="font-size:18px">→</span>
-    </div>`;
-  }
-
-  el.innerHTML = `
-    <div class="home-card home-overview">
-      <div class="home-eyebrow">UN POCO CADA DÍA, UN PASO MÁS</div>
-      <div class="home-greeting">${greeting}, ${name}! 👋</div>
-      <div style="display:flex;align-items:center;gap:12px;margin:12px 0">
-        <div class="level-badge" style="width:44px;height:44px;font-size:18px">${li.level}</div>
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;justify-content:space-between;align-items:baseline">
-            <span style="font-size:13px;font-weight:700">${getActiveLevel()} · Nivel ${li.level}</span>
-            <span style="font-size:12px;color:var(--text-light)">${data.xp} XP</span>
-          </div>
-          <div class="xp-bar" style="margin-top:4px"><div class="xp-fill" style="width:${pctXP}%"></div></div>
-          <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text-light)">
-            <span>${learnedWords}/${totalWords} palabras · ${pctVocab}%</span>
-            <span>${ds > 0 ? '🔥 ' : ''}${ds} días</span>
-          </div>
-        </div>
-      </div>
-      ${srsSummary}
-      <button class="home-action" onclick="quickStart()">Practicar ahora ▶</button>
-    </div>
-  `;
-  renderLessonsBelow();
+function safeText(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function studySummary(){return StudyState.summary(data,getActiveVocab(),getActiveLessons());}
+function openNextLesson(){
+  const next=studySummary().next;
+  if(next)openLesson(LESSONS.indexOf(next));else switchTab('exam');
 }
-
-function renderLessonsBelow(){
+function lessonRow(lesson,index){
+  const done=data.completedLessons.includes(lesson.id);
+  const started=(data.lessonPositions[lesson.id]||0)>0;
+  return `<button type="button" class="lesson-card route-lesson ${done?'completed':''}" onclick="openLesson(${LESSONS.indexOf(lesson)})">
+    <span class="lc-num">${index+1}</span><span class="lc-icon" aria-hidden="true">${lesson.icon}</span>
+    <span class="lc-info"><span class="lc-title">${safeText(lesson.title)}</span><span class="lc-desc">${safeText(lesson.desc)}</span></span>
+    <span class="route-status">${done?'Completada':started?'Continuar':'Empezar'} →</span></button>`;
+}
+function renderHomeTab(){
   const el=document.getElementById('tab-home');
-  const activeLessons=getActiveLessons();
-  const completedLessons=data.completedLessons||[];
-  const doneCount=activeLessons.filter(l=>completedLessons.includes(l.id)).length;
-
-  el.innerHTML+=`<div class="home-card home-memory" style="margin-bottom:14px"><div id="memoryGameArea"></div></div>`;
+  const s=studySummary(),level=getActiveLevel(),lessons=getActiveLessons();
+  const next=s.next,continued=next&&(data.lessonPositions[next.id]||0)>0;
+  const due=Object.values(getActiveVocab()).flat().filter(w=>isDue(getWordKey(w))&&getWordStat(w).correct>0).length;
+  const nextIndex=next?lessons.indexOf(next):0;
+  const nearby=lessons.slice(nextIndex,nextIndex+3);
+  el.innerHTML=`<div class="study-home">
+    <header class="study-heading"><p class="study-eyebrow">TU ESPACIO DE ALEMÁN · ${level}</p>
+      <h1 class="home-greeting">Hola${data.userName?', '+safeText(data.userName):''}. Vamos paso a paso.</h1>
+      <p>Aprende con las lecciones, practica lo que sabes y revisa tu avance.</p></header>
+    <section class="study-panel next-lesson"><p class="study-eyebrow">${next?continued?'RETOMA DONDE QUEDASTE':'TU SIGUIENTE PASO':'RUTA COMPLETADA'}</p>
+      <h2>${next?safeText(next.title):'Pon a prueba tu '+level}</h2>
+      <p>${next?safeText(next.desc):'Terminaste las lecciones de este nivel. Puedes repasarlas o hacer una evaluación.'}</p>
+      ${next?`<p class="study-small">Lección ${nextIndex+1} de ${lessons.length}${continued?' · Continúa desde el último apartado':''}</p>`:''}
+      <button class="home-action" onclick="openNextLesson()">${next?continued?'Continuar lección':'Empezar lección':'Ir a la evaluación'} →</button>
+    </section>
+    <section class="study-panel practice-shortcuts"><p class="study-eyebrow">SI PREFIERES PRACTICAR</p><h2>Una ronda corta</h2>
+      <p>10 preguntas de vocabulario. Cada respuesta cuenta y se guarda.</p>
+      <button class="study-secondary" onclick="quickStart()">Practicar vocabulario</button>
+      ${due?`<button class="study-link" onclick="quickStart('review')">Repasar ${due} palabras pendientes →</button>`:'<p class="study-small">No tienes repasos pendientes todavía.</p>'}
+      <button class="study-link" onclick="switchTab('play')">Ver todos los ejercicios →</button>
+    </section>
+    <section class="home-snapshot" aria-label="Resumen de tu avance">
+      <div><strong>${s.completed}<small> / ${s.total}</small></strong><span>Lecciones completadas en ${level}</span></div>
+      <div><strong>${s.practiced}</strong><span>Palabras practicadas en ${level}</span></div>
+      <div><strong>${getDailyStreak()}</strong><span>Días seguidos de actividad</span></div>
+      <button class="study-link" onclick="switchTab('progress')">Ver mi avance →</button>
+    </section>
+    <section class="study-panel learning-route"><div class="study-section-heading"><div><h2>Tu ruta ${level}</h2>
+      <p>${s.completed} de ${s.total} lecciones completadas. Puedes volver a cualquiera.</p></div><span class="route-percent">${s.lessonPercent}%</span></div>
+      <div class="route-track" role="progressbar" aria-label="Lecciones completadas" aria-valuenow="${s.completed}" aria-valuemin="0" aria-valuemax="${s.total}"><span style="width:${s.lessonPercent}%"></span></div>
+      <div class="route-list">${nearby.map(l=>lessonRow(l,lessons.indexOf(l))).join('')}</div>
+      <details class="study-details"><summary>Ver todas las lecciones (${s.total})</summary><div class="route-list">${lessons.map(lessonRow).join('')}</div></details>
+    </section>
+    <details class="study-panel home-extra"><summary>Otra forma de practicar: juego de memoria</summary><p class="study-small">Une las parejas y marca las palabras que ya aprendiste.</p><div id="memoryGameArea"></div></details>
+  </div>`;
   renderMemoryGame();
-
-  el.innerHTML+=`<div class="prog-section home-lessons"><h3>📚 Lecciones ${getActiveLevel()}</h3>
-    <div style="font-size:13px;color:var(--text-light);margin-bottom:14px">${doneCount}/${activeLessons.length} completadas</div>
-    <div class="lesson-list">${activeLessons.map((l,i)=>{
-      const globalIdx=LESSONS.indexOf(l);
-      const done=completedLessons.includes(l.id);
-      const score=(data.lessonScores||{})[l.id];
-      return`<div class="lesson-card ${done?'completed':''}" onclick="openLesson(${globalIdx})">
-        <span class="lc-num">${i+1}</span>
-        <span class="lc-icon">${l.icon}</span>
-        <div class="lc-info"><div class="lc-title">${l.title}</div><div class="lc-desc">${l.desc}</div></div>
-        ${done ? `<span class="lc-badge done" title="Lección completada">✓</span>${score ? `<span class="lc-badge" style="background:${score>=90?'rgba(245,181,66,.18)':score>=70?'rgba(249,115,22,.18)':'rgba(239,68,68,.18)'};color:${score>=90?'#FCD34D':score>=70?'#FDBA74':'#FCA5A5'};border:none" title="${score}% aciertos — ${score>=90?'Dominada':'Repasa para mejorar'}">${score>=90?'⭐⭐⭐':score>=70?'⭐⭐':'⭐'}</span>` : ''}` : `<span class="lc-badge new" title="Aún no has hecho esta lección">Pendiente</span>`}
-      </div>`;
-    }).join("")}</div></div>`;
 }
 
 // CATEGORY TOGGLE
