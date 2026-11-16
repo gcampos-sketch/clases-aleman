@@ -68,7 +68,7 @@ const TTS = {
   },
   isCurrent(item) { return !!item && this.current === item && item.generation === this.generation; },
   async speakCloud(text, _rate, onEnd) {
-    const item = {text, onEnd, generation:this.generation, fallback:false, engine:"loading", rate:_rate === 0.6 ? 0.6 : this.rate()};
+    const item = {text, onEnd, generation:this.generation, fallback:false, engine:"loading", rate:typeof _rate === "number" && _rate > 0 && _rate < 0.85 ? _rate : this.rate()};
     this.current = item; this.playing = true; this.paused = false;
     if (this.cloudEnabled === null) await this.capabilities;
     if (!this.isCurrent(item)) return;

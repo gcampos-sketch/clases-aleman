@@ -69,5 +69,5 @@ test('completion callback starting another clip does not finish the new clip',as
 
 test('the explicit slow pronunciation button is slower than normal playback',async()=>{
  const {tts,utterances}=setup();await tts.capabilities;
- tts.speak('Hallo',0.6);assert.equal(utterances[0].rate,0.6);tts.speak('Hallo',0.85);assert.equal(utterances[1].rate,1);
+ tts.speak('Hallo',0.6);assert.equal(utterances[0].rate,0.6);tts.speak('Hallo',0.85);assert.equal(utterances[1].rate,1);tts.speakSequence(['Guten Tag'],0.7);assert.equal(utterances[2].rate,0.7);
 });

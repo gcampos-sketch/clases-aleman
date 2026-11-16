@@ -804,6 +804,7 @@ button { touch-action:manipulation; }
 .sidebar-hint { font-size:11px; line-height:1.6; color:var(--text-light); margin:12px 16px; }
 .settings-panel { position:relative; }
 .settings-close { float:right; border:0; background:transparent; color:var(--text); font-size:24px; cursor:pointer; padding:0 4px; }
+.start-btn { border-radius:10px; box-shadow:none; }
 .study-eyebrow { text-transform:none; letter-spacing:.3px; font-size:12px !important; font-weight:600; }
 .study-heading h1 { font-size:clamp(26px,2.8vw,38px); font-weight:700; letter-spacing:-1.1px; }
 .study-panel { border-radius:12px; border-color:var(--line-subtle); background:rgba(39,56,76,.65); box-shadow:none; }
@@ -1405,7 +1406,7 @@ function updateProgress(){
 function showWelcome(){
   const area=document.getElementById("gameArea");
   const modeName=MODES.find(m=>m.id===state.mode).name;
-  const name=data.userName?', '+data.userName:'';
+  const name=data.userName?', '+safeText(data.userName):'';
   if(state.mode==='review'&&state.words.length===0){
     area.innerHTML=`<div class="welcome"><div class="big-emoji">🎉</div><h2>${t('noReviewWords')}</h2><p>${t('playOtherModes')}</p></div>`;
     return;
@@ -1415,11 +1416,11 @@ function showWelcome(){
   const isPlurals = state.mode==='plurals';
   const isCases = state.mode==='cases';
   const noCategory = state.mode==='review'||isSentences||isConj||isPlurals||isCases;
-  const icon = state.mode==='review'?'🔄':isSentences?'🧩':isConj?'🔀':isPlurals?'👥':isCases?'⚖️':'🇩🇪';
+  const icon = `<img src="/favicon.svg" width="56" height="56" alt="" style="display:block;margin:0 auto">`;
   const catInfo = noCategory?'':(t('category')+': <strong>'+state.cat+'</strong><br>');
   const unitLabel = isSentences?'oraciones':isConj?'verbos':isPlurals?'sustantivos':isCases?'ejercicios':t('wordsPerRound');
   area.innerHTML=`<div class="welcome"><div class="big-emoji">${icon}</div>
-    <h2>${state.mode==='review'?t('reviewMode'):t('letsLearn')+name+'!'}</h2>
+    <h2>${state.mode==='review'?t('reviewMode'):t('letsLearn').replace(/[!¡]+/g,'')+name}</h2>
     <p>${catInfo}${t('mode')}: <strong>${modeName}</strong><br>${state.words.length} ${unitLabel}</p>
     <button class="start-btn" onclick="startGame()">${t('startBtn')}</button></div>`;
 }
@@ -5045,7 +5046,7 @@ const T = {
     howDoYouSay:"¿Cómo se dice en alemán?", writeInGerman:"Escribe la palabra en alemán",
     listenAndWrite:"Escucha y escribe lo que oyes", whatArticle:"¿Qué artículo lleva?",
     correct:"¡Correcto!", incorrect:"Incorrecto", next:"Siguiente →", checkBtn:"Comprobar ✓",
-    startBtn:"¡Empezar! 🚀", playAgain:"Jugar de nuevo 🔄", letsLearn:"¡Vamos a aprender!",
+    startBtn:"Empezar ronda →", playAgain:"Jugar de nuevo 🔄", letsLearn:"¡Vamos a aprender!",
     wordsPerRound:"palabras por ronda", category:"Categoría", mode:"Modo",
     tapToFlip:"Toca para voltear y escuchar", iKnew:"¡La sabía! ✓", didntKnow:"No la sabía ✗",
     slow:"Lento", normal:"Normal", listenAll:"Escuchar todo", translation:"Traducción",
