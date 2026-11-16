@@ -4,7 +4,7 @@ import { ArrowRight, Headphones, Languages, Sparkles } from "lucide-react";
 const TITLE = "Abecedario alemán: letras, pronunciación y caracteres especiales";
 const DESCRIPTION =
   "Guía completa del abecedario alemán para hispanohablantes: nombre de cada letra, pronunciación aproximada, umlauts (ä, ö, ü) y la letra ß con ejemplos de palabras comunes.";
-const URL = "https://aprenderaleman.app/abecedario-aleman";
+const URL = "https://deutsch-gonzalo.onrender.com/abecedario-aleman";
 
 type Letter = { letter: string; name: string; pron: string; example: string; meaning: string };
 
@@ -111,9 +111,9 @@ export const Route = createFileRoute("/abecedario-aleman")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "article" },
       { property: "og:url", content: URL },
-      { property: "og:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { property: "og:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: URL }],
     scripts: [
@@ -130,11 +130,11 @@ export const Route = createFileRoute("/abecedario-aleman")({
           author: {
             "@type": "Organization",
             name: "Deutsch Lernspiel",
-            url: "https://aprenderaleman.app/",
+            url: "https://deutsch-gonzalo.onrender.com/",
           },
           image: {
             "@type": "ImageObject",
-            url: "https://aprenderaleman.app/og-image.jpg",
+            url: "https://deutsch-gonzalo.onrender.com/og-image.jpg",
             width: 1200,
             height: 630,
           },

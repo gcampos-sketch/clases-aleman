@@ -4,7 +4,7 @@ import { ArrowRight, Calculator, Headphones, Repeat } from "lucide-react";
 const TITLE = "Números en alemán: del 0 al 100 y más, con pronunciación";
 const DESCRIPTION =
   "Tabla completa de números en alemán del 0 al 100, decenas, cientos y millones, con pronunciación aproximada, la regla del orden invertido y ejemplos de uso.";
-const URL = "https://aprenderaleman.app/numeros-en-aleman";
+const URL = "https://deutsch-gonzalo.onrender.com/numeros-en-aleman";
 
 type Num = { n: string; de: string; pron: string };
 
@@ -139,9 +139,9 @@ export const Route = createFileRoute("/numeros-en-aleman")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "article" },
       { property: "og:url", content: URL },
-      { property: "og:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { property: "og:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: URL }],
     scripts: [
@@ -158,11 +158,11 @@ export const Route = createFileRoute("/numeros-en-aleman")({
           author: {
             "@type": "Organization",
             name: "Deutsch Lernspiel",
-            url: "https://aprenderaleman.app/",
+            url: "https://deutsch-gonzalo.onrender.com/",
           },
           image: {
             "@type": "ImageObject",
-            url: "https://aprenderaleman.app/og-image.jpg",
+            url: "https://deutsch-gonzalo.onrender.com/og-image.jpg",
             width: 1200,
             height: 630,
           },

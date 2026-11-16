@@ -4,7 +4,7 @@ import { ArrowRight, BookOpen, CheckCircle, GraduationCap, HelpCircle, Lightbulb
 const TITLE = "Declinaciones en alemán: Nominativ, Akkusativ, Dativ y Genitiv";
 const DESCRIPTION =
   "Guía completa de declinaciones alemanas: artículos, adjetivos y pronombres en Nominativ, Akkusativ, Dativ y Genitiv con tablas y ejemplos.";
-const URL = "https://aprenderaleman.app/declinaciones-aleman";
+const URL = "https://deutsch-gonzalo.onrender.com/declinaciones-aleman";
 
 const CASES = [
   {
@@ -105,9 +105,9 @@ export const Route = createFileRoute("/declinaciones-aleman")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "article" },
       { property: "og:url", content: URL },
-      { property: "og:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { property: "og:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: URL }],
     scripts: [
@@ -124,11 +124,11 @@ export const Route = createFileRoute("/declinaciones-aleman")({
           author: {
             "@type": "Organization",
             name: "Deutsch Lernspiel",
-            url: "https://aprenderaleman.app/",
+            url: "https://deutsch-gonzalo.onrender.com/",
           },
           image: {
             "@type": "ImageObject",
-            url: "https://aprenderaleman.app/og-image.jpg",
+            url: "https://deutsch-gonzalo.onrender.com/og-image.jpg",
             width: 1200,
             height: 630,
           },

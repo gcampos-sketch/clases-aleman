@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://aprenderaleman.app/sitemap.xml
+Sitemap: https://deutsch-gonzalo.onrender.com/sitemap.xml

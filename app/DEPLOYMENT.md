@@ -4,9 +4,11 @@ Esta versión conserva el juego A1/A2, el progreso local y el acceso opcional a 
 
 - Repositorio: https://github.com/gcampos-sketch/clases-aleman
 - Rama de publicación: `render/desktop-app`
+- Enlace: https://deutsch-gonzalo.onrender.com
+- Servicio: https://dashboard.render.com/web/srv-dbt51cu7bikc73d2gc00
 - Runtime: Node.js 24
-- Compilación: `npm ci --include=dev && npm run build`
-- Inicio: `npm start`
+- Compilación: `cd app && npm ci --include=dev && npm run build`
+- Inicio: `cd app && npm start`
 - El servidor escucha en el puerto que entrega Render mediante `PORT`.
 
 Configurar en Render las variables `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` usando los valores del proyecto existente. Nunca subir `.env` al repositorio.

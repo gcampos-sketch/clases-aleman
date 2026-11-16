@@ -4,7 +4,7 @@ import { ArrowRight, Headphones, Layers, Target } from "lucide-react";
 const TITLE = "Palabras en alemán: 100 básicas con pronunciación y ejemplos";
 const DESCRIPTION =
   "Lista de palabras en alemán con su traducción al español, artículo y ejemplos por temas: saludos, personas, comida, casa, tiempo y verbos.";
-const URL = "https://aprenderaleman.app/palabras-en-aleman";
+const URL = "https://deutsch-gonzalo.onrender.com/palabras-en-aleman";
 
 type Word = { de: string; es: string; ejemplo: string };
 type Group = { tema: string; nota: string; palabras: Word[] };
@@ -186,9 +186,9 @@ export const Route = createFileRoute("/palabras-en-aleman")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "article" },
       { property: "og:url", content: URL },
-      { property: "og:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { property: "og:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://aprenderaleman.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://deutsch-gonzalo.onrender.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: URL }],
     scripts: [
@@ -205,11 +205,11 @@ export const Route = createFileRoute("/palabras-en-aleman")({
           author: {
             "@type": "Organization",
             name: "Deutsch Lernspiel",
-            url: "https://aprenderaleman.app/",
+            url: "https://deutsch-gonzalo.onrender.com/",
           },
           image: {
             "@type": "ImageObject",
-            url: "https://aprenderaleman.app/og-image.jpg",
+            url: "https://deutsch-gonzalo.onrender.com/og-image.jpg",
             width: 1200,
             height: 630,
           },
