@@ -801,6 +801,7 @@ button { touch-action:manipulation; }
 .brand-header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .tab-btn { display:flex; align-items:center; justify-content:center; gap:12px; }
 .preferences-btn { gap:12px; width:100%; padding:12px 16px; font-family:inherit; font-size:13px; font-weight:600; justify-content:flex-start; margin-top:24px; border-top:1px solid var(--line-subtle); border-radius:0; }
+.level-select-bar .locked { display:none; }
 .sidebar-hint { font-size:11px; line-height:1.6; color:var(--text-light); margin:12px 16px; }
 .settings-panel { position:relative; }
 .settings-close { float:right; border:0; background:transparent; color:var(--text); font-size:24px; cursor:pointer; padding:0 4px; }
@@ -823,7 +824,8 @@ button:focus-visible, summary:focus-visible { outline:2px solid var(--brand); ou
   .brand-header { order:0; height:88px; flex-shrink:0; padding:8px 0 24px; box-sizing:border-box; }
   #tabBar { order:1; }
   .preferences-btn { order:2; flex-shrink:0; }
-  #levelSelectBar { order:3; margin-top:20px; }
+  #levelSelectBar { order:3; margin-top:20px; flex-shrink:0; flex-wrap:nowrap; }
+  #levelSelectBar::before { content:"Nivel"; font-size:11px; color:var(--text-light); align-self:center; margin-right:auto; }
   #levelBar { order:4; display:none !important; }
   .sidebar-hint { order:5; }
   .brand-header #appTitle { font-size:19px; gap:8px; }
