@@ -217,7 +217,7 @@ export function LearnPage() {
         {ready ? (
           <iframe
             key={iframeVersion}
-            src="/lernspiel/index.html"
+            src={`/lernspiel/index.html?v=${import.meta.env["VITE_LEARNING_REVISION"] || "dev"}`}
             title="Deutsch Lernspiel"
             onLoad={() => setFrameLoaded(true)}
             className="h-full w-full border-0"

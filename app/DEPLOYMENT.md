@@ -4,7 +4,8 @@ Esta versión conserva el juego A1/A2, el progreso local y el acceso opcional a 
 
 - Repositorio: https://github.com/gcampos-sketch/clases-aleman
 - Rama de publicación: `render/desktop-app`
-- Enlace: https://deutsch-gonzalo.onrender.com
+- Enlace principal (estático): https://deutsch-gonzalo-app.onrender.com
+- Enlace anterior (servidor): https://deutsch-gonzalo.onrender.com
 - Servicio: https://dashboard.render.com/web/srv-dbt51cu7bikc73d2gc00
 - Runtime: Node.js 24
 - Compilación: `cd app && npm ci --include=dev && npm run build`
@@ -47,3 +48,15 @@ Gonzalo eligió publicar un enlace nuevo sin arranque en frío. La interfaz usa 
 - Entradas físicas para `/auth/` y las cuatro páginas de contenido permiten abrir y recargar enlaces en el CDN sin una regla global de reescritura.
 - El dominio nuevo requiere entrar a la misma cuenta para recuperar el avance; los datos locales de invitado siguen perteneciendo a su dominio original.
 - No publicar `.env`. Solo se incluyen URL y clave publicable de Supabase como variables VITE_ de compilación.
+
+
+Interfaz estática publicada en Render el 16/11/2026:
+- URL principal: https://deutsch-gonzalo-app.onrender.com
+- Servicio: srv-dbtf5p8n74is73bo7h3g
+- Panel: https://dashboard.render.com/static/srv-dbtf5p8n74is73bo7h3g
+- Rama: render/desktop-app
+- Commit de aplicación: 925c7046ca7d5ec8c3473690fdb0e7caa071404b
+- Verificación HTTP: inicio, acceso (con y sin barra final), las cuatro páginas de contenido, configuración de audio e iconos devuelven 200 desde el CDN. La recuperación con la misma sesión partió sin datos de progreso en el nuevo origen y cargó el avance de la cuenta desde Supabase.
+
+- Comprobación entre dos orígenes autenticados: guardar apartado 2/4 en el sitio estático y retomarlo en el enlace anterior; después se devolvió el punto al apartado inicial. No se añadieron XP ni se marcaron lecciones como completadas.
+- Cada compilación calcula una revisión del contenido del juego y versiona su iframe, scripts e iconos para evitar pantallas antiguas retenidas por el navegador.
