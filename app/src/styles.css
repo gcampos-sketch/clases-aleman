@@ -65,11 +65,11 @@
 :root,
 .dark {
   --radius: 0.875rem;
-  --background: oklch(0.3655 0.0432 252.77);
+  --background: oklch(0.207 0.019 250);
   --foreground: oklch(1 0 0);
-  --card: oklch(0.4310 0.0518 252.05);
+  --card: oklch(0.336 0.043 252);
   --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.4310 0.0518 252.05);
+  --popover: oklch(0.336 0.043 252);
   --popover-foreground: oklch(1 0 0);
   --primary: oklch(0.878 0.166 92.2);
   --primary-foreground: oklch(0.145 0 0);
@@ -108,6 +108,8 @@
   body {
     font-family: var(--font-sans);
     background-color: var(--color-background);
+    background-image: linear-gradient(135deg, oklch(0.207 0.019 250), oklch(0.29 0.035 255) 55%, oklch(0.365 0.043 252));
+    background-attachment: fixed;
     color: var(--color-foreground);
   }
 }

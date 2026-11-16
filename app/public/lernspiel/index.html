@@ -9,10 +9,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <style>
 :root {
-  --bg: #2E4055;
-  --bg2: #344A62;
-  --card: #3B526C;
-  --elevated: #496582;
+  --bg: #111820;
+  --page-gradient: radial-gradient(ellipse at 15% 0%,rgba(74,100,140,0.24),transparent 55%), linear-gradient(135deg,#111820 0%,#1D2A3B 55%,#2C4056 100%);
+  --bg2: #1D2A3B;
+  --card: #27384C;
+  --elevated: #354B64;
   --brand: #FFD540;
   --brand-hover: #FFE37A;
   --brand-active: #E6C039;
@@ -555,7 +556,7 @@ body { font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif; backgr
 .reading-list-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-lg); }
 
 /* ONBOARDING */
-.onboarding { position:fixed; inset:0; background:var(--bg); z-index:200; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.4s ease; }
+.onboarding { position:fixed; inset:0; background:var(--page-gradient); z-index:200; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.4s ease; }
 .ob-card { background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow-lg); padding:32px 28px; max-width:400px; width:90%; text-align:center; position:relative; overflow:hidden; }
 .ob-card::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; background:var(--brand); }
 .ob-flag { font-size:56px; margin-bottom:12px; }
@@ -607,7 +608,7 @@ body { font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif; backgr
 
 /* === Adereso dark override layer === */
 html { color-scheme: dark; }
-body { background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
+body { background:var(--page-gradient); background-attachment:fixed; color:var(--text); -webkit-font-smoothing:antialiased; }
 .app { max-width:560px; }
 input, textarea, select, button { font-family:inherit; color:var(--text); }
 input, textarea, .text-input, .writing-area, .notes-editor, .dict-search {
@@ -653,7 +654,7 @@ button { touch-action:manipulation; }
 .lc-info { min-width:0; }
 .lc-title, .lc-desc { overflow-wrap:anywhere; }
 @media (min-width:900px) {
-  body { background:radial-gradient(ellipse at 80% 0%,rgba(255,235,168,.07),transparent 65%),var(--bg); }
+  body { background:var(--page-gradient); background-attachment:fixed; }
   .app { max-width:1480px; display:grid; grid-template-columns:224px minmax(0,1fr); gap:36px; padding:28px 36px 72px; align-items:start; }
   .app-sidebar { position:sticky; top:28px; padding:4px 20px 24px 0; border-right:1px solid var(--line); max-height:calc(100dvh - 56px); overflow-y:auto; }
   .header { text-align:left; padding:10px 0 28px; }
