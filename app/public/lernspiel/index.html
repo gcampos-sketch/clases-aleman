@@ -665,12 +665,6 @@ button { touch-action:manipulation; }
   .level-bar { flex-wrap:wrap; padding:12px; margin-bottom:20px; }
   .tabs { flex-direction:column; gap:6px; padding:0; background:transparent; border:0; box-shadow:none; }
   .tab-btn { flex:none; min-height:48px; padding:14px 18px; text-align:left; font-size:14px; border-radius:12px; }
-  .tab-btn::before { display:inline-block; width:27px; font-size:16px; }
-  .tab-btn:nth-child(1)::before { content:'⌂'; }
-  .tab-btn:nth-child(2)::before { content:'▤'; }
-  .tab-btn:nth-child(3)::before { content:'◈'; }
-  .tab-btn:nth-child(4)::before { content:'✓'; }
-  .tab-btn:nth-child(5)::before { content:'↗'; }
   .tab-btn.active { box-shadow:none; }
   .app-workspace { padding-top:4px; }
   #tab-home.active:has(.home-overview) { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); gap:22px; align-items:stretch; }
@@ -794,27 +788,94 @@ button { touch-action:manipulation; }
   .study-category > span:first-child { flex-basis:100%; }
 }
 
+
+/* Deutsch's own navigation and quieter learning surfaces. */
+.ui-icon { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.brand-header #appTitle { display:flex; align-items:center; gap:10px; margin:0; color:var(--text); font-size:20px; letter-spacing:-.6px; }
+.brand-mark { width:38px; height:38px; flex-shrink:0; }
+.brand-copy { display:flex; align-items:baseline; gap:7px; white-space:nowrap; }
+.brand-copy small { font-size:12px; color:var(--brand); letter-spacing:0; font-weight:600; }
+.sidebar-toggle,.preferences-btn { display:flex; align-items:center; justify-content:center; background:transparent; color:var(--text-light); border:1px solid transparent; cursor:pointer; border-radius:8px; min-height:40px; }
+.sidebar-toggle { width:36px; flex-shrink:0; }
+.sidebar-toggle:hover,.preferences-btn:hover { background:var(--glass); color:var(--text); border-color:var(--line-subtle); }
+.brand-header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.tab-btn { display:flex; align-items:center; justify-content:center; gap:12px; }
+.preferences-btn { gap:12px; width:100%; padding:12px 16px; font-family:inherit; font-size:13px; font-weight:600; justify-content:flex-start; margin-top:24px; border-top:1px solid var(--line-subtle); border-radius:0; }
+.sidebar-hint { font-size:11px; line-height:1.6; color:var(--text-light); margin:12px 16px; }
+.settings-panel { position:relative; }
+.settings-close { float:right; border:0; background:transparent; color:var(--text); font-size:24px; cursor:pointer; padding:0 4px; }
+.study-eyebrow { text-transform:none; letter-spacing:.3px; font-size:12px !important; font-weight:600; }
+.study-heading h1 { font-size:clamp(26px,2.8vw,38px); font-weight:700; letter-spacing:-1.1px; }
+.study-panel { border-radius:12px; border-color:var(--line-subtle); background:rgba(39,56,76,.65); box-shadow:none; }
+.next-lesson { border-top:0; border-left:3px solid var(--brand); background:linear-gradient(120deg,rgba(57,79,104,.7),rgba(39,56,76,.45)); }
+.practice-shortcuts { background:transparent; border-color:transparent; padding-left:24px; }
+.learning-route { background:transparent; border:0; padding-inline:0; }
+.route-list { gap:0; }
+.route-lesson { border:0; border-bottom:1px solid var(--line-subtle); border-radius:0; background:transparent; padding:18px 4px; }
+.route-lesson .lc-num { background:var(--glass); color:var(--text-light); border-radius:8px; }
+.home-snapshot { border-radius:0; border:0; border-top:1px solid var(--line-subtle); border-bottom:1px solid var(--line-subtle); background:transparent; padding-inline:0; }
+button:focus-visible, summary:focus-visible { outline:2px solid var(--brand); outline-offset:3px; }
+@media (min-width:900px) {
+  .app { gap:32px; grid-template-columns:224px minmax(0,1fr); }
+  #settingsPanel:not(:empty) { position:absolute; left:calc(100% + 12px); top:0; width:300px; max-height:calc(100dvh - 120px); overflow:auto; filter:drop-shadow(0 12px 24px #080f1c66); }
+  .app-sidebar { display:flex; flex-direction:column; width:224px; padding:0 20px 24px 0; box-sizing:border-box; overflow:visible; z-index:30; min-height:calc(100dvh - 100px); }
+  .brand-header { order:0; height:88px; flex-shrink:0; padding:8px 0 24px; box-sizing:border-box; }
+  #tabBar { order:1; }
+  .preferences-btn { order:2; flex-shrink:0; }
+  #levelSelectBar { order:3; margin-top:20px; }
+  #levelBar { order:4; display:none !important; }
+  .sidebar-hint { order:5; }
+  .brand-header #appTitle { font-size:19px; gap:8px; }
+  .brand-mark { width:34px; height:34px; }
+  .sidebar-toggle { width:30px; }
+  .tab-btn { justify-content:flex-start; padding:12px 16px; min-height:46px; border-radius:9px; }
+  .tab-btn.active { background:var(--primary-light); color:var(--brand); border:1px solid rgba(255,213,64,.3); }
+  .tab-btn:hover:not(.active) { background:var(--glass); }
+  .nav-collapsed .app { grid-template-columns:64px minmax(0,1fr); }
+  .nav-collapsed .app-sidebar { width:64px; padding:0 12px 24px 0; transition:width .18s ease,background .18s ease; }
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) .brand-copy,
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) .nav-label,
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) #levelSelectBar,
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) #levelBar,
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) .sidebar-hint { display:none; }
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) .brand-header { flex-direction:column; padding-bottom:16px; }
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) .tab-btn,
+  .nav-collapsed .app-sidebar:not(:hover):not(:focus-within):not(.settings-open) .preferences-btn { justify-content:center; padding:12px; }
+  .nav-collapsed .app-sidebar:is(:hover,:focus-within,.settings-open) { width:244px; background:linear-gradient(155deg,#1d2a3b,#26394e); padding:16px; margin:-16px 0 0 -16px; border:1px solid var(--line-subtle); border-radius:12px; box-shadow:16px 12px 40px #080f1c66; }
+}
+@media (max-width:899px) {
+  .sidebar-toggle,.sidebar-hint { display:none; }
+  .brand-header { padding-block:12px; }
+  .brand-header #appTitle { margin:auto; }
+  .tab-btn { flex-direction:column; gap:6px; padding:10px 5px; }
+  .tab-btn .ui-icon { width:18px; height:18px; }
+  .preferences-btn { width:auto; margin:12px 0; padding:8px 12px; border:1px solid var(--line-subtle); border-radius:8px; }
+}
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+
 </style>
 </head>
 <body>
 <div id="onboarding"></div>
 <div class="app" id="mainApp" style="display:none">
  <aside class="app-sidebar" aria-label="Navegación de aprendizaje">
-  <div class="header" style="position:relative">
-    <h1 id="appTitle">🇩🇪 Deutsch A1</h1>
-    <button class="settings-btn" onclick="toggleSettings()" title="Configuración" aria-label="Configuración">⚙️</button>
+  <div class="header brand-header">
+    <h1 id="appTitle" aria-label="Deutsch A1"><img class="brand-mark" src="/favicon.svg" alt=""><span class="brand-copy">Deutsch <small id="brandLevel">A1</small></span></h1>
+    <button id="sidebarToggle" class="sidebar-toggle" onclick="toggleSidebar()" title="Ocultar menú" aria-label="Ocultar menú" aria-expanded="true" aria-controls="tabBar"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#collapse"/></svg></button>
   </div>
   <div id="settingsPanel"></div>
   <div id="levelSelectBar" class="level-select-bar"></div>
   <div class="level-bar" id="levelBar"></div>
   <div class="tabs" id="tabBar">
-    <button class="tab-btn active" onclick="switchTab('home')">Inicio</button>
-    <button class="tab-btn" onclick="switchTab('reading')">Lectura</button>
-    <button class="tab-btn" onclick="switchTab('play')">Practicar</button>
-    <button class="tab-btn" onclick="switchTab('exam')">Evaluación</button>
-    <button class="tab-btn" onclick="switchTab('progress')">Mi avance</button>
+    <button class="tab-btn active" onclick="switchTab('home')" aria-label="Inicio" title="Inicio"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#home"/></svg><span class="nav-label">Inicio</span></button>
+    <button class="tab-btn" onclick="switchTab('reading')" aria-label="Lectura" title="Lectura"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#reading"/></svg><span class="nav-label">Lectura</span></button>
+    <button class="tab-btn" onclick="switchTab('play')" aria-label="Practicar" title="Practicar"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#practice"/></svg><span class="nav-label">Practicar</span></button>
+    <button class="tab-btn" onclick="switchTab('exam')" aria-label="Evaluación" title="Evaluación"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#exam"/></svg><span class="nav-label">Evaluación</span></button>
+    <button class="tab-btn" onclick="switchTab('progress')" aria-label="Mi avance" title="Mi avance"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#progress"/></svg><span class="nav-label">Mi avance</span></button>
   </div>
 
+  <button class="preferences-btn" onclick="toggleSettings()" title="Preferencias" aria-label="Preferencias" aria-expanded="false" aria-controls="settingsPanel"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#preferences"/></svg><span class="nav-label">Preferencias</span></button>
+  <p class="sidebar-hint">Un poco de alemán, cada día.</p>
   </aside>
   <main class="app-workspace">
   <div class="tab-content active" id="tab-home"></div>
@@ -837,7 +898,7 @@ button { touch-action:manipulation; }
   </main>
 </div>
 
-<button class="dict-fab" onclick="toggleDict()" title="Diccionario">📖</button>
+<button class="dict-fab" onclick="toggleDict()" title="Diccionario" aria-label="Diccionario"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#reading"/></svg></button>
 <div class="dict-panel" id="dictPanel" onclick="if(event.target===this)toggleDict()">
   <div class="dict-content">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -927,7 +988,7 @@ function setActiveLevel(lv) {
   if (!lvl || !lvl.available) return;
   data.level = lv;
   saveData();
-  document.getElementById('appTitle').textContent = '🇩🇪 Deutsch ' + lv;
+  setAppTitle(lv);
   state.cat = Object.keys(getActiveVocab())[0];
   lessonState.currentLesson = null;
   readingState.current = null;
@@ -1294,7 +1355,7 @@ function renderModes(){
     let extra='';
     if(m.id==='review'&&reviewCount>0)extra=`<span class="review-badge">${reviewCount}</span>`;
     return`<button class="mode-btn ${m.id===state.mode?'active':''}" onclick="selectMode('${m.id}')">
-      <div class="icon">${m.icon}</div>
+      <div class="icon"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#${m.id}"/></svg></div>
       <div class="name">${m.name}${extra}</div>
     </button>`;
   }).join("");
@@ -1413,7 +1474,7 @@ function renderQuiz(area,w){
     <div class="word-es">${w.es}</div>
     <div style="margin-bottom:6px;display:flex;align-items:center;gap:6px;justify-content:center">
       <span class="wl-mastery" style="background:${srs.color}22;color:${srs.color}">${srs.label}</span>
-      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" title="Escuchar">🔊</button>
+      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" title="Escuchar" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
     </div>
     <div class="word-hint">¿Cómo se dice en alemán?</div>
     <div class="options">${opts.map(o=>`<button class="option-btn" onclick="checkQuiz(this,'${escapeStr(o.de)}','${escapeStr(w.de)}')">${o.de}</button>`).join("")}</div>
@@ -1428,7 +1489,7 @@ function skipQuiz(correct){
   state.streak=0;state.mistakes.push(w);
   updateWordStat(w,false);updateSRS(getWordKey(w),false);
   speak(w.de);logError('Vocabulario',w.es+' → '+w.de,false);
-  fb.innerHTML=`<div class="feedback wrong">🤷 Sin problema. La respuesta es: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle">🔊</button></div>${getGrammarTip(w,'quiz')}`;
+  fb.innerHTML=`<div class="feedback wrong">🤷 Sin problema. La respuesta es: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'quiz')}`;
   updateStats();
   fb.innerHTML+=`<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
 }
@@ -1442,12 +1503,12 @@ function checkQuiz(btn,selected,correct){
     const pts=10+(state.streak>1?state.streak*2:0);state.score+=pts;
     updateWordStat(w,true);updateSRS(getWordKey(w),true);
     speak(w.de);logError('Vocabulario',w.de,true);
-    fb.innerHTML=`<div class="feedback correct">✅ ¡Correcto! +${pts} XP ${state.streak>2?'🔥 Racha de '+state.streak:''}<br><small>${w.de} ${w.pron}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle">🔊</button></div>`;
+    fb.innerHTML=`<div class="feedback correct">✅ ¡Correcto! +${pts} XP ${state.streak>2?'🔥 Racha de '+state.streak:''}<br><small>${w.de} ${w.pron}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     btn.classList.add("wrong");state.streak=0;state.mistakes.push(w);
     updateWordStat(w,false);updateSRS(getWordKey(w),false);
     speak(w.de);logError('Vocabulario',w.es+' → '+w.de,false);
-    fb.innerHTML=`<div class="feedback wrong">❌ Incorrecto. La respuesta es: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle">🔊</button></div>${getGrammarTip(w,'quiz')}`;
+    fb.innerHTML=`<div class="feedback wrong">❌ Incorrecto. La respuesta es: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" style="vertical-align:middle" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'quiz')}`;
   }
   updateStats();
   fb.innerHTML+=`<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -1462,7 +1523,7 @@ function renderWrite(area,w){
     <div class="word-es">${w.es}</div>
     <div style="margin-bottom:6px;display:flex;align-items:center;gap:6px;justify-content:center">
       <span class="wl-mastery" style="background:${srs.color}22;color:${srs.color}">${srs.label}</span>
-      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" title="Escuchar pista">🔊</button>
+      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" title="Escuchar pista" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
     </div>
     <div class="word-hint">Escribe la palabra en alemán</div>
     <div class="input-area"><input class="text-input" id="writeInput" type="text" placeholder="Escribe aquí..." autocomplete="off" autofocus>
@@ -1483,12 +1544,12 @@ function checkWrite(){
     const pts=15+(state.streak>1?state.streak*3:0);state.score+=pts;
     updateWordStat(w,true);updateSRS(getWordKey(w),true);
     speak(w.de);logError('Escritura',w.de,true);
-    fb.innerHTML=`<div class="feedback correct">✅ ¡Correcto! +${pts} XP ${state.streak>2?'🔥 Racha de '+state.streak:''}<br><small>${w.de} ${w.pron}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
+    fb.innerHTML=`<div class="feedback correct">✅ ¡Correcto! +${pts} XP ${state.streak>2?'🔥 Racha de '+state.streak:''}<br><small>${w.de} ${w.pron}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     inp.classList.add("wrong");state.streak=0;state.mistakes.push(w);
     updateWordStat(w,false);updateSRS(getWordKey(w),false);
     speak(w.de);logError('Escritura',val+'→'+w.de,false);
-    fb.innerHTML=`<div class="feedback wrong">❌ Incorrecto. Tu respuesta: <strong>${val}</strong><br>Correcto: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'write',val)}`;
+    fb.innerHTML=`<div class="feedback wrong">❌ Incorrecto. Tu respuesta: <strong>${val}</strong><br>Correcto: <strong>${w.de}</strong> ${w.pron} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'write',val)}`;
   }
   updateStats();fb.innerHTML+=`<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
 }
@@ -1499,7 +1560,7 @@ function renderFlash(area,w){
   area.innerHTML=`<div class="flashcard-container"><div class="flashcard" id="flashcard" onclick="flipCardAnki()">
     <div class="flashcard-face flashcard-front"><div class="emoji-display" style="font-size:48px">${w.emoji}</div>${at}<div class="word-es" style="font-size:16px">${w.es}</div><div style="font-size:11px;color:var(--text-light);margin-top:8px">Toca para ver la respuesta</div></div>
     <div class="flashcard-face flashcard-back"><div class="de-article">${w.article||''}</div><div class="de-word">${w.de}</div><div class="de-pronunciation">${w.pron}</div>
-    <button class="speak-btn" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)" style="margin-top:8px">🔊</button></div>
+    <button class="speak-btn" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)" style="margin-top:8px" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
   </div></div>
   <div id="flashActions"></div>`;
 }
@@ -1537,7 +1598,7 @@ function renderDictation(area, w) {
   area.innerHTML = `
     ${state.streak >= 3 ? `<div class="streak-indicator ${state.streak >= 5 ? 'hot' : ''}">🔥 ${state.streak}</div>` : ''}
     <div style="font-size:13px;color:var(--text-light);margin-bottom:8px">Escucha y escribe lo que oyes</div>
-    <button class="speak-btn" onclick="speakBtn('${escapeStr(w.de)}',this)" style="width:64px;height:64px;font-size:32px;margin-bottom:12px">🔊</button>
+    <button class="speak-btn" onclick="speakBtn('${escapeStr(w.de)}',this)" style="width:64px;height:64px;font-size:32px;margin-bottom:12px" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
     <div style="display:flex;gap:6px;margin-bottom:12px">
       <button class="rc-btn" onclick="speak('${escapeStr(w.de)}',0.6)" style="font-size:11px">🐢 Lento</button>
       <button class="rc-btn" onclick="speak('${escapeStr(w.de)}',0.85)" style="font-size:11px">🔊 Normal</button>
@@ -1572,12 +1633,12 @@ function checkDictation() {
     inp.classList.add("correct"); state.correct++; state.streak++;
     const pts = 20 + (state.streak > 1 ? state.streak * 3 : 0); state.score += pts;
     updateWordStat(w, true); updateSRS(getWordKey(w), true);logError('Dictado',w.de,true);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Perfecto! +${pts} XP ${state.streak > 2 ? '🔥 Racha de ' + state.streak : ''}<br><small>${w.de} — ${w.es}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Perfecto! +${pts} XP ${state.streak > 2 ? '🔥 Racha de ' + state.streak : ''}<br><small>${w.de} — ${w.es}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     inp.classList.add("wrong"); state.streak = 0; state.mistakes.push(w);
     updateWordStat(w, false); updateSRS(getWordKey(w), false);
     speak(w.de);logError('Dictado',val+'→'+w.de,false);
-    fb.innerHTML = `<div class="feedback wrong">❌ Escribiste: <strong>${val}</strong><br>Correcto: <strong>${w.de}</strong> — ${w.es} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'dictation',val)}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ Escribiste: <strong>${val}</strong><br>Correcto: <strong>${w.de}</strong> — ${w.es} <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'dictation',val)}`;
   }
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -1617,7 +1678,7 @@ function skipArticle() {
   state.streak = 0; state.mistakes.push(w);
   updateWordStat(w, false); updateSRS(getWordKey(w), false);
   speak(w.de); logError('Artículos (der/die/das)', 'skip: ' + w.de, false);
-  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <span class="genre-tag ${correct}">${correct}</span> <strong>${w.de}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'articles')}`;
+  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <span class="genre-tag ${correct}">${correct}</span> <strong>${w.de}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'articles')}`;
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
 }
@@ -1636,12 +1697,12 @@ function checkArticle(btn, selected, correct, fullWord) {
     const pts = 12 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
     updateWordStat(w, true); updateSRS(getWordKey(w), true);
     speak(w.de);logError('Artículos (der/die/das)',w.de,true);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.de}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.de}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     btn.classList.add("wrong"); state.streak = 0; state.mistakes.push(w);
     updateWordStat(w, false); updateSRS(getWordKey(w), false);
     speak(w.de);logError('Artículos (der/die/das)',selected+'→'+correct+': '+w.de,false);
-    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <span class="genre-tag ${correct}">${correct}</span> <strong>${w.de}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'articles')}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <span class="genre-tag ${correct}">${correct}</span> <strong>${w.de}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'articles')}`;
   }
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -1709,7 +1770,7 @@ function skipPlural() {
   const speakText = w.singular + ', ' + w.plural;
   state.streak = 0; state.mistakes.push({de: w.singular + ' → ' + w.plural, es: w.es, emoji: w.emoji});
   speak(w.plural); logError('Plurales', 'skip: ' + w.singular, false);
-  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <strong>${w.singular} → ${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>${getPluralTip(w)}`;
+  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <strong>${w.singular} → ${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getPluralTip(w)}`;
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
 }
@@ -1731,12 +1792,12 @@ function checkPluralWrite() {
     inp.classList.add('correct'); state.correct++; state.streak++;
     const pts = 15 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
     speak(w.plural);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.singular} → ${w.plural}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.singular} → ${w.plural}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
     setTimeout(() => nextWord(), 800);
   } else {
     inp.classList.add('wrong'); state.streak = 0; state.mistakes.push({de: w.singular + ' → ' + w.plural, es: w.es, emoji: w.emoji});
     speak(w.plural);
-    fb.innerHTML = `<div class="feedback wrong">❌ Tu respuesta: <strong>die ${val}</strong><br>Correcto: <strong>${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>${getPluralTip(w)}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ Tu respuesta: <strong>die ${val}</strong><br>Correcto: <strong>${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getPluralTip(w)}`;
     fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
   }
   updateStats();
@@ -1774,11 +1835,11 @@ function checkPlural(btn, selected, correct) {
     btn.classList.add('correct'); state.correct++; state.streak++;
     const pts = 12 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
     speak(w.plural);logError('Plurales',w.singular+'→'+w.plural,true);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.singular} → ${w.plural}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${w.singular} → ${w.plural}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     btn.classList.add('wrong'); state.streak = 0; state.mistakes.push({de: w.singular + ' → ' + w.plural, es: w.es, emoji: w.emoji});
     speak(w.plural);logError('Plurales',w.singular+': '+selected+'→'+w.plural,false);
-    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>.<br>Correcto: <strong>${w.singular} → ${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)">🔊</button></div>${getPluralTip(w)}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>.<br>Correcto: <strong>${w.singular} → ${w.plural}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(speakText)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getPluralTip(w)}`;
   }
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -1818,7 +1879,7 @@ function skipCases() {
   const fullSentence = w.sentence.replace('___', correct);
   state.streak = 0; state.mistakes.push({de: fullSentence, es: w.es + ' (' + w.case + ')', emoji: '⚖️'});
   speak(fullSentence); logError('Casos (' + w.case + ')', 'skip', false);
-  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <strong>${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)">🔊</button><br><small>${fullSentence}</small></div>${getCaseTip(w)}`;
+  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <strong>${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button><br><small>${fullSentence}</small></div>${getCaseTip(w)}`;
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
 }
@@ -1849,12 +1910,12 @@ function checkCases(btn, selected, correctIdx) {
     btn.classList.add('correct'); state.correct++; state.streak++;
     const pts = 15 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
     speak(fullSentence);logError('Casos ('+w.case+')',fullSentence,true);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)">🔊</button><br><small>${fullSentence}</small></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button><br><small>${fullSentence}</small></div>`;
   } else {
     btn.classList.add('wrong'); state.streak = 0;
     state.mistakes.push({de: fullSentence, es: w.es + ' (' + w.case + ')', emoji: '⚖️'});
     speak(fullSentence);logError('Casos ('+w.case+')',selected+'→'+correct,false);
-    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <strong>${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)">🔊</button><br><small>${fullSentence}</small></div>${getCaseTip(w)}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <strong>${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullSentence)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button><br><small>${fullSentence}</small></div>${getCaseTip(w)}`;
   }
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -1916,7 +1977,7 @@ function skipConjugation() {
   const fullForm = q.pronoun + ' ' + correct;
   state.streak = 0; state.mistakes.push({de: q.verb.inf, es: q.verb.es + ' (' + q.pronoun + ' → ' + correct + ')', emoji: '🔀'});
   speak(fullForm); logError('Conjugación', 'skip: ' + q.verb.inf, false);
-  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <strong>${q.pronoun} ${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)">🔊</button></div>${getConjTip(q.verb, q.pronoun)}`;
+  fb.innerHTML = `<div class="feedback wrong">🤷 Sin problema. Es: <strong>${q.pronoun} ${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getConjTip(q.verb, q.pronoun)}`;
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
 }
@@ -1967,11 +2028,11 @@ function checkConjugation(btn, selected, correct) {
     btn.classList.add('correct'); state.correct++; state.streak++;
     const pts = 14 + (state.streak > 1 ? state.streak * 2 : 0); state.score += pts;
     speak(fullForm);logError('Conjugación',q.verb.inf+': '+fullForm,true);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${q.pronoun} ${correct}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)">🔊</button></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Correcto! <strong>${q.pronoun} ${correct}</strong> +${pts} XP <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     btn.classList.add('wrong'); state.streak = 0; state.mistakes.push({de: q.verb.inf, es: q.verb.es + ' (' + q.pronoun + ' → ' + correct + ')', emoji: '🔀'});
     speak(fullForm);logError('Conjugación',q.verb.inf+': '+q.pronoun+' '+selected+'→'+correct,false);
-    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <strong>${q.pronoun} ${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)">🔊</button></div>${getConjTip(q.verb, q.pronoun)}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ No es <strong>${selected}</strong>. Es: <strong>${q.pronoun} ${correct}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(fullForm)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getConjTip(q.verb, q.pronoun)}`;
   }
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -2059,12 +2120,12 @@ function checkSentence() {
     state.correct++; state.streak++;
     const pts = 18 + (state.streak > 1 ? state.streak * 3 : 0); state.score += pts;
     speak(w.de);logError('Oraciones',w.de,true);
-    fb.innerHTML = `<div class="feedback correct">✅ ¡Perfecto! +${pts} XP ${state.streak > 2 ? '🔥 Racha de ' + state.streak : ''}<br><small>${w.de}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>`;
+    fb.innerHTML = `<div class="feedback correct">✅ ¡Perfecto! +${pts} XP ${state.streak > 2 ? '🔥 Racha de ' + state.streak : ''}<br><small>${w.de}</small> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>`;
   } else {
     zone.classList.add('wrong');
     state.streak = 0; state.mistakes.push(w);
     speak(w.de);logError('Oraciones',(w.hint||'')+': '+userAnswer+'→'+correctAnswer,false);
-    fb.innerHTML = `<div class="feedback wrong">❌ Orden incorrecto<br>Tu respuesta: <strong>${userAnswer}</strong><br>Correcto: <strong>${correctAnswer}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button></div>${getGrammarTip(w,'sentences')}`;
+    fb.innerHTML = `<div class="feedback wrong">❌ Orden incorrecto<br>Tu respuesta: <strong>${userAnswer}</strong><br>Correcto: <strong>${correctAnswer}</strong> <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>${getGrammarTip(w,'sentences')}`;
   }
   updateStats();
   fb.innerHTML += `<button class="next-btn" onclick="nextWord()">Siguiente →</button>`;
@@ -2120,7 +2181,7 @@ function renderWordsTab(){
           <span class="wl-emoji">${w.emoji}</span>
           <span class="wl-es">${w.es}</span>
           <span class="wl-de">${w.de}</span>
-          <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button>
+          <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
           <span class="wl-mastery" style="background:${srs.color}22;color:${srs.color}">${srs.label}</span>
           ${due?'<span class="srs-badge srs-due">repasar</span>':''}
         </div>`;
@@ -2147,7 +2208,7 @@ function renderProgressTab(){
   for(let i=6;i>=0;i--){const date=new Date();date.setDate(date.getDate()-i);const key=StudyState.dateKey(date),active=data.activeDays.includes(key);
     week+=`<div class="study-day ${active?'is-active':''}" aria-label="${date.toLocaleDateString('es-CL')}: ${active?'con actividad':'sin actividad'}"><span>${date.toLocaleDateString('es-CL',{weekday:'short'})}</span><strong>${date.getDate()}</strong><span>${active?'✓':'—'}</span></div>`;}
   el.innerHTML=`<div class="study-progress">
-    <header class="study-heading"><p class="study-eyebrow">MI AVANCE</p><h1>Así vas en ${level}</h1><p>Las lecciones y palabras corresponden a ${level}. La práctica y la experiencia suman tu actividad de todos los niveles.</p></header>
+    <header class="study-heading"><p class="study-eyebrow">Mi avance</p><h1>Así vas en ${level}</h1><p>Las lecciones y palabras corresponden a ${level}. La práctica y la experiencia suman tu actividad de todos los niveles.</p></header>
     ${!hasActivity?`<section class="study-panel progress-empty"><h2>Tu avance empieza con el primer paso</h2><p>Aún no hay ejercicios ni lecciones registrados. Empieza una lección o responde una pregunta: aquí verás lo que llevas.</p><button class="home-action" onclick="switchTab('home');openNextLesson()">Empezar mi primera lección →</button></section>`:''}
     <section class="progress-metrics">
       <div class="study-panel"><strong>${s.completed}<small> / ${s.total}</small></strong><h2>Lecciones completadas</h2><p>${s.lessonPercent}% de tu ruta ${level}</p></div>
@@ -2187,9 +2248,9 @@ steps:[
 <tr><td class="highlight">sie / Sie</td><td>ellos/as / usted(es)</td><td>Sie sind nett.</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich komme aus Chile.</span><span class="ex-es">Yo vengo de Chile.</span><button class="speak-btn sm" onclick="speakBtn('Ich komme aus Chile',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er trinkt Kaffee.</span><span class="ex-es">Él bebe café.</span><button class="speak-btn sm" onclick="speakBtn('Er trinkt Kaffee',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Wir lernen Deutsch.</span><span class="ex-es">Nosotros aprendemos alemán.</span><button class="speak-btn sm" onclick="speakBtn('Wir lernen Deutsch',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich komme aus Chile.</span><span class="ex-es">Yo vengo de Chile.</span><button class="speak-btn sm" onclick="speakBtn('Ich komme aus Chile',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er trinkt Kaffee.</span><span class="ex-es">Él bebe café.</span><button class="speak-btn sm" onclick="speakBtn('Er trinkt Kaffee',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Wir lernen Deutsch.</span><span class="ex-es">Nosotros aprendemos alemán.</span><button class="speak-btn sm" onclick="speakBtn('Wir lernen Deutsch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>"sie"</strong> tiene 3 significados: <strong>ella</strong> (singular), <strong>ellos/as</strong> (plural), y <strong>usted(es)</strong> (formal, con mayúscula: <strong>Sie</strong>). El contexto y la conjugación te dicen cuál es.</span></div>`},
 {type:"teach",title:"Formal vs. informal",content:`
@@ -2201,8 +2262,8 @@ steps:[
 <tr><td>¿De dónde eres?</td><td>Woher kommst <strong>du</strong>?</td><td>Woher kommen <strong>Sie</strong>?</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-emoji">👫</span><span class="ex-de">Hallo, woher kommst du?</span><span class="ex-es">Con amigos, familia, niños</span><button class="speak-btn sm" onclick="speakBtn('Hallo, woher kommst du?',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">👔</span><span class="ex-de">Guten Tag, woher kommen Sie?</span><span class="ex-es">Con desconocidos, jefes, mayores</span><button class="speak-btn sm" onclick="speakBtn('Guten Tag, woher kommen Sie?',this)">🔊</button></div>
+<div class="example-row"><span class="ex-emoji">👫</span><span class="ex-de">Hallo, woher kommst du?</span><span class="ex-es">Con amigos, familia, niños</span><button class="speak-btn sm" onclick="speakBtn('Hallo, woher kommst du?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">👔</span><span class="ex-de">Guten Tag, woher kommen Sie?</span><span class="ex-es">Con desconocidos, jefes, mayores</span><button class="speak-btn sm" onclick="speakBtn('Guten Tag, woher kommen Sie?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>En alemán, tutear sin permiso es una falta de respeto. Usa <strong>Sie</strong> por defecto con adultos que no conoces. Si quieren tutear, te dirán: "Du kannst mich duzen!"</span></div>
 <div class="study-box"><span class="study-icon">🎯</span><span><strong>Cómo estudiarlo — el orden ideal:</strong> 1) Domina estos pronombres. 2) Aprende sein y haben. 3) Luego los verbos regulares. 4) Después artículos y casos. Cada bloque se apoya en el anterior. No saltes al dativo sin dominar los pronombres — todo se encadena. Aprende en bloques de una lección a la vez y no avances hasta sacar 2⭐ o más.</span></div>`},
@@ -2503,29 +2564,29 @@ steps:[
 {type:"teach",title:"Vocales y Umlauts",content:`
 <div class="lc-explain">Las vocales a, e, i, o, u se pronuncian similar al español. Lo especial son los <strong>Umlauts</strong> (diéresis):</div>
 <div class="phonetic-box">
-<div class="phonetic-row"><span class="ph-letter">Ä</span><span class="ph-sound">Boca de "a" diciendo "e" → suena como <strong>e abierta</strong></span><button class="speak-btn sm" onclick="speakBtn('Käse',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">Ö</span><span class="ph-sound">Boca de "o" (beso) diciendo "e"</span><button class="speak-btn sm" onclick="speakBtn('hören',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">Ü</span><span class="ph-sound">Boca de "u" intentando decir "i"</span><button class="speak-btn sm" onclick="speakBtn('tschüss',this)">🔊</button></div>
+<div class="phonetic-row"><span class="ph-letter">Ä</span><span class="ph-sound">Boca de "a" diciendo "e" → suena como <strong>e abierta</strong></span><button class="speak-btn sm" onclick="speakBtn('Käse',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">Ö</span><span class="ph-sound">Boca de "o" (beso) diciendo "e"</span><button class="speak-btn sm" onclick="speakBtn('hören',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">Ü</span><span class="ph-sound">Boca de "u" intentando decir "i"</span><button class="speak-btn sm" onclick="speakBtn('tschüss',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="lc-explain">Los <strong>diptongos</strong> más importantes:</div>
 <div class="phonetic-box">
-<div class="phonetic-row"><span class="ph-letter">ei</span><span class="ph-sound">Se pronuncia <strong>"ai"</strong></span><span class="ph-example">mein [main]</span><button class="speak-btn sm" onclick="speakBtn('mein',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">eu</span><span class="ph-sound">Se pronuncia <strong>"oi"</strong></span><span class="ph-example">heute [hoite]</span><button class="speak-btn sm" onclick="speakBtn('heute',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">ie</span><span class="ph-sound">Se pronuncia como <strong>"i larga"</strong></span><span class="ph-example">Spiel [shpiil]</span><button class="speak-btn sm" onclick="speakBtn('Spiel',this)">🔊</button></div>
+<div class="phonetic-row"><span class="ph-letter">ei</span><span class="ph-sound">Se pronuncia <strong>"ai"</strong></span><span class="ph-example">mein [main]</span><button class="speak-btn sm" onclick="speakBtn('mein',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">eu</span><span class="ph-sound">Se pronuncia <strong>"oi"</strong></span><span class="ph-example">heute [hoite]</span><button class="speak-btn sm" onclick="speakBtn('heute',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">ie</span><span class="ph-sound">Se pronuncia como <strong>"i larga"</strong></span><span class="ph-example">Spiel [shpiil]</span><button class="speak-btn sm" onclick="speakBtn('Spiel',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>En alemán <strong>se pronuncian TODAS las letras</strong>. No leas como si fuera inglés.</span></div>`},
 {type:"teach",title:"Consonantes clave",content:`
 <div class="lc-explain">Las consonantes que más confunden a los hispanohablantes:</div>
 <div class="phonetic-box">
-<div class="phonetic-row"><span class="ph-letter">ch</span><span class="ph-sound">Tras i/e: como <strong>gato enfadado</strong>. Tras a/o/u: como <strong>"j"</strong></span><button class="speak-btn sm" onclick="speakBtn('ich',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">sch</span><span class="ph-sound">Como mandar a callar: <strong>"shhh"</strong></span><button class="speak-btn sm" onclick="speakBtn('Schule',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">sp/st</span><span class="ph-sound">La S suena <strong>"sh"</strong> antes de p/t</span><button class="speak-btn sm" onclick="speakBtn('Spanisch',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">w</span><span class="ph-sound">Suena como <strong>"v"</strong></span><button class="speak-btn sm" onclick="speakBtn('wie',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">v</span><span class="ph-sound">Suena como <strong>"f"</strong></span><button class="speak-btn sm" onclick="speakBtn('vier',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">z</span><span class="ph-sound">Suena como <strong>"ts"</strong></span><button class="speak-btn sm" onclick="speakBtn('Zentrum',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">ß</span><span class="ph-sound">Como <strong>sonido de serpiente</strong> (ss suave)</span><button class="speak-btn sm" onclick="speakBtn('heißen',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">r</span><span class="ph-sound">Al inicio: <strong>gutural</strong> (gárgaras). Al final: suena como <strong>"a"</strong></span><button class="speak-btn sm" onclick="speakBtn('der',this)">🔊</button></div>
-<div class="phonetic-row"><span class="ph-letter">h</span><span class="ph-sound">Como <strong>echar aliento</strong> a un cristal (no como J española)</span><button class="speak-btn sm" onclick="speakBtn('Haus',this)">🔊</button></div>
+<div class="phonetic-row"><span class="ph-letter">ch</span><span class="ph-sound">Tras i/e: como <strong>gato enfadado</strong>. Tras a/o/u: como <strong>"j"</strong></span><button class="speak-btn sm" onclick="speakBtn('ich',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">sch</span><span class="ph-sound">Como mandar a callar: <strong>"shhh"</strong></span><button class="speak-btn sm" onclick="speakBtn('Schule',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">sp/st</span><span class="ph-sound">La S suena <strong>"sh"</strong> antes de p/t</span><button class="speak-btn sm" onclick="speakBtn('Spanisch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">w</span><span class="ph-sound">Suena como <strong>"v"</strong></span><button class="speak-btn sm" onclick="speakBtn('wie',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">v</span><span class="ph-sound">Suena como <strong>"f"</strong></span><button class="speak-btn sm" onclick="speakBtn('vier',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">z</span><span class="ph-sound">Suena como <strong>"ts"</strong></span><button class="speak-btn sm" onclick="speakBtn('Zentrum',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">ß</span><span class="ph-sound">Como <strong>sonido de serpiente</strong> (ss suave)</span><button class="speak-btn sm" onclick="speakBtn('heißen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">r</span><span class="ph-sound">Al inicio: <strong>gutural</strong> (gárgaras). Al final: suena como <strong>"a"</strong></span><button class="speak-btn sm" onclick="speakBtn('der',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="phonetic-row"><span class="ph-letter">h</span><span class="ph-sound">Como <strong>echar aliento</strong> a un cristal (no como J española)</span><button class="speak-btn sm" onclick="speakBtn('Haus',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Cuidado: <strong>b</strong> al final → suena "p" (ab → [ap]). <strong>d</strong> al final → suena "t" (Kind → [kint]). <strong>g</strong> al final → suena "k" (mag → [mak]).</span></div>`},
 {type:"quiz",title:"Practica fonética",questions:[
@@ -2543,14 +2604,14 @@ steps:[
 <div class="lc-explain">Los <strong>verbos separables</strong> (Trennbare Verben) se componen de un verbo + un prefijo que le da nuevo significado. En presente, el prefijo va <strong>al final de la oración</strong>:</div>
 <div class="example-box">
 <div style="font-size:13px;margin-bottom:6px"><strong>an</strong> + kommen (venir) = <strong>ankommen</strong> (llegar)</div>
-<div class="example-row"><span class="ex-de">Ich komme um 11 Uhr an.</span><span class="ex-es">Yo llego a las 11.</span><button class="speak-btn sm" onclick="speakBtn('Ich komme um elf Uhr an',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich komme um 11 Uhr an.</span><span class="ex-es">Yo llego a las 11.</span><button class="speak-btn sm" onclick="speakBtn('Ich komme um elf Uhr an',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="lc-explain">Más ejemplos importantes:</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-emoji">😴</span><span class="ex-de">aufwachen → Ich wache auf.</span><span class="ex-es">Me despierto.</span><button class="speak-btn sm" onclick="speakBtn('Ich wache auf',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">🧍</span><span class="ex-de">aufstehen → Ich stehe auf.</span><span class="ex-es">Me levanto.</span><button class="speak-btn sm" onclick="speakBtn('Ich stehe auf',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">📺</span><span class="ex-de">fernsehen → Ich sehe fern.</span><span class="ex-es">Veo la tele.</span><button class="speak-btn sm" onclick="speakBtn('Ich sehe fern',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">❌</span><span class="ex-de">absagen → Ich sage den Termin ab.</span><span class="ex-es">Cancelo la cita.</span><button class="speak-btn sm" onclick="speakBtn('Ich sage den Termin ab',this)">🔊</button></div>
+<div class="example-row"><span class="ex-emoji">😴</span><span class="ex-de">aufwachen → Ich wache auf.</span><span class="ex-es">Me despierto.</span><button class="speak-btn sm" onclick="speakBtn('Ich wache auf',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">🧍</span><span class="ex-de">aufstehen → Ich stehe auf.</span><span class="ex-es">Me levanto.</span><button class="speak-btn sm" onclick="speakBtn('Ich stehe auf',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">📺</span><span class="ex-de">fernsehen → Ich sehe fern.</span><span class="ex-es">Veo la tele.</span><button class="speak-btn sm" onclick="speakBtn('Ich sehe fern',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">❌</span><span class="ex-de">absagen → Ich sage den Termin ab.</span><span class="ex-es">Cancelo la cita.</span><button class="speak-btn sm" onclick="speakBtn('Ich sage den Termin ab',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Regla de oro: en presente, el prefijo <strong>siempre va al final</strong> de la oración. El verbo conjugado queda en la <strong>segunda posición</strong>.</span></div>`},
 {type:"quiz",title:"Practica verbos separables",questions:[
@@ -2567,24 +2628,24 @@ steps:[
 {type:"teach",title:"Verbos de la rutina",content:`
 <div class="lc-explain">Estos son los verbos esenciales para hablar de tu día:</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-emoji">⏰</span><span class="ex-de">aufwachen / aufstehen</span><span class="ex-es">despertarse / levantarse</span><button class="speak-btn sm" onclick="speakBtn('aufstehen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">🍳</span><span class="ex-de">frühstücken</span><span class="ex-es">desayunar</span><button class="speak-btn sm" onclick="speakBtn('frühstücken',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">💼</span><span class="ex-de">arbeiten</span><span class="ex-es">trabajar</span><button class="speak-btn sm" onclick="speakBtn('arbeiten',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">🍽️</span><span class="ex-de">zu Mittag essen</span><span class="ex-es">almorzar</span><button class="speak-btn sm" onclick="speakBtn('zu Mittag essen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">📚</span><span class="ex-de">lernen</span><span class="ex-es">estudiar</span><button class="speak-btn sm" onclick="speakBtn('lernen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">🍲</span><span class="ex-de">kochen</span><span class="ex-es">cocinar</span><button class="speak-btn sm" onclick="speakBtn('kochen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">🌙</span><span class="ex-de">zu Abend essen</span><span class="ex-es">cenar</span><button class="speak-btn sm" onclick="speakBtn('zu Abend essen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">😴</span><span class="ex-de">schlafen gehen</span><span class="ex-es">irse a dormir</span><button class="speak-btn sm" onclick="speakBtn('schlafen gehen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-emoji">⏰</span><span class="ex-de">aufwachen / aufstehen</span><span class="ex-es">despertarse / levantarse</span><button class="speak-btn sm" onclick="speakBtn('aufstehen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">🍳</span><span class="ex-de">frühstücken</span><span class="ex-es">desayunar</span><button class="speak-btn sm" onclick="speakBtn('frühstücken',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">💼</span><span class="ex-de">arbeiten</span><span class="ex-es">trabajar</span><button class="speak-btn sm" onclick="speakBtn('arbeiten',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">🍽️</span><span class="ex-de">zu Mittag essen</span><span class="ex-es">almorzar</span><button class="speak-btn sm" onclick="speakBtn('zu Mittag essen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">📚</span><span class="ex-de">lernen</span><span class="ex-es">estudiar</span><button class="speak-btn sm" onclick="speakBtn('lernen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">🍲</span><span class="ex-de">kochen</span><span class="ex-es">cocinar</span><button class="speak-btn sm" onclick="speakBtn('kochen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">🌙</span><span class="ex-de">zu Abend essen</span><span class="ex-es">cenar</span><button class="speak-btn sm" onclick="speakBtn('zu Abend essen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">😴</span><span class="ex-de">schlafen gehen</span><span class="ex-es">irse a dormir</span><button class="speak-btn sm" onclick="speakBtn('schlafen gehen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Preposiciones temporales clave: <strong>um</strong> = a las (hora exacta), <strong>von...bis</strong> = de...a, <strong>ab</strong> = a partir de.</span></div>`},
 {type:"teach",title:"Ejemplo real de rutina",content:`
 <div class="lc-explain">Lee esta rutina y escúchala. Así habla un alemán de su día:</div>
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Von Montag bis Freitag stehe ich fast immer um 9 Uhr auf.</strong></div><div class="dl-es">De lunes a viernes me levanto casi siempre a las 9.</div></div><button class="speak-btn sm" onclick="speakBtn('Von Montag bis Freitag stehe ich fast immer um neun Uhr auf.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Ich frühstücke oft um halb zehn. Täglich trinke ich Milchkaffee.</strong></div><div class="dl-es">Desayuno a menudo a las 9:30. A diario bebo café con leche.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich frühstücke oft um halb zehn. Täglich trinke ich Milchkaffee.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Ich arbeite von 10 Uhr bis 13 Uhr.</strong></div><div class="dl-es">Trabajo de 10 a 13.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich arbeite von zehn Uhr bis dreizehn Uhr.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Oft lerne ich Deutsch von 15 bis 17 Uhr.</strong></div><div class="dl-es">A menudo estudio alemán de 15 a 17.</div></div><button class="speak-btn sm" onclick="speakBtn('Oft lerne ich Deutsch von fünfzehn bis siebzehn Uhr.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Um 21 Uhr esse ich zu Abend. Ich gehe oft um 23 Uhr schlafen.</strong></div><div class="dl-es">A las 21 ceno. Me duermo a menudo a las 23.</div></div><button class="speak-btn sm" onclick="speakBtn('Um einundzwanzig Uhr esse ich zu Abend. Ich gehe oft um dreiundzwanzig Uhr schlafen.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Von Montag bis Freitag stehe ich fast immer um 9 Uhr auf.</strong></div><div class="dl-es">De lunes a viernes me levanto casi siempre a las 9.</div></div><button class="speak-btn sm" onclick="speakBtn('Von Montag bis Freitag stehe ich fast immer um neun Uhr auf.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Ich frühstücke oft um halb zehn. Täglich trinke ich Milchkaffee.</strong></div><div class="dl-es">Desayuno a menudo a las 9:30. A diario bebo café con leche.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich frühstücke oft um halb zehn. Täglich trinke ich Milchkaffee.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Ich arbeite von 10 Uhr bis 13 Uhr.</strong></div><div class="dl-es">Trabajo de 10 a 13.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich arbeite von zehn Uhr bis dreizehn Uhr.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Oft lerne ich Deutsch von 15 bis 17 Uhr.</strong></div><div class="dl-es">A menudo estudio alemán de 15 a 17.</div></div><button class="speak-btn sm" onclick="speakBtn('Oft lerne ich Deutsch von fünfzehn bis siebzehn Uhr.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">📝</span><div><div class="dl-text"><strong>Um 21 Uhr esse ich zu Abend. Ich gehe oft um 23 Uhr schlafen.</strong></div><div class="dl-es">A las 21 ceno. Me duermo a menudo a las 23.</div></div><button class="speak-btn sm" onclick="speakBtn('Um einundzwanzig Uhr esse ich zu Abend. Ich gehe oft um dreiundzwanzig Uhr schlafen.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Regla de oro: el verbo <strong>siempre va en segunda posición</strong>. Si empiezas con un complemento de tiempo, el sujeto se invierte: "Am Montag <strong>stehe ich</strong>..." (no "ich stehe").</span></div>`},
 {type:"quiz",title:"Practica la rutina",questions:[
@@ -2631,9 +2692,9 @@ steps:[
 <tr><td>wir</td><td class="highlight">unser</td><td class="highlight">unsere</td><td>nuestro/a</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Meine Schwester ist Ärztin.</span><span class="ex-es">Mi hermana es doctora. (die Schwester → meine)</span><button class="speak-btn sm" onclick="speakBtn('Meine Schwester ist Ärztin',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Dein Auto ist sehr alt.</span><span class="ex-es">Tu coche es muy viejo. (das Auto → dein)</span><button class="speak-btn sm" onclick="speakBtn('Dein Auto ist sehr alt',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Seine Mutter ist Spanierin.</span><span class="ex-es">Su madre (de él) es española. (die Mutter → seine)</span><button class="speak-btn sm" onclick="speakBtn('Seine Mutter ist Spanierin',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Meine Schwester ist Ärztin.</span><span class="ex-es">Mi hermana es doctora. (die Schwester → meine)</span><button class="speak-btn sm" onclick="speakBtn('Meine Schwester ist Ärztin',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Dein Auto ist sehr alt.</span><span class="ex-es">Tu coche es muy viejo. (das Auto → dein)</span><button class="speak-btn sm" onclick="speakBtn('Dein Auto ist sehr alt',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Seine Mutter ist Spanierin.</span><span class="ex-es">Su madre (de él) es española. (die Mutter → seine)</span><button class="speak-btn sm" onclick="speakBtn('Seine Mutter ist Spanierin',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Truco: si el sustantivo es <strong>die</strong> (femenino) o plural, añade <strong>-e</strong> al posesivo. Masc/neutro queda sin cambio.</span></div>`},
 {type:"teach",title:"sein vs. ihr — la trampa de 'su'",content:`
@@ -2645,9 +2706,9 @@ steps:[
 <tr><td>su (de usted)</td><td class="highlight">Ihr / Ihre</td><td><strong>Ihr</strong> Name, bitte?</td></tr>
 </table>
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Das ist Maria. <strong>Ihr</strong> Mann heißt Thomas.</div><div class="dl-es">Esta es María. <strong>Su</strong> (de ella) marido se llama Thomas.</div></div><button class="speak-btn sm" onclick="speakBtn('Das ist Maria. Ihr Mann heißt Thomas.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Und das ist Thomas. <strong>Seine</strong> Frau ist Ärztin.</div><div class="dl-es">Y este es Thomas. <strong>Su</strong> (de él) mujer es doctora.</div></div><button class="speak-btn sm" onclick="speakBtn('Und das ist Thomas. Seine Frau ist Ärztin.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text"><strong>Ihre</strong> Kinder gehen in <strong>meine</strong> Schule.</div><div class="dl-es"><strong>Sus</strong> (de ellos) hijos van a <strong>mi</strong> escuela.</div></div><button class="speak-btn sm" onclick="speakBtn('Ihre Kinder gehen in meine Schule.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Das ist Maria. <strong>Ihr</strong> Mann heißt Thomas.</div><div class="dl-es">Esta es María. <strong>Su</strong> (de ella) marido se llama Thomas.</div></div><button class="speak-btn sm" onclick="speakBtn('Das ist Maria. Ihr Mann heißt Thomas.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Und das ist Thomas. <strong>Seine</strong> Frau ist Ärztin.</div><div class="dl-es">Y este es Thomas. <strong>Su</strong> (de él) mujer es doctora.</div></div><button class="speak-btn sm" onclick="speakBtn('Und das ist Thomas. Seine Frau ist Ärztin.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text"><strong>Ihre</strong> Kinder gehen in <strong>meine</strong> Schule.</div><div class="dl-es"><strong>Sus</strong> (de ellos) hijos van a <strong>mi</strong> escuela.</div></div><button class="speak-btn sm" onclick="speakBtn('Ihre Kinder gehen in meine Schule.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Error de hispanohablantes:</strong> Usar "sein" para todo. "Maria und <strong>sein</strong> Mann" ✗. Si María es mujer, es "<strong>ihr</strong> Mann" ✓. El posesivo depende del <strong>dueño</strong>, no del objeto poseído.</span></div>`},
 {type:"quiz",title:"Practica posesivos",questions:[
@@ -2664,37 +2725,37 @@ steps:[
 {type:"teach",title:"Los días de la semana",content:`
 <div class="lc-explain">Los días son <strong>siempre masculinos</strong> (der). Se usan con <strong>"am"</strong> (an+dem):</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">am Montag</span><span class="ex-es">el lunes</span><button class="speak-btn sm" onclick="speakBtn('Montag',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">am Dienstag</span><span class="ex-es">el martes</span><button class="speak-btn sm" onclick="speakBtn('Dienstag',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">am Mittwoch</span><span class="ex-es">el miércoles</span><button class="speak-btn sm" onclick="speakBtn('Mittwoch',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">am Donnerstag</span><span class="ex-es">el jueves</span><button class="speak-btn sm" onclick="speakBtn('Donnerstag',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">am Freitag</span><span class="ex-es">el viernes</span><button class="speak-btn sm" onclick="speakBtn('Freitag',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">am Samstag</span><span class="ex-es">el sábado</span><button class="speak-btn sm" onclick="speakBtn('Samstag',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">am Sonntag</span><span class="ex-es">el domingo</span><button class="speak-btn sm" onclick="speakBtn('Sonntag',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">am Montag</span><span class="ex-es">el lunes</span><button class="speak-btn sm" onclick="speakBtn('Montag',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">am Dienstag</span><span class="ex-es">el martes</span><button class="speak-btn sm" onclick="speakBtn('Dienstag',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">am Mittwoch</span><span class="ex-es">el miércoles</span><button class="speak-btn sm" onclick="speakBtn('Mittwoch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">am Donnerstag</span><span class="ex-es">el jueves</span><button class="speak-btn sm" onclick="speakBtn('Donnerstag',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">am Freitag</span><span class="ex-es">el viernes</span><button class="speak-btn sm" onclick="speakBtn('Freitag',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">am Samstag</span><span class="ex-es">el sábado</span><button class="speak-btn sm" onclick="speakBtn('Samstag',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">am Sonntag</span><span class="ex-es">el domingo</span><button class="speak-btn sm" onclick="speakBtn('Sonntag',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="lc-explain" style="margin-top:10px">Las estaciones (<strong>siempre masculinas</strong>), con <strong>"im"</strong>:</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-emoji">🌸</span><span class="ex-de">im Frühling</span><span class="ex-es">en primavera</span><button class="speak-btn sm" onclick="speakBtn('Frühling',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">☀️</span><span class="ex-de">im Sommer</span><span class="ex-es">en verano</span><button class="speak-btn sm" onclick="speakBtn('Sommer',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">🍂</span><span class="ex-de">im Herbst</span><span class="ex-es">en otoño</span><button class="speak-btn sm" onclick="speakBtn('Herbst',this)">🔊</button></div>
-<div class="example-row"><span class="ex-emoji">❄️</span><span class="ex-de">im Winter</span><span class="ex-es">en invierno</span><button class="speak-btn sm" onclick="speakBtn('Winter',this)">🔊</button></div>
+<div class="example-row"><span class="ex-emoji">🌸</span><span class="ex-de">im Frühling</span><span class="ex-es">en primavera</span><button class="speak-btn sm" onclick="speakBtn('Frühling',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">☀️</span><span class="ex-de">im Sommer</span><span class="ex-es">en verano</span><button class="speak-btn sm" onclick="speakBtn('Sommer',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">🍂</span><span class="ex-de">im Herbst</span><span class="ex-es">en otoño</span><button class="speak-btn sm" onclick="speakBtn('Herbst',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-emoji">❄️</span><span class="ex-de">im Winter</span><span class="ex-es">en invierno</span><button class="speak-btn sm" onclick="speakBtn('Winter',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Regla: días → <strong>am</strong>. Meses y estaciones → <strong>im</strong>. Horas → <strong>um</strong>.</span></div>`},
 {type:"teach",title:"Los meses del año",content:`
 <div class="lc-explain">Los meses son <strong>siempre masculinos</strong> (der) y se usan con <strong>"im"</strong> (in+dem). Se parecen mucho al español:</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">im Januar</span><span class="ex-es">en enero</span><button class="speak-btn sm" onclick="speakBtn('Januar',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im Februar</span><span class="ex-es">en febrero</span><button class="speak-btn sm" onclick="speakBtn('Februar',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im März</span><span class="ex-es">en marzo</span><button class="speak-btn sm" onclick="speakBtn('März',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im April</span><span class="ex-es">en abril</span><button class="speak-btn sm" onclick="speakBtn('April',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im Mai</span><span class="ex-es">en mayo</span><button class="speak-btn sm" onclick="speakBtn('Mai',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im Juni</span><span class="ex-es">en junio</span><button class="speak-btn sm" onclick="speakBtn('Juni',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im Juli</span><span class="ex-es">en julio</span><button class="speak-btn sm" onclick="speakBtn('Juli',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im August</span><span class="ex-es">en agosto</span><button class="speak-btn sm" onclick="speakBtn('August',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im September</span><span class="ex-es">en septiembre</span><button class="speak-btn sm" onclick="speakBtn('September',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im Oktober</span><span class="ex-es">en octubre</span><button class="speak-btn sm" onclick="speakBtn('Oktober',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im November</span><span class="ex-es">en noviembre</span><button class="speak-btn sm" onclick="speakBtn('November',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">im Dezember</span><span class="ex-es">en diciembre</span><button class="speak-btn sm" onclick="speakBtn('Dezember',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">im Januar</span><span class="ex-es">en enero</span><button class="speak-btn sm" onclick="speakBtn('Januar',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im Februar</span><span class="ex-es">en febrero</span><button class="speak-btn sm" onclick="speakBtn('Februar',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im März</span><span class="ex-es">en marzo</span><button class="speak-btn sm" onclick="speakBtn('März',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im April</span><span class="ex-es">en abril</span><button class="speak-btn sm" onclick="speakBtn('April',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im Mai</span><span class="ex-es">en mayo</span><button class="speak-btn sm" onclick="speakBtn('Mai',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im Juni</span><span class="ex-es">en junio</span><button class="speak-btn sm" onclick="speakBtn('Juni',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im Juli</span><span class="ex-es">en julio</span><button class="speak-btn sm" onclick="speakBtn('Juli',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im August</span><span class="ex-es">en agosto</span><button class="speak-btn sm" onclick="speakBtn('August',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im September</span><span class="ex-es">en septiembre</span><button class="speak-btn sm" onclick="speakBtn('September',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im Oktober</span><span class="ex-es">en octubre</span><button class="speak-btn sm" onclick="speakBtn('Oktober',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im November</span><span class="ex-es">en noviembre</span><button class="speak-btn sm" onclick="speakBtn('November',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">im Dezember</span><span class="ex-es">en diciembre</span><button class="speak-btn sm" onclick="speakBtn('Dezember',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Ojo con la pronunciación: <strong>Januar</strong> [yánuar], <strong>Juni</strong> [yúni], <strong>Juli</strong> [yúli]. La J suena como "y". <strong>März</strong> lleva Umlaut: [merts].</span></div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Para decir fechas: <strong>Ich habe am 15. Mai Geburtstag</strong> (mi cumpleaños es el 15 de mayo). El día va con <strong>am</strong> + número ordinal.</span></div>`},
@@ -2723,19 +2784,19 @@ steps:[
 <tr><td class="highlight">möchten</td><td>desear/quisiera</td><td>möchte</td><td>möchtest</td><td>möchte</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich <strong>kann</strong> Deutsch <strong>sprechen</strong>.</span><span class="ex-es">Puedo hablar alemán.</span><button class="speak-btn sm" onclick="speakBtn('Ich kann Deutsch sprechen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Du <strong>musst</strong> morgen <strong>arbeiten</strong>.</span><span class="ex-es">Debes trabajar mañana.</span><button class="speak-btn sm" onclick="speakBtn('Du musst morgen arbeiten',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich <strong>möchte</strong> einen Kaffee <strong>trinken</strong>.</span><span class="ex-es">Quisiera tomar un café.</span><button class="speak-btn sm" onclick="speakBtn('Ich möchte einen Kaffee trinken',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Hier <strong>darf</strong> man nicht <strong>rauchen</strong>.</span><span class="ex-es">Aquí no se puede fumar.</span><button class="speak-btn sm" onclick="speakBtn('Hier darf man nicht rauchen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>kann</strong> Deutsch <strong>sprechen</strong>.</span><span class="ex-es">Puedo hablar alemán.</span><button class="speak-btn sm" onclick="speakBtn('Ich kann Deutsch sprechen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Du <strong>musst</strong> morgen <strong>arbeiten</strong>.</span><span class="ex-es">Debes trabajar mañana.</span><button class="speak-btn sm" onclick="speakBtn('Du musst morgen arbeiten',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>möchte</strong> einen Kaffee <strong>trinken</strong>.</span><span class="ex-es">Quisiera tomar un café.</span><button class="speak-btn sm" onclick="speakBtn('Ich möchte einen Kaffee trinken',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Hier <strong>darf</strong> man nicht <strong>rauchen</strong>.</span><span class="ex-es">Aquí no se puede fumar.</span><button class="speak-btn sm" onclick="speakBtn('Hier darf man nicht rauchen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Estructura: Sujeto + <strong>modal conjugado</strong> + complementos + <strong>infinitivo al final</strong>. Esto es fundamental en el examen.</span></div>`},
 {type:"teach",title:"Mini diálogo: En la vida diaria",content:`
 <div class="lc-explain">Así se usan los modales en conversación real:</div>
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text"><strong>Kannst</strong> du mir <strong>helfen</strong>?</div><div class="dl-es">¿Puedes ayudarme?</div></div><button class="speak-btn sm" onclick="speakBtn('Kannst du mir helfen?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Jetzt <strong>kann</strong> ich leider nicht. Ich <strong>muss</strong> noch <strong>arbeiten</strong>.</div><div class="dl-es">Ahora no puedo. Todavía tengo que trabajar.</div></div><button class="speak-btn sm" onclick="speakBtn('Jetzt kann ich leider nicht. Ich muss noch arbeiten.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text"><strong>Willst</strong> du später <strong>essen</strong> <strong>gehen</strong>?</div><div class="dl-es">¿Quieres ir a comer después?</div></div><button class="speak-btn sm" onclick="speakBtn('Willst du später essen gehen?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Ja! Ich <strong>möchte</strong> gern Sushi <strong>essen</strong>.</div><div class="dl-es">¡Sí! Me gustaría comer sushi.</div></div><button class="speak-btn sm" onclick="speakBtn('Ja! Ich möchte gern Sushi essen.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text"><strong>Kannst</strong> du mir <strong>helfen</strong>?</div><div class="dl-es">¿Puedes ayudarme?</div></div><button class="speak-btn sm" onclick="speakBtn('Kannst du mir helfen?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Jetzt <strong>kann</strong> ich leider nicht. Ich <strong>muss</strong> noch <strong>arbeiten</strong>.</div><div class="dl-es">Ahora no puedo. Todavía tengo que trabajar.</div></div><button class="speak-btn sm" onclick="speakBtn('Jetzt kann ich leider nicht. Ich muss noch arbeiten.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text"><strong>Willst</strong> du später <strong>essen</strong> <strong>gehen</strong>?</div><div class="dl-es">¿Quieres ir a comer después?</div></div><button class="speak-btn sm" onclick="speakBtn('Willst du später essen gehen?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Ja! Ich <strong>möchte</strong> gern Sushi <strong>essen</strong>.</div><div class="dl-es">¡Sí! Me gustaría comer sushi.</div></div><button class="speak-btn sm" onclick="speakBtn('Ja! Ich möchte gern Sushi essen.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Cuidado con können vs. dürfen:</strong> "Ich <strong>kann</strong> nicht schwimmen" = No <strong>sé</strong> nadar (habilidad). "Man <strong>darf</strong> hier nicht schwimmen" = No se <strong>permite</strong> nadar (prohibición). Los hispanohablantes suelen confundir esto porque en español "poder" cubre ambos.</span></div>`},
 {type:"quiz",title:"Practica modales",questions:[
@@ -2770,13 +2831,13 @@ steps:[
 <div class="lc-explain">La posición de <strong>nicht</strong> depende de qué estás negando:</div>
 <div class="example-box">
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px">Negar el verbo → nicht al final:</div>
-<div class="example-row"><span class="ex-de">Ich komme <strong>nicht</strong>.</span><span class="ex-es">No vengo.</span><button class="speak-btn sm" onclick="speakBtn('Ich komme nicht',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er schläft <strong>nicht</strong>.</span><span class="ex-es">Él no duerme.</span><button class="speak-btn sm" onclick="speakBtn('Er schläft nicht',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich komme <strong>nicht</strong>.</span><span class="ex-es">No vengo.</span><button class="speak-btn sm" onclick="speakBtn('Ich komme nicht',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er schläft <strong>nicht</strong>.</span><span class="ex-es">Él no duerme.</span><button class="speak-btn sm" onclick="speakBtn('Er schläft nicht',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px;margin-top:8px">Negar un adjetivo/adverbio → nicht justo antes:</div>
-<div class="example-row"><span class="ex-de">Das ist <strong>nicht</strong> teuer.</span><span class="ex-es">Eso no es caro.</span><button class="speak-btn sm" onclick="speakBtn('Das ist nicht teuer',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er singt <strong>nicht</strong> gut.</span><span class="ex-es">Él no canta bien.</span><button class="speak-btn sm" onclick="speakBtn('Er singt nicht gut',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Das ist <strong>nicht</strong> teuer.</span><span class="ex-es">Eso no es caro.</span><button class="speak-btn sm" onclick="speakBtn('Das ist nicht teuer',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er singt <strong>nicht</strong> gut.</span><span class="ex-es">Él no canta bien.</span><button class="speak-btn sm" onclick="speakBtn('Er singt nicht gut',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px;margin-top:8px">Negar con artículo definido (der/die/das) → nicht antes:</div>
-<div class="example-row"><span class="ex-de">Ich kenne <strong>nicht</strong> den Mann.</span><span class="ex-es">No conozco al hombre.</span><button class="speak-btn sm" onclick="speakBtn('Ich kenne nicht den Mann',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich kenne <strong>nicht</strong> den Mann.</span><span class="ex-es">No conozco al hombre.</span><button class="speak-btn sm" onclick="speakBtn('Ich kenne nicht den Mann',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Error de hispanohablantes:</strong> Poner "nicht" al principio como "no" en español. "Nicht ich komme" ✗ → "Ich komme <strong>nicht</strong>" ✓. En alemán la negación no va al principio.</span></div>`},
 {type:"quiz",title:"Practica negación",questions:[
@@ -2800,10 +2861,10 @@ steps:[
 <tr><td style="font-weight:700">Plural</td><td>die / –</td><td>die / –</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich habe <strong>einen</strong> Hund.</span><span class="ex-es">Tengo un perro. (der Hund → einen)</span><button class="speak-btn sm" onclick="speakBtn('Ich habe einen Hund',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich kaufe <strong>eine</strong> Jacke.</span><span class="ex-es">Compro una chaqueta. (die Jacke → eine, no cambia)</span><button class="speak-btn sm" onclick="speakBtn('Ich kaufe eine Jacke',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich nehme <strong>das</strong> Brot.</span><span class="ex-es">Tomo el pan. (das Brot → das, no cambia)</span><button class="speak-btn sm" onclick="speakBtn('Ich nehme das Brot',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich sehe <strong>den</strong> Mann.</span><span class="ex-es">Veo al hombre. (der Mann → den)</span><button class="speak-btn sm" onclick="speakBtn('Ich sehe den Mann',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich habe <strong>einen</strong> Hund.</span><span class="ex-es">Tengo un perro. (der Hund → einen)</span><button class="speak-btn sm" onclick="speakBtn('Ich habe einen Hund',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich kaufe <strong>eine</strong> Jacke.</span><span class="ex-es">Compro una chaqueta. (die Jacke → eine, no cambia)</span><button class="speak-btn sm" onclick="speakBtn('Ich kaufe eine Jacke',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich nehme <strong>das</strong> Brot.</span><span class="ex-es">Tomo el pan. (das Brot → das, no cambia)</span><button class="speak-btn sm" onclick="speakBtn('Ich nehme das Brot',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich sehe <strong>den</strong> Mann.</span><span class="ex-es">Veo al hombre. (der Mann → den)</span><button class="speak-btn sm" onclick="speakBtn('Ich sehe den Mann',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Solo el masculino cambia: <strong>der→den</strong>, <strong>ein→einen</strong>, <strong>kein→keinen</strong>, <strong>mein→meinen</strong>. Todo lo demás queda igual. ¡Esa es la buena noticia!</span></div>
 <div class="tip-box"><span class="tip-icon">⚡</span><span><strong>El truco mínimo:</strong> Akkusativo = el “qué” → lo que recibe la acción directa. <em>Ich sehe den Mann</em> (veo al hombre). Si puedes responder “¿qué?” o “¿a quién? directamente”, es Akkusativ.</span></div>
@@ -2821,10 +2882,10 @@ steps:[
 </table>
 <div class="lc-explain" style="margin-top:10px">Mini diálogo en contexto:</div>
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Was kaufst du?</div><div class="dl-es">¿Qué compras?</div></div><button class="speak-btn sm" onclick="speakBtn('Was kaufst du?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Ich kaufe <strong>einen</strong> Kuchen für <strong>meine</strong> Mutter.</div><div class="dl-es">Compro un pastel para mi madre.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich kaufe einen Kuchen für meine Mutter.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Ohne <strong>eine</strong> Kerze?</div><div class="dl-es">¿Sin una vela?</div></div><button class="speak-btn sm" onclick="speakBtn('Ohne eine Kerze?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Stimmt! Ich brauche auch <strong>einen</strong> Blumenstrauß.</div><div class="dl-es">¡Cierto! También necesito un ramo de flores.</div></div><button class="speak-btn sm" onclick="speakBtn('Stimmt! Ich brauche auch einen Blumenstrauß.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Was kaufst du?</div><div class="dl-es">¿Qué compras?</div></div><button class="speak-btn sm" onclick="speakBtn('Was kaufst du?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Ich kaufe <strong>einen</strong> Kuchen für <strong>meine</strong> Mutter.</div><div class="dl-es">Compro un pastel para mi madre.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich kaufe einen Kuchen für meine Mutter.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Ohne <strong>eine</strong> Kerze?</div><div class="dl-es">¿Sin una vela?</div></div><button class="speak-btn sm" onclick="speakBtn('Ohne eine Kerze?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Stimmt! Ich brauche auch <strong>einen</strong> Blumenstrauß.</div><div class="dl-es">¡Cierto! También necesito un ramo de flores.</div></div><button class="speak-btn sm" onclick="speakBtn('Stimmt! Ich brauche auch einen Blumenstrauß.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Error de hispanohablantes:</strong> En español decimos "para el jefe" sin cambiar nada. En alemán, "für" exige acusativo: "für <strong>den</strong> Chef" (no der Chef). Siempre pregúntate: ¿esta preposición pide Akk o Dat?</span></div>`},
 {type:"quiz",title:"Practica acusativo",questions:[
@@ -2849,9 +2910,9 @@ steps:[
 <tr><td style="font-weight:700">Plural</td><td>die</td><td>die</td><td class="highlight">den (+n)</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich gebe <strong>dem</strong> Mann das Buch.</span><span class="ex-es">Le doy el libro al hombre.</span><button class="speak-btn sm" onclick="speakBtn('Ich gebe dem Mann das Buch',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich helfe <strong>der</strong> Frau.</span><span class="ex-es">Ayudo a la mujer.</span><button class="speak-btn sm" onclick="speakBtn('Ich helfe der Frau',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er gibt <strong>dem</strong> Kind ein Geschenk.</span><span class="ex-es">Él le da un regalo al niño.</span><button class="speak-btn sm" onclick="speakBtn('Er gibt dem Kind ein Geschenk',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich gebe <strong>dem</strong> Mann das Buch.</span><span class="ex-es">Le doy el libro al hombre.</span><button class="speak-btn sm" onclick="speakBtn('Ich gebe dem Mann das Buch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich helfe <strong>der</strong> Frau.</span><span class="ex-es">Ayudo a la mujer.</span><button class="speak-btn sm" onclick="speakBtn('Ich helfe der Frau',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er gibt <strong>dem</strong> Kind ein Geschenk.</span><span class="ex-es">Él le da un regalo al niño.</span><button class="speak-btn sm" onclick="speakBtn('Er gibt dem Kind ein Geschenk',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Truco para recordar: masc/neutro → <strong>dem</strong> (suena a "them"), femenino → <strong>der</strong> (parece masculino pero no lo es en Dativ).</span></div>
 <div class="tip-box"><span class="tip-icon">⚡</span><span><strong>El único truco que necesitas por ahora:</strong> si puedes decir <strong>“le”</strong> en español, es Dativ. <em>Le doy</em> → Dativ. <em>Le ayudo</em> → Dativ. <em>Lo veo / Lo compro</em> → Akkusativ. Versión mínima: <strong>Dativ = el “a quién le”</strong> (el destinatario). <em>Ich helfe der Frau</em> = le ayudo a la mujer.</span></div>`},
@@ -2918,8 +2979,8 @@ steps:[
 <tr><td class="highlight">au → äu</td><td>laufen</td><td>l<strong>äu</strong>fst</td><td>l<strong>äu</strong>ft</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich <strong>spreche</strong> Deutsch, du <strong>sprichst</strong> Englisch.</span><span class="ex-es">Yo hablo alemán, tú hablas inglés.</span><button class="speak-btn sm" onclick="speakBtn('Ich spreche Deutsch, du sprichst Englisch',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er <strong>fährt</strong> nach Berlin.</span><span class="ex-es">Él va (en vehículo) a Berlín.</span><button class="speak-btn sm" onclick="speakBtn('Er fährt nach Berlin',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>spreche</strong> Deutsch, du <strong>sprichst</strong> Englisch.</span><span class="ex-es">Yo hablo alemán, tú hablas inglés.</span><button class="speak-btn sm" onclick="speakBtn('Ich spreche Deutsch, du sprichst Englisch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er <strong>fährt</strong> nach Berlin.</span><span class="ex-es">Él va (en vehículo) a Berlín.</span><button class="speak-btn sm" onclick="speakBtn('Er fährt nach Berlin',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>El cambio SOLO ocurre en <strong>du</strong> y <strong>er/sie/es</strong>. En wir/ihr/sie la vocal original se mantiene.</span></div>
 <div class="tip-box tip-box-brain"><span class="tip-icon">🧠</span><span><strong>¿Sabías que?</strong> Los cambios de raíz (e→i, a→ä) existen porque en alemán antiguo las vocales "se contagiaban" entre sílabas. La terminación de 2ª/3ª persona tenía una vocal alta que "tiraba" de la vocal de la raíz hacia arriba: a→ä, e→i. Se llama <strong>Umlaut</strong> y es la misma razón por la que los plurales también cambian la vocal.</span></div>`},
@@ -2954,40 +3015,40 @@ steps:[
 <div class="lc-explain">Estudia cada ficha como en un diccionario. Fíjate en el artículo, el plural y el ejemplo en contexto:</div>
 <div class="plural-cards">
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Hund</span><span class="pc-plural">pl.: die Hunde</span><span class="pc-rule">-e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Hund, die Hunde',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Hund</span><span class="pc-plural">pl.: die Hunde</span><span class="pc-rule">-e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Hund, die Hunde',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example"><strong>Ich habe einen Hund.</strong> Mein Nachbar hat zwei <strong>Hunde</strong>.<br><span class="pc-es">Tengo un perro. Mi vecino tiene dos perros.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Kind</span><span class="pc-plural">pl.: die Kinder</span><span class="pc-rule">-er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Kind, die Kinder',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Kind</span><span class="pc-plural">pl.: die Kinder</span><span class="pc-rule">-er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Kind, die Kinder',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example"><strong>Das Kind</strong> spielt im Garten. Die <strong>Kinder</strong> spielen zusammen.<br><span class="pc-es">El niño juega en el jardín. Los niños juegan juntos.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Buch</span><span class="pc-plural">pl.: die Bücher</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Buch, die Bücher',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Buch</span><span class="pc-plural">pl.: die Bücher</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Buch, die Bücher',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Ich lese ein <strong>Buch</strong>. Sie hat viele <strong>Bücher</strong>.<br><span class="pc-es">Leo un libro. Ella tiene muchos libros.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Stuhl</span><span class="pc-plural">pl.: die Stühle</span><span class="pc-rule">-̈e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Stuhl, die Stühle',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Stuhl</span><span class="pc-plural">pl.: die Stühle</span><span class="pc-rule">-̈e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Stuhl, die Stühle',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Der <strong>Stuhl</strong> ist kaputt. Wir brauchen neue <strong>Stühle</strong>.<br><span class="pc-es">La silla está rota. Necesitamos sillas nuevas.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Blume</span><span class="pc-plural">pl.: die Blumen</span><span class="pc-rule">-n</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Blume, die Blumen',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Blume</span><span class="pc-plural">pl.: die Blumen</span><span class="pc-rule">-n</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Blume, die Blumen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Die <strong>Blume</strong> ist schön. Im Garten gibt es viele <strong>Blumen</strong>.<br><span class="pc-es">La flor es bonita. En el jardín hay muchas flores.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Zeitung</span><span class="pc-plural">pl.: die Zeitungen</span><span class="pc-rule">-en</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Zeitung, die Zeitungen',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Zeitung</span><span class="pc-plural">pl.: die Zeitungen</span><span class="pc-rule">-en</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Zeitung, die Zeitungen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Ich lese die <strong>Zeitung</strong>. Er kauft zwei <strong>Zeitungen</strong>.<br><span class="pc-es">Leo el periódico. Él compra dos periódicos.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Auto</span><span class="pc-plural">pl.: die Autos</span><span class="pc-rule">-s</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Auto, die Autos',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Auto</span><span class="pc-plural">pl.: die Autos</span><span class="pc-rule">-s</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Auto, die Autos',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Das <strong>Auto</strong> ist neu. Auf dem Parkplatz stehen viele <strong>Autos</strong>.<br><span class="pc-es">El coche es nuevo. En el parking hay muchos coches.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Mädchen</span><span class="pc-plural">pl.: die Mädchen</span><span class="pc-rule">—</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Mädchen, die Mädchen',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Mädchen</span><span class="pc-plural">pl.: die Mädchen</span><span class="pc-rule">—</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Mädchen, die Mädchen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Das <strong>Mädchen</strong> lacht. Die <strong>Mädchen</strong> spielen Fußball.<br><span class="pc-es">La chica se ríe. Las chicas juegan fútbol.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Mann</span><span class="pc-plural">pl.: die Männer</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Mann, die Männer',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article der">masc.</span><span class="pc-word">der Mann</span><span class="pc-plural">pl.: die Männer</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('der Mann, die Männer',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Der <strong>Mann</strong> arbeitet. Die <strong>Männer</strong> trinken Kaffee.<br><span class="pc-es">El hombre trabaja. Los hombres beben café.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Mutter</span><span class="pc-plural">pl.: die Mütter</span><span class="pc-rule">-̈</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Mutter, die Mütter',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article die">fem.</span><span class="pc-word">die Mutter</span><span class="pc-plural">pl.: die Mütter</span><span class="pc-rule">-̈</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('die Mutter, die Mütter',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Meine <strong>Mutter</strong> kocht gut. Alle <strong>Mütter</strong> sind eingeladen.<br><span class="pc-es">Mi madre cocina bien. Todas las madres están invitadas.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Haus</span><span class="pc-plural">pl.: die Häuser</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Haus, die Häuser',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Haus</span><span class="pc-plural">pl.: die Häuser</span><span class="pc-rule">-̈er</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Haus, die Häuser',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Das <strong>Haus</strong> ist groß. In der Straße gibt es alte <strong>Häuser</strong>.<br><span class="pc-es">La casa es grande. En la calle hay casas antiguas.</span></div></div>
 
-<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Telefon</span><span class="pc-plural">pl.: die Telefone</span><span class="pc-rule">-e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Telefon, die Telefone',this)">🔊</button></div>
+<div class="plural-card"><div class="pc-header"><span class="pc-article das">neutro</span><span class="pc-word">das Telefon</span><span class="pc-plural">pl.: die Telefone</span><span class="pc-rule">-e</span><button class="speak-btn sm pc-audio" onclick="event.stopPropagation();speakBtn('das Telefon, die Telefone',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="pc-example">Das <strong>Telefon</strong> klingelt. Im Büro gibt es drei <strong>Telefone</strong>.<br><span class="pc-es">El teléfono suena. En la oficina hay tres teléfonos.</span></div></div>
 
 </div>
@@ -3033,22 +3094,22 @@ steps:[
 <tr><td>100</td><td class="highlight">(ein)hundert</td><td></td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">35 = fünfunddreißig</span><span class="ex-es">cinco-y-treinta</span><button class="speak-btn sm" onclick="speakBtn('fünfunddreißig',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">47 = siebenundvierzig</span><span class="ex-es">siete-y-cuarenta</span><button class="speak-btn sm" onclick="speakBtn('siebenundvierzig',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">99 = neunundneunzig</span><span class="ex-es">nueve-y-noventa</span><button class="speak-btn sm" onclick="speakBtn('neunundneunzig',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">35 = fünfunddreißig</span><span class="ex-es">cinco-y-treinta</span><button class="speak-btn sm" onclick="speakBtn('fünfunddreißig',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">47 = siebenundvierzig</span><span class="ex-es">siete-y-cuarenta</span><button class="speak-btn sm" onclick="speakBtn('siebenundvierzig',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">99 = neunundneunzig</span><span class="ex-es">nueve-y-noventa</span><button class="speak-btn sm" onclick="speakBtn('neunundneunzig',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Patrón: <strong>unidad + und + decena</strong>. 23 = drei-und-zwanzig. Siempre al revés de como lo decimos en español.</span></div>`},
 {type:"teach",title:"Fechas y precios",content:`
 <div class="lc-explain">En el examen te piden entender fechas y precios. Así se dicen:</div>
 <div class="example-box">
 <div style="font-weight:700;margin-bottom:6px">📅 Fechas:</div>
-<div class="example-row"><span class="ex-de">Heute ist der erste März.</span><span class="ex-es">Hoy es 1 de marzo.</span><button class="speak-btn sm" onclick="speakBtn('Heute ist der erste März',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich bin am dritten Juli geboren.</span><span class="ex-es">Nací el 3 de julio.</span><button class="speak-btn sm" onclick="speakBtn('Ich bin am dritten Juli geboren',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Heute ist der erste März.</span><span class="ex-es">Hoy es 1 de marzo.</span><button class="speak-btn sm" onclick="speakBtn('Heute ist der erste März',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich bin am dritten Juli geboren.</span><span class="ex-es">Nací el 3 de julio.</span><button class="speak-btn sm" onclick="speakBtn('Ich bin am dritten Juli geboren',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="example-row"><span class="ex-de">Mein Geburtstag ist am fünfzehnten Oktober.</span><span class="ex-es">Mi cumpleaños es el 15 de octubre.</span></div>
 </div>
 <div class="example-box">
 <div style="font-weight:700;margin-bottom:6px">💶 Precios:</div>
-<div class="example-row"><span class="ex-de">Das kostet fünf Euro fünfzig.</span><span class="ex-es">Cuesta cinco euros cincuenta. (5,50 €)</span><button class="speak-btn sm" onclick="speakBtn('Das kostet fünf Euro fünfzig',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Das kostet fünf Euro fünfzig.</span><span class="ex-es">Cuesta cinco euros cincuenta. (5,50 €)</span><button class="speak-btn sm" onclick="speakBtn('Das kostet fünf Euro fünfzig',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="example-row"><span class="ex-de">Das macht zusammen zwölf Euro dreißig.</span><span class="ex-es">Son en total doce euros treinta. (12,30 €)</span></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Ordinales: <strong>erste</strong> (1°), <strong>zweite</strong> (2°), <strong>dritte</strong> (3°), luego se agrega <strong>-te</strong> hasta el 19° y <strong>-ste</strong> del 20° en adelante.</span></div>`},
@@ -3082,7 +3143,7 @@ steps:[
 <div style="margin-top:6px"><strong>Viele Grüße</strong></div>
 <div>María</div>
 </div></div>
-<button class="speak-btn" onclick="speakBtn('Liebe Anna, ich komme heute leider dreißig Minuten später. Mein Bus hat Verspätung. Kannst du bitte schon anfangen? Viele Grüße, María',this)" style="margin:8px auto;display:flex">🔊</button>
+<button class="speak-btn" onclick="speakBtn('Liebe Anna, ich komme heute leider dreißig Minuten später. Mein Bus hat Verspätung. Kannst du bitte schon anfangen? Viele Grüße, María',this)" style="margin:8px auto;display:flex" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Frases comodín para emails: <strong>Ich schreibe dir, weil...</strong> (Te escribo porque...), <strong>Kannst du bitte...</strong> (¿Puedes por favor...), <strong>Vielen Dank für...</strong> (Muchas gracias por...)</span></div>`},
 {type:"teach",title:"Rellenar formularios",content:`
 <div class="lc-explain">El examen también te pide rellenar formularios. Aprende estos campos:</div>
@@ -3137,19 +3198,19 @@ steps:[
 <tr><td>sie/Sie</td><td class="highlight">waren</td><td class="highlight">hatten</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Mein Opa <strong>war</strong> Bäcker.</span><span class="ex-es">Mi abuelo era panadero.</span><button class="speak-btn sm" onclick="speakBtn('Mein Opa war Bäcker',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Wir <strong>waren</strong> gestern im Kino.</span><span class="ex-es">Ayer estuvimos en el cine.</span><button class="speak-btn sm" onclick="speakBtn('Wir waren gestern im Kino',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich <strong>hatte</strong> keine Zeit.</span><span class="ex-es">No tenía tiempo.</span><button class="speak-btn sm" onclick="speakBtn('Ich hatte keine Zeit',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Das Wetter <strong>war</strong> schlecht.</span><span class="ex-es">El clima estaba malo.</span><button class="speak-btn sm" onclick="speakBtn('Das Wetter war schlecht',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Sie <strong>hatten</strong> zwei Kinder.</span><span class="ex-es">Ellos tenían dos hijos.</span><button class="speak-btn sm" onclick="speakBtn('Sie hatten zwei Kinder',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Mein Opa <strong>war</strong> Bäcker.</span><span class="ex-es">Mi abuelo era panadero.</span><button class="speak-btn sm" onclick="speakBtn('Mein Opa war Bäcker',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Wir <strong>waren</strong> gestern im Kino.</span><span class="ex-es">Ayer estuvimos en el cine.</span><button class="speak-btn sm" onclick="speakBtn('Wir waren gestern im Kino',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>hatte</strong> keine Zeit.</span><span class="ex-es">No tenía tiempo.</span><button class="speak-btn sm" onclick="speakBtn('Ich hatte keine Zeit',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Das Wetter <strong>war</strong> schlecht.</span><span class="ex-es">El clima estaba malo.</span><button class="speak-btn sm" onclick="speakBtn('Das Wetter war schlecht',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Sie <strong>hatten</strong> zwei Kinder.</span><span class="ex-es">Ellos tenían dos hijos.</span><button class="speak-btn sm" onclick="speakBtn('Sie hatten zwei Kinder',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>`},
 {type:"teach",title:"Mini diálogo: Wie war dein Wochenende?",content:`
 <div class="lc-explain">Lee este diálogo real. Fíjate cómo se mezclan <strong>war/hatte</strong> (Präteritum) con otros verbos en <strong>Perfekt</strong>:</div>
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Hey, wie <strong>war</strong> dein Wochenende?</div><div class="dl-es">Hey, ¿cómo estuvo tu fin de semana?</div></div><button class="speak-btn sm" onclick="speakBtn('Hey, wie war dein Wochenende?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Es <strong>war</strong> super! Ich <strong>hatte</strong> endlich frei.</div><div class="dl-es">¡Estuvo genial! Por fin tenía libre.</div></div><button class="speak-btn sm" onclick="speakBtn('Es war super! Ich hatte endlich frei.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Was hast du gemacht?</div><div class="dl-es">¿Qué hiciste? (Perfekt, no Präteritum)</div></div><button class="speak-btn sm" onclick="speakBtn('Was hast du gemacht?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Ich bin gewandert. Das Wetter <strong>war</strong> perfekt.</div><div class="dl-es">Hice senderismo. El clima estaba perfecto.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich bin gewandert. Das Wetter war perfekt.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Hey, wie <strong>war</strong> dein Wochenende?</div><div class="dl-es">Hey, ¿cómo estuvo tu fin de semana?</div></div><button class="speak-btn sm" onclick="speakBtn('Hey, wie war dein Wochenende?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Es <strong>war</strong> super! Ich <strong>hatte</strong> endlich frei.</div><div class="dl-es">¡Estuvo genial! Por fin tenía libre.</div></div><button class="speak-btn sm" onclick="speakBtn('Es war super! Ich hatte endlich frei.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Was hast du gemacht?</div><div class="dl-es">¿Qué hiciste? (Perfekt, no Präteritum)</div></div><button class="speak-btn sm" onclick="speakBtn('Was hast du gemacht?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Ich bin gewandert. Das Wetter <strong>war</strong> perfekt.</div><div class="dl-es">Hice senderismo. El clima estaba perfecto.</div></div><button class="speak-btn sm" onclick="speakBtn('Ich bin gewandert. Das Wetter war perfekt.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span><strong>Error común de hispanohablantes:</strong> Decir "Ich war gegangen" (yo estuve ido) mezclando Präteritum + Partizip. En alemán no se mezclan así. Es "Ich <strong>bin</strong> gegangen" (Perfekt) o "Ich <strong>ging</strong>" (Präteritum), nunca las dos.</span></div>`},
 {type:"quiz",title:"Practica Präteritum",questions:[
@@ -3165,7 +3226,7 @@ steps:[
 {type:"teach",title:"¿Qué es el Perfekt y cuándo se usa?",content:`
 <div class="lc-explain">El <strong>Perfekt</strong> es el tiempo pasado que usarás el 90% de las veces al hablar alemán. Equivale a "he comido" o "comí" en español:</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich <strong>habe</strong> gestern Pizza <strong>gegessen</strong>.</span><span class="ex-es">Ayer comí / he comido pizza.</span><button class="speak-btn sm" onclick="speakBtn('Ich habe gestern Pizza gegessen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>habe</strong> gestern Pizza <strong>gegessen</strong>.</span><span class="ex-es">Ayer comí / he comido pizza.</span><button class="speak-btn sm" onclick="speakBtn('Ich habe gestern Pizza gegessen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="lc-explain">La estructura es siempre la misma:</div>
 <table class="grammar-table">
@@ -3178,15 +3239,15 @@ steps:[
 <div class="lc-explain">La gran pregunta: ¿cuándo se usa <strong>haben</strong> y cuándo <strong>sein</strong>?</div>
 <div class="example-box">
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px">🔵 haben — la mayoría de verbos:</div>
-<div class="example-row"><span class="ex-de">Ich <strong>habe</strong> Deutsch <strong>gelernt</strong>.</span><span class="ex-es">He aprendido alemán.</span><button class="speak-btn sm" onclick="speakBtn('Ich habe Deutsch gelernt',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Sie <strong>hat</strong> ein Buch <strong>gelesen</strong>.</span><span class="ex-es">Ella ha leído un libro.</span><button class="speak-btn sm" onclick="speakBtn('Sie hat ein Buch gelesen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Wir <strong>haben</strong> Fußball <strong>gespielt</strong>.</span><span class="ex-es">Hemos jugado fútbol.</span><button class="speak-btn sm" onclick="speakBtn('Wir haben Fußball gespielt',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>habe</strong> Deutsch <strong>gelernt</strong>.</span><span class="ex-es">He aprendido alemán.</span><button class="speak-btn sm" onclick="speakBtn('Ich habe Deutsch gelernt',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Sie <strong>hat</strong> ein Buch <strong>gelesen</strong>.</span><span class="ex-es">Ella ha leído un libro.</span><button class="speak-btn sm" onclick="speakBtn('Sie hat ein Buch gelesen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Wir <strong>haben</strong> Fußball <strong>gespielt</strong>.</span><span class="ex-es">Hemos jugado fútbol.</span><button class="speak-btn sm" onclick="speakBtn('Wir haben Fußball gespielt',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="example-box">
 <div style="font-weight:700;color:var(--secondary);margin-bottom:6px">🟢 sein — verbos de movimiento y cambio de estado:</div>
-<div class="example-row"><span class="ex-de">Ich <strong>bin</strong> nach Berlin <strong>gefahren</strong>.</span><span class="ex-es">He ido a Berlín.</span><button class="speak-btn sm" onclick="speakBtn('Ich bin nach Berlin gefahren',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er <strong>ist</strong> um 7 Uhr <strong>aufgestanden</strong>.</span><span class="ex-es">Él se ha levantado a las 7.</span><button class="speak-btn sm" onclick="speakBtn('Er ist um sieben Uhr aufgestanden',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Sie <strong>ist</strong> nach Hause <strong>gelaufen</strong>.</span><span class="ex-es">Ella fue a casa caminando.</span><button class="speak-btn sm" onclick="speakBtn('Sie ist nach Hause gelaufen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>bin</strong> nach Berlin <strong>gefahren</strong>.</span><span class="ex-es">He ido a Berlín.</span><button class="speak-btn sm" onclick="speakBtn('Ich bin nach Berlin gefahren',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er <strong>ist</strong> um 7 Uhr <strong>aufgestanden</strong>.</span><span class="ex-es">Él se ha levantado a las 7.</span><button class="speak-btn sm" onclick="speakBtn('Er ist um sieben Uhr aufgestanden',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Sie <strong>ist</strong> nach Hause <strong>gelaufen</strong>.</span><span class="ex-es">Ella fue a casa caminando.</span><button class="speak-btn sm" onclick="speakBtn('Sie ist nach Hause gelaufen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Verbos con <strong>sein</strong>: gehen, kommen, fahren, fliegen, laufen, aufstehen, einschlafen, sterben, werden, bleiben, passieren. Si implica <strong>ir de A a B</strong> o <strong>cambiar de estado</strong> → sein.</span></div>
 <div class="tip-box tip-box-brain"><span class="tip-icon">🧠</span><span><strong>¿Sabías que?</strong> ¿Por qué los verbos de movimiento usan <strong>sein</strong> y no haben? En alemán antiguo, "Ich bin gegangen" significaba literalmente "Yo <strong>soy</strong> ido" — describía un <strong>estado resultante</strong> del movimiento (ahora estoy en otro lugar). Con el tiempo se convirtió en pasado. El español hizo lo mismo: "yo <strong>he</strong> ido" viene de "yo <strong>tengo</strong> ido". ¡Ambos idiomas hicieron lo mismo pero con verbos auxiliares diferentes!</span></div>`},
@@ -3213,12 +3274,12 @@ steps:[
 <div class="study-box"><span class="study-icon">🎯</span><span><strong>Cómo estudiarlo:</strong> No intentes memorizar todos los participios de golpe. Aprende primero los <strong>regulares</strong> (ge-...-t) que son la mayoría y siguen un patrón fijo. Luego haz una lista de los <strong>10 irregulares más frecuentes</strong> (gegessen, getrunken, gefahren...) y practícalos en bloque. Los irregulares raros los irás aprendiendo con el uso, no de memoria.</span></div>`},
 {type:"teach",title:"Mini diálogo: Was hast du am Wochenende gemacht?",content:`
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Was hast du am Wochenende <strong>gemacht</strong>?</div><div class="dl-es">¿Qué hiciste el fin de semana?</div></div><button class="speak-btn sm" onclick="speakBtn('Was hast du am Wochenende gemacht?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Am Samstag <strong>bin</strong> ich ins Kino <strong>gegangen</strong>.</div><div class="dl-es">El sábado fui al cine.</div></div><button class="speak-btn sm" onclick="speakBtn('Am Samstag bin ich ins Kino gegangen.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Welchen Film hast du <strong>gesehen</strong>?</div><div class="dl-es">¿Qué película viste?</div></div><button class="speak-btn sm" onclick="speakBtn('Welchen Film hast du gesehen?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Einen Actionfilm. Er <strong>hat</strong> mir gut <strong>gefallen</strong>.</div><div class="dl-es">Una de acción. Me gustó mucho.</div></div><button class="speak-btn sm" onclick="speakBtn('Einen Actionfilm. Er hat mir gut gefallen.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Was hast du am Wochenende <strong>gemacht</strong>?</div><div class="dl-es">¿Qué hiciste el fin de semana?</div></div><button class="speak-btn sm" onclick="speakBtn('Was hast du am Wochenende gemacht?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Am Samstag <strong>bin</strong> ich ins Kino <strong>gegangen</strong>.</div><div class="dl-es">El sábado fui al cine.</div></div><button class="speak-btn sm" onclick="speakBtn('Am Samstag bin ich ins Kino gegangen.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Welchen Film hast du <strong>gesehen</strong>?</div><div class="dl-es">¿Qué película viste?</div></div><button class="speak-btn sm" onclick="speakBtn('Welchen Film hast du gesehen?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Einen Actionfilm. Er <strong>hat</strong> mir gut <strong>gefallen</strong>.</div><div class="dl-es">Una de acción. Me gustó mucho.</div></div><button class="speak-btn sm" onclick="speakBtn('Einen Actionfilm. Er hat mir gut gefallen.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Und am Sonntag?</div><div class="dl-es">¿Y el domingo?</div></div></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Da <strong>bin</strong> ich zu Hause <strong>geblieben</strong> und <strong>habe</strong> <strong>gekocht</strong>.</div><div class="dl-es">Me quedé en casa y cociné.</div></div><button class="speak-btn sm" onclick="speakBtn('Da bin ich zu Hause geblieben und habe gekocht.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Da <strong>bin</strong> ich zu Hause <strong>geblieben</strong> und <strong>habe</strong> <strong>gekocht</strong>.</div><div class="dl-es">Me quedé en casa y cociné.</div></div><button class="speak-btn sm" onclick="speakBtn('Da bin ich zu Hause geblieben und habe gekocht.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Fíjate: <strong>gehen, bleiben</strong> van con sein. <strong>sehen, kochen, gefallen</strong> van con haben. La pregunta "Was hast du gemacht?" (¿Qué hiciste?) es la frase más útil del A2.</span></div>`},
 {type:"quiz",title:"Practica Perfekt",questions:[
@@ -3254,10 +3315,10 @@ steps:[
 <tr><td class="highlight">sitzen (estar sentado)</td><td class="highlight">setzen (sentar)</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Die Lampe <strong>hängt</strong> an <strong>der</strong> Wand.</span><span class="ex-es">La lámpara cuelga en la pared. (Wo? → Dativ)</span><button class="speak-btn sm" onclick="speakBtn('Die Lampe hängt an der Wand',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich <strong>hänge</strong> die Lampe an <strong>die</strong> Wand.</span><span class="ex-es">Cuelgo la lámpara en la pared. (Wohin? → Akk)</span><button class="speak-btn sm" onclick="speakBtn('Ich hänge die Lampe an die Wand',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Das Buch <strong>liegt</strong> auf <strong>dem</strong> Tisch.</span><span class="ex-es">El libro está sobre la mesa.</span><button class="speak-btn sm" onclick="speakBtn('Das Buch liegt auf dem Tisch',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich <strong>lege</strong> das Buch auf <strong>den</strong> Tisch.</span><span class="ex-es">Pongo el libro sobre la mesa.</span><button class="speak-btn sm" onclick="speakBtn('Ich lege das Buch auf den Tisch',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Die Lampe <strong>hängt</strong> an <strong>der</strong> Wand.</span><span class="ex-es">La lámpara cuelga en la pared. (Wo? → Dativ)</span><button class="speak-btn sm" onclick="speakBtn('Die Lampe hängt an der Wand',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>hänge</strong> die Lampe an <strong>die</strong> Wand.</span><span class="ex-es">Cuelgo la lámpara en la pared. (Wohin? → Akk)</span><button class="speak-btn sm" onclick="speakBtn('Ich hänge die Lampe an die Wand',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Das Buch <strong>liegt</strong> auf <strong>dem</strong> Tisch.</span><span class="ex-es">El libro está sobre la mesa.</span><button class="speak-btn sm" onclick="speakBtn('Das Buch liegt auf dem Tisch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>lege</strong> das Buch auf <strong>den</strong> Tisch.</span><span class="ex-es">Pongo el libro sobre la mesa.</span><button class="speak-btn sm" onclick="speakBtn('Ich lege das Buch auf den Tisch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Error común:</strong> "Ich bin in die Schule" (estoy en la escuela). Mal — si ya estás ahí, es posición → Dativ: "Ich bin in <strong>der</strong> Schule". "In die Schule" significa que vas camino a ella.</span></div>`},
 {type:"quiz",title:"Practica Wechselpräpositionen",questions:[
@@ -3281,22 +3342,22 @@ steps:[
 <tr><td>sein</td><td class="highlight">wäre</td><td>sería/estaría</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Wir <strong>könnten</strong> montags joggen gehen.</span><span class="ex-es">Podríamos ir a correr los lunes.</span><button class="speak-btn sm" onclick="speakBtn('Wir könnten montags joggen gehen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich <strong>würde</strong> gern ins Kino gehen.</span><span class="ex-es">Me gustaría ir al cine.</span><button class="speak-btn sm" onclick="speakBtn('Ich würde gern ins Kino gehen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Du <strong>solltest</strong> mehr Sport machen.</span><span class="ex-es">Deberías hacer más deporte.</span><button class="speak-btn sm" onclick="speakBtn('Du solltest mehr Sport machen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Das <strong>wäre</strong> super!</span><span class="ex-es">¡Eso sería genial!</span><button class="speak-btn sm" onclick="speakBtn('Das wäre super!',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich <strong>hätte</strong> gern ein Wasser.</span><span class="ex-es">Quisiera un agua (tendría con gusto).</span><button class="speak-btn sm" onclick="speakBtn('Ich hätte gern ein Wasser',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Wir <strong>könnten</strong> montags joggen gehen.</span><span class="ex-es">Podríamos ir a correr los lunes.</span><button class="speak-btn sm" onclick="speakBtn('Wir könnten montags joggen gehen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>würde</strong> gern ins Kino gehen.</span><span class="ex-es">Me gustaría ir al cine.</span><button class="speak-btn sm" onclick="speakBtn('Ich würde gern ins Kino gehen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Du <strong>solltest</strong> mehr Sport machen.</span><span class="ex-es">Deberías hacer más deporte.</span><button class="speak-btn sm" onclick="speakBtn('Du solltest mehr Sport machen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Das <strong>wäre</strong> super!</span><span class="ex-es">¡Eso sería genial!</span><button class="speak-btn sm" onclick="speakBtn('Das wäre super!',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich <strong>hätte</strong> gern ein Wasser.</span><span class="ex-es">Quisiera un agua (tendría con gusto).</span><button class="speak-btn sm" onclick="speakBtn('Ich hätte gern ein Wasser',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span><strong>würde + infinitivo</strong> es la forma comodín: funciona con cualquier verbo. "Ich <strong>würde</strong> gern Pizza <strong>essen</strong>" = Me gustaría comer pizza. El infinitivo va al final.</span></div>`},
 {type:"teach",title:"Cuándo usar cada forma",content:`
 <div class="lc-explain">Cada forma de Konjunktiv II tiene su contexto:</div>
 <div class="example-box">
 <div style="font-weight:700;color:#7C3AED;margin-bottom:6px">💭 Deseos (wenn + Konj. II):</div>
-<div class="example-row"><span class="ex-de"><strong>Wenn</strong> ich reich <strong>wäre</strong>, <strong>würde</strong> ich reisen.</span><span class="ex-es">Si yo fuera rico, viajaría.</span><button class="speak-btn sm" onclick="speakBtn('Wenn ich reich wäre, würde ich reisen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de"><strong>Wenn</strong> ich reich <strong>wäre</strong>, <strong>würde</strong> ich reisen.</span><span class="ex-es">Si yo fuera rico, viajaría.</span><button class="speak-btn sm" onclick="speakBtn('Wenn ich reich wäre, würde ich reisen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div style="font-weight:700;color:var(--secondary);margin-bottom:6px;margin-top:8px">🙋 Sugerencias corteses:</div>
-<div class="example-row"><span class="ex-de"><strong>Könnten</strong> Sie mir bitte helfen?</span><span class="ex-es">¿Podría ayudarme por favor?</span><button class="speak-btn sm" onclick="speakBtn('Könnten Sie mir bitte helfen?',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de"><strong>Könnten</strong> Sie mir bitte helfen?</span><span class="ex-es">¿Podría ayudarme por favor?</span><button class="speak-btn sm" onclick="speakBtn('Könnten Sie mir bitte helfen?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div style="font-weight:700;color:var(--accent);margin-bottom:6px;margin-top:8px">💡 Consejos suaves:</div>
-<div class="example-row"><span class="ex-de">Du <strong>solltest</strong> zum Arzt gehen.</span><span class="ex-es">Deberías ir al médico.</span><button class="speak-btn sm" onclick="speakBtn('Du solltest zum Arzt gehen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Du <strong>solltest</strong> zum Arzt gehen.</span><span class="ex-es">Deberías ir al médico.</span><button class="speak-btn sm" onclick="speakBtn('Du solltest zum Arzt gehen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Error de hispanohablantes:</strong> Usar el presente para ser cortés ("Können Sie mir helfen?"). No es incorrecto, pero <strong>Könnten</strong> Sie... suena mucho más cortés, como la diferencia entre "¿Puede...?" y "¿Podría...?"</span></div>`},
 {type:"quiz",title:"Practica Konjunktiv II",questions:[
@@ -3331,22 +3392,22 @@ steps:[
 <div class="lc-explain">Veamos cada conector con ejemplos completos y audio:</div>
 <div class="example-box">
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px">weil = porque</div>
-<div class="example-row"><span class="ex-de">Ich lerne Deutsch, <strong>weil</strong> ich in Deutschland <strong>arbeite</strong>.</span><span class="ex-es">Aprendo alemán porque trabajo en Alemania.</span><button class="speak-btn sm" onclick="speakBtn('Ich lerne Deutsch, weil ich in Deutschland arbeite',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er bleibt zu Hause, <strong>weil</strong> er krank <strong>ist</strong>.</span><span class="ex-es">Él se queda en casa porque está enfermo.</span><button class="speak-btn sm" onclick="speakBtn('Er bleibt zu Hause, weil er krank ist',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich lerne Deutsch, <strong>weil</strong> ich in Deutschland <strong>arbeite</strong>.</span><span class="ex-es">Aprendo alemán porque trabajo en Alemania.</span><button class="speak-btn sm" onclick="speakBtn('Ich lerne Deutsch, weil ich in Deutschland arbeite',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er bleibt zu Hause, <strong>weil</strong> er krank <strong>ist</strong>.</span><span class="ex-es">Él se queda en casa porque está enfermo.</span><button class="speak-btn sm" onclick="speakBtn('Er bleibt zu Hause, weil er krank ist',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px;margin-top:10px">dass = que</div>
-<div class="example-row"><span class="ex-de">Ich finde, <strong>dass</strong> Deutsch interessant <strong>ist</strong>.</span><span class="ex-es">Creo que el alemán es interesante.</span><button class="speak-btn sm" onclick="speakBtn('Ich finde, dass Deutsch interessant ist',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er sagt, <strong>dass</strong> er morgen <strong>kommt</strong>.</span><span class="ex-es">Él dice que viene mañana.</span><button class="speak-btn sm" onclick="speakBtn('Er sagt, dass er morgen kommt',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich finde, <strong>dass</strong> Deutsch interessant <strong>ist</strong>.</span><span class="ex-es">Creo que el alemán es interesante.</span><button class="speak-btn sm" onclick="speakBtn('Ich finde, dass Deutsch interessant ist',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er sagt, <strong>dass</strong> er morgen <strong>kommt</strong>.</span><span class="ex-es">Él dice que viene mañana.</span><button class="speak-btn sm" onclick="speakBtn('Er sagt, dass er morgen kommt',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div style="font-weight:700;color:var(--primary);margin-bottom:6px;margin-top:10px">wenn = cuando / si</div>
-<div class="example-row"><span class="ex-de"><strong>Wenn</strong> es warm <strong>ist</strong>, essen wir Salat.</span><span class="ex-es">Cuando hace calor, comemos ensalada.</span><button class="speak-btn sm" onclick="speakBtn('Wenn es warm ist, essen wir Salat',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de"><strong>Wenn</strong> ich Zeit <strong>habe</strong>, lese ich ein Buch.</span><span class="ex-es">Cuando tengo tiempo, leo un libro.</span><button class="speak-btn sm" onclick="speakBtn('Wenn ich Zeit habe, lese ich ein Buch',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de"><strong>Wenn</strong> es warm <strong>ist</strong>, essen wir Salat.</span><span class="ex-es">Cuando hace calor, comemos ensalada.</span><button class="speak-btn sm" onclick="speakBtn('Wenn es warm ist, essen wir Salat',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de"><strong>Wenn</strong> ich Zeit <strong>habe</strong>, lese ich ein Buch.</span><span class="ex-es">Cuando tengo tiempo, leo un libro.</span><button class="speak-btn sm" onclick="speakBtn('Wenn ich Zeit habe, lese ich ein Buch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Cuando el Nebensatz va <strong>primero</strong>, la oración principal empieza con el verbo: "<strong>Wenn</strong> es warm <strong>ist</strong>, <strong>essen</strong> wir Salat." El verbo principal ("essen") va justo después de la coma.</span></div>`},
 {type:"teach",title:"Mini diálogo con Nebensätze",content:`
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Warum lernst du Deutsch?</div><div class="dl-es">¿Por qué aprendes alemán?</div></div><button class="speak-btn sm" onclick="speakBtn('Warum lernst du Deutsch?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text"><strong>Weil</strong> ich in München <strong>arbeite</strong> und <strong>weil</strong> meine Freundin Deutsche <strong>ist</strong>.</div><div class="dl-es">Porque trabajo en Múnich y porque mi novia es alemana.</div></div><button class="speak-btn sm" onclick="speakBtn('Weil ich in München arbeite und weil meine Freundin Deutsche ist.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Ich finde, <strong>dass</strong> du schon gut Deutsch <strong>sprichst</strong>!</div><div class="dl-es">¡Creo que ya hablas bien alemán!</div></div><button class="speak-btn sm" onclick="speakBtn('Ich finde, dass du schon gut Deutsch sprichst!',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Danke! <strong>Wenn</strong> ich mehr <strong>übe</strong>, <strong>werde</strong> ich noch besser.</div><div class="dl-es">¡Gracias! Cuando practique más, seré aún mejor.</div></div><button class="speak-btn sm" onclick="speakBtn('Danke! Wenn ich mehr übe, werde ich noch besser.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Warum lernst du Deutsch?</div><div class="dl-es">¿Por qué aprendes alemán?</div></div><button class="speak-btn sm" onclick="speakBtn('Warum lernst du Deutsch?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text"><strong>Weil</strong> ich in München <strong>arbeite</strong> und <strong>weil</strong> meine Freundin Deutsche <strong>ist</strong>.</div><div class="dl-es">Porque trabajo en Múnich y porque mi novia es alemana.</div></div><button class="speak-btn sm" onclick="speakBtn('Weil ich in München arbeite und weil meine Freundin Deutsche ist.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Ich finde, <strong>dass</strong> du schon gut Deutsch <strong>sprichst</strong>!</div><div class="dl-es">¡Creo que ya hablas bien alemán!</div></div><button class="speak-btn sm" onclick="speakBtn('Ich finde, dass du schon gut Deutsch sprichst!',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Danke! <strong>Wenn</strong> ich mehr <strong>übe</strong>, <strong>werde</strong> ich noch besser.</div><div class="dl-es">¡Gracias! Cuando practique más, seré aún mejor.</div></div><button class="speak-btn sm" onclick="speakBtn('Danke! Wenn ich mehr übe, werde ich noch besser.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Fíjate en el último ejemplo: "<strong>Wenn</strong> ich mehr <strong>übe</strong>" — el Nebensatz va primero, entonces la oración principal empieza con el verbo "<strong>werde</strong> ich noch besser".</span></div>`},
 {type:"quiz",title:"Practica Nebensätze",questions:[
@@ -3388,10 +3449,10 @@ steps:[
 </table>
 <div class="lc-explain" style="margin-top:10px">Mini diálogo:</div>
 <div class="dialogue-box">
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Welche Stadt findest du <strong>schöner</strong>: Berlin oder München?</div><div class="dl-es">¿Qué ciudad te parece más bonita: Berlín o Múnich?</div></div><button class="speak-btn sm" onclick="speakBtn('Welche Stadt findest du schöner: Berlin oder München?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">München ist schöner, aber Berlin ist <strong>interessanter</strong>.</div><div class="dl-es">Múnich es más bonita, pero Berlín es más interesante.</div></div><button class="speak-btn sm" onclick="speakBtn('München ist schöner, aber Berlin ist interessanter.',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Und welche ist <strong>am größten</strong>?</div><div class="dl-es">¿Y cuál es la más grande?</div></div><button class="speak-btn sm" onclick="speakBtn('Und welche ist am größten?',this)">🔊</button></div>
-<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Berlin ist <strong>am größten</strong>. Es ist <strong>größer als</strong> Hamburg.</div><div class="dl-es">Berlín es la más grande. Es más grande que Hamburgo.</div></div><button class="speak-btn sm" onclick="speakBtn('Berlin ist am größten. Es ist größer als Hamburg.',this)">🔊</button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Welche Stadt findest du <strong>schöner</strong>: Berlin oder München?</div><div class="dl-es">¿Qué ciudad te parece más bonita: Berlín o Múnich?</div></div><button class="speak-btn sm" onclick="speakBtn('Welche Stadt findest du schöner: Berlin oder München?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">München ist schöner, aber Berlin ist <strong>interessanter</strong>.</div><div class="dl-es">Múnich es más bonita, pero Berlín es más interesante.</div></div><button class="speak-btn sm" onclick="speakBtn('München ist schöner, aber Berlin ist interessanter.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👩</span><div><div class="dl-text">Und welche ist <strong>am größten</strong>?</div><div class="dl-es">¿Y cuál es la más grande?</div></div><button class="speak-btn sm" onclick="speakBtn('Und welche ist am größten?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="dialogue-line"><span class="dl-speaker">👨</span><div><div class="dl-text">Berlin ist <strong>am größten</strong>. Es ist <strong>größer als</strong> Hamburg.</div><div class="dl-es">Berlín es la más grande. Es más grande que Hamburgo.</div></div><button class="speak-btn sm" onclick="speakBtn('Berlin ist am größten. Es ist größer als Hamburg.',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Error #1:</strong> Usar "wie" en vez de "als" al comparar: "größer <strong>wie</strong>" ✗ → "größer <strong>als</strong>" ✓. <strong>als</strong> = que (comparar cosas diferentes). <strong>wie</strong> = como (igualdad: so groß <strong>wie</strong>).</span></div>`},
 {type:"quiz",title:"Practica comparaciones",questions:[
@@ -3431,9 +3492,9 @@ steps:[
 <tr><td class="highlight">sich erinnern an</td><td>recordar</td><td>+ Akkusativ</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich freue <strong>mich</strong> auf den Urlaub.</span><span class="ex-es">Me alegro por las vacaciones.</span><button class="speak-btn sm" onclick="speakBtn('Ich freue mich auf den Urlaub',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Er fühlt <strong>sich</strong> krank.</span><span class="ex-es">Él se siente enfermo.</span><button class="speak-btn sm" onclick="speakBtn('Er fühlt sich krank',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Wir treffen <strong>uns</strong> morgen.</span><span class="ex-es">Nos encontramos mañana.</span><button class="speak-btn sm" onclick="speakBtn('Wir treffen uns morgen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich freue <strong>mich</strong> auf den Urlaub.</span><span class="ex-es">Me alegro por las vacaciones.</span><button class="speak-btn sm" onclick="speakBtn('Ich freue mich auf den Urlaub',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Er fühlt <strong>sich</strong> krank.</span><span class="ex-es">Él se siente enfermo.</span><button class="speak-btn sm" onclick="speakBtn('Er fühlt sich krank',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Wir treffen <strong>uns</strong> morgen.</span><span class="ex-es">Nos encontramos mañana.</span><button class="speak-btn sm" onclick="speakBtn('Wir treffen uns morgen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>`},
 {type:"quiz",title:"Practica verbos reflexivos",questions:[
 {q:"ich / sich freuen → ich freue _____",opts:["sich","mich","dich","uns"],correct:1,tip:"Con <b>ich</b> el pronombre reflexivo es <b>mich</b>. ich→mich, du→dich, er→sich, wir→uns, ihr→euch, sie→sich."},
@@ -3504,9 +3565,9 @@ steps:[
 <tr><td>plural</td><td>die Kinder</td><td class="highlight">die Kinder</td><td class="highlight">keine Kinder</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich sehe <strong>den</strong> Hund.</span><span class="ex-es">Veo al perro.</span><button class="speak-btn sm" onclick="speakBtn('Ich sehe den Hund',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Wir kaufen <strong>einen</strong> Tisch.</span><span class="ex-es">Compramos una mesa.</span><button class="speak-btn sm" onclick="speakBtn('Wir kaufen einen Tisch',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Sie liest <strong>ein</strong> Buch.</span><span class="ex-es">Ella lee un libro.</span><button class="speak-btn sm" onclick="speakBtn('Sie liest ein Buch',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich sehe <strong>den</strong> Hund.</span><span class="ex-es">Veo al perro.</span><button class="speak-btn sm" onclick="speakBtn('Ich sehe den Hund',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Wir kaufen <strong>einen</strong> Tisch.</span><span class="ex-es">Compramos una mesa.</span><button class="speak-btn sm" onclick="speakBtn('Wir kaufen einen Tisch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Sie liest <strong>ein</strong> Buch.</span><span class="ex-es">Ella lee un libro.</span><button class="speak-btn sm" onclick="speakBtn('Sie liest ein Buch',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Truco: pregunta <strong>Wen? / Was?</strong> (¿a quién? / ¿qué?). La respuesta va en Akkusativ.</span></div>`},
 {type:"teach",title:"Preposiciones SIEMPRE con Akkusativ",content:`
@@ -3536,9 +3597,9 @@ steps:[
 <tr><td>sie / Sie</td><td class="highlight">sie / Sie</td><td>los / a usted</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Ich kenne <strong>ihn</strong> gut.</span><span class="ex-es">Lo conozco bien.</span><button class="speak-btn sm" onclick="speakBtn('Ich kenne ihn gut',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Rufst du <strong>mich</strong> an?</span><span class="ex-es">¿Me llamas?</span><button class="speak-btn sm" onclick="speakBtn('Rufst du mich an?',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Wir besuchen <strong>euch</strong> morgen.</span><span class="ex-es">Os visitamos mañana.</span><button class="speak-btn sm" onclick="speakBtn('Wir besuchen euch morgen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Ich kenne <strong>ihn</strong> gut.</span><span class="ex-es">Lo conozco bien.</span><button class="speak-btn sm" onclick="speakBtn('Ich kenne ihn gut',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Rufst du <strong>mich</strong> an?</span><span class="ex-es">¿Me llamas?</span><button class="speak-btn sm" onclick="speakBtn('Rufst du mich an?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Wir besuchen <strong>euch</strong> morgen.</span><span class="ex-es">Os visitamos mañana.</span><button class="speak-btn sm" onclick="speakBtn('Wir besuchen euch morgen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Error típico: decir <em>"Ich sehe er"</em>. Con objeto directo siempre <strong>ihn</strong>: Ich sehe <strong>ihn</strong>.</span></div>`},
 {type:"quiz",title:"Practica Akkusativ",questions:[
@@ -3605,9 +3666,9 @@ steps:[
 <tr><td>sie</td><td class="highlight">ihr</td><td>Sie</td><td class="highlight">Ihnen</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Kannst du <strong>mir</strong> helfen?</span><span class="ex-es">¿Puedes ayudarme?</span><button class="speak-btn sm" onclick="speakBtn('Kannst du mir helfen?',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Ich fahre mit <strong>dem</strong> Zug.</span><span class="ex-es">Voy en tren.</span><button class="speak-btn sm" onclick="speakBtn('Ich fahre mit dem Zug',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Das gehört <strong>ihnen</strong>.</span><span class="ex-es">Eso les pertenece.</span><button class="speak-btn sm" onclick="speakBtn('Das gehört ihnen',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Kannst du <strong>mir</strong> helfen?</span><span class="ex-es">¿Puedes ayudarme?</span><button class="speak-btn sm" onclick="speakBtn('Kannst du mir helfen?',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Ich fahre mit <strong>dem</strong> Zug.</span><span class="ex-es">Voy en tren.</span><button class="speak-btn sm" onclick="speakBtn('Ich fahre mit dem Zug',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Das gehört <strong>ihnen</strong>.</span><span class="ex-es">Eso les pertenece.</span><button class="speak-btn sm" onclick="speakBtn('Das gehört ihnen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Contracciones obligatorias: zu dem = <strong>zum</strong>, zu der = <strong>zur</strong>, bei dem = <strong>beim</strong>, von dem = <strong>vom</strong>.</span></div>`},
 {type:"quiz",title:"Practica Dativ",questions:[
@@ -3635,9 +3696,9 @@ steps:[
 <tr><td>plural</td><td>die Eltern</td><td class="highlight">der Eltern</td><td class="highlight">meiner Eltern</td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de">Das Auto <strong>des Vaters</strong> ist neu.</span><span class="ex-es">El coche del padre es nuevo.</span><button class="speak-btn sm" onclick="speakBtn('Das Auto des Vaters ist neu',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Die Farbe <strong>der Tür</strong> gefällt mir.</span><span class="ex-es">Me gusta el color de la puerta.</span><button class="speak-btn sm" onclick="speakBtn('Die Farbe der Tür gefällt mir',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de">Das Ende <strong>des Films</strong> war traurig.</span><span class="ex-es">El final de la película fue triste.</span><button class="speak-btn sm" onclick="speakBtn('Das Ende des Films war traurig',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de">Das Auto <strong>des Vaters</strong> ist neu.</span><span class="ex-es">El coche del padre es nuevo.</span><button class="speak-btn sm" onclick="speakBtn('Das Auto des Vaters ist neu',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Die Farbe <strong>der Tür</strong> gefällt mir.</span><span class="ex-es">Me gusta el color de la puerta.</span><button class="speak-btn sm" onclick="speakBtn('Die Farbe der Tür gefällt mir',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de">Das Ende <strong>des Films</strong> war traurig.</span><span class="ex-es">El final de la película fue triste.</span><button class="speak-btn sm" onclick="speakBtn('Das Ende des Films war traurig',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>Solo masculino y neutro añaden <strong>-s</strong> (o <strong>-es</strong> en palabras cortas o terminadas en -s, -ß, -z, -t: de<strong>s Kindes</strong>, des Man<strong>nes</strong>). Femenino y plural: el sustantivo no cambia.</span></div>`},
 {type:"teach",title:"Preposiciones con Genitiv",content:`
@@ -3653,9 +3714,9 @@ steps:[
 </table>
 <div class="tip-box"><span class="tip-icon">🎵</span><span>Memoriza el bloque <strong>"trotz, während, wegen, (an)statt"</strong> como una canción. Son los 4 que aparecen en el 90% de los ejercicios.</span></div>
 <div class="example-box">
-<div class="example-row"><span class="ex-de"><strong>Trotz des Regens</strong> gehen wir spazieren.</span><span class="ex-es">A pesar de la lluvia, paseamos.</span><button class="speak-btn sm" onclick="speakBtn('Trotz des Regens gehen wir spazieren',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de"><strong>Während der Arbeit</strong> darf man nicht rauchen.</span><span class="ex-es">Durante el trabajo no se puede fumar.</span><button class="speak-btn sm" onclick="speakBtn('Während der Arbeit darf man nicht rauchen',this)">🔊</button></div>
-<div class="example-row"><span class="ex-de"><strong>Wegen der Grippe</strong> bleibt sie zu Hause.</span><span class="ex-es">Por la gripe se queda en casa.</span><button class="speak-btn sm" onclick="speakBtn('Wegen der Grippe bleibt sie zu Hause',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de"><strong>Trotz des Regens</strong> gehen wir spazieren.</span><span class="ex-es">A pesar de la lluvia, paseamos.</span><button class="speak-btn sm" onclick="speakBtn('Trotz des Regens gehen wir spazieren',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de"><strong>Während der Arbeit</strong> darf man nicht rauchen.</span><span class="ex-es">Durante el trabajo no se puede fumar.</span><button class="speak-btn sm" onclick="speakBtn('Während der Arbeit darf man nicht rauchen',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
+<div class="example-row"><span class="ex-de"><strong>Wegen der Grippe</strong> bleibt sie zu Hause.</span><span class="ex-es">Por la gripe se queda en casa.</span><button class="speak-btn sm" onclick="speakBtn('Wegen der Grippe bleibt sie zu Hause',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>`},
 {type:"teach",title:"Genitiv en la vida real: von + Dativ",content:`
 <div class="lc-explain">En el <strong>alemán hablado</strong> muchas veces el Genitiv se sustituye por <strong>von + Dativ</strong>. Las dos formas son correctas, pero suenan distinto:</div>
@@ -3665,7 +3726,7 @@ steps:[
 </div>
 <div class="lc-explain" style="margin-top:12px">Con <strong>nombres propios</strong> se usa la -s sin apóstrofo:</div>
 <div class="example-box">
-<div class="example-row"><span class="ex-de"><strong>Annas</strong> Auto</span><span class="ex-es">el coche de Anna</span><button class="speak-btn sm" onclick="speakBtn('Annas Auto ist rot',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de"><strong>Annas</strong> Auto</span><span class="ex-es">el coche de Anna</span><button class="speak-btn sm" onclick="speakBtn('Annas Auto ist rot',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 <div class="example-row"><span class="ex-de"><strong>Thomas'</strong> Hund</span><span class="ex-es">el perro de Thomas (ya termina en -s)</span></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>Regla práctica: al <strong>hablar</strong> usa <em>von + Dativ</em>; al <strong>escribir</strong> (emails formales, exámenes, textos) usa el Genitiv. Con trotz/während/wegen usa siempre Genitiv en el examen.</span></div>
@@ -3714,7 +3775,7 @@ steps:[
 <tr><td>¿De quién es? <strong>Wessen?</strong></td><td class="highlight">Genitiv</td><td>das Buch <strong>des Kindes</strong></td></tr>
 </table>
 <div class="example-box">
-<div class="example-row"><span class="ex-de"><strong>Der Vater</strong> gibt <strong>dem Sohn</strong> <strong>das Handy</strong> <strong>seiner Frau</strong>.</span><span class="ex-es">El padre le da al hijo el móvil de su esposa.</span><button class="speak-btn sm" onclick="speakBtn('Der Vater gibt dem Sohn das Handy seiner Frau',this)">🔊</button></div>
+<div class="example-row"><span class="ex-de"><strong>Der Vater</strong> gibt <strong>dem Sohn</strong> <strong>das Handy</strong> <strong>seiner Frau</strong>.</span><span class="ex-es">El padre le da al hijo el móvil de su esposa.</span><button class="speak-btn sm" onclick="speakBtn('Der Vater gibt dem Sohn das Handy seiner Frau',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span><strong>Orden típico:</strong> Dativ antes que Akkusativ cuando ambos son sustantivos (Ich gebe <strong>dem Kind</strong> <strong>das Buch</strong>). Pero si el Akkusativ es pronombre, va primero: Ich gebe <strong>es</strong> dem Kind.</span></div>
 <div class="tip-box"><span class="tip-icon">⚠️</span><span>El caso lo decide el <strong>verbo</strong> o la <strong>preposición</strong>, nunca la traducción al español. Aprende verbo + caso como una sola unidad: <em>helfen + Dativ</em>, <em>sehen + Akkusativ</em>.</span></div>`},
@@ -3802,7 +3863,7 @@ function renderReadingViewInLessons(){
         <div class="rl-de">${words}</div>
         <div class="rl-es ${readingState.showTranslations?'show':''}">${l.es}</div>
       </div>
-      <button class="speak-btn sm rl-speak" onclick="event.stopPropagation();speakBtn('${escapeStr(l.de)}',this)">🔊</button>
+      <button class="speak-btn sm rl-speak" onclick="event.stopPropagation();speakBtn('${escapeStr(l.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
     </div>`;
   }).join('');
 
@@ -4809,7 +4870,7 @@ function renderReadingView() {
         <div class="rl-de">${words}</div>
         <div class="rl-es ${readingState.showTranslations ? 'show' : ''}">${l.es}</div>
       </div>
-      <button class="speak-btn sm rl-speak" onclick="event.stopPropagation();speakBtn('${escapeStr(l.de)}',this)">🔊</button>
+      <button class="speak-btn sm rl-speak" onclick="event.stopPropagation();speakBtn('${escapeStr(l.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
     </div>`;
   }).join('');
 
@@ -4945,11 +5006,11 @@ function showWordInfo(word) {
   popup.className = 'word-popup';
   if (found) {
     popup.innerHTML = `<div><div class="wp-de">${found.emoji} ${found.de}</div><div class="wp-es">${found.es} · ${found.pron}</div></div>
-      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(found.de)}',this)" style="border-color:rgba(255,255,255,0.3)">🔊</button>
+      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(found.de)}',this)" style="border-color:rgba(255,255,255,0.3)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
       <span class="wp-close" onclick="this.parentElement.remove()">✕</span>`;
   } else {
     popup.innerHTML = `<div><div class="wp-de">${clean}</div><div class="wp-es">Toca 🔊 para escuchar</div></div>
-      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(clean)}',this)" style="border-color:rgba(255,255,255,0.3)">🔊</button>
+      <button class="speak-btn sm" onclick="speakBtn('${escapeStr(clean)}',this)" style="border-color:rgba(255,255,255,0.3)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
       <span class="wp-close" onclick="this.parentElement.remove()">✕</span>`;
   }
   document.body.appendChild(popup);
@@ -5095,7 +5156,7 @@ function t(key) {
 function updateUILanguage() {
   const tabs = document.querySelectorAll('#tabBar .tab-btn');
   const tabKeys = ['home','reading','games','exam','progress'];
-  tabs.forEach((btn,i) => { if(tabKeys[i]) btn.textContent = t(tabKeys[i]); });
+  tabs.forEach((btn,i) => { if(tabKeys[i]) { const label=t(tabKeys[i]); btn.querySelector('.nav-label').textContent=label; btn.setAttribute('aria-label',label); btn.title=label; } });
   document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
 }
 
@@ -5103,7 +5164,7 @@ function updateUILanguage() {
 function showOnboarding() {
   const ob = document.getElementById('onboarding');
   ob.innerHTML = `<div class="onboarding"><div class="ob-card">
-    <div class="ob-flag">🇩🇪</div>
+    <div class="ob-flag"><img src="/favicon.svg" width="64" height="64" alt="Deutsch"></div>
     <div class="ob-title">Willkommen!</div>
     <div class="ob-sub">Tu app personal para aprender alemán.<br>Configura tu perfil para empezar.</div>
     <div class="ob-field">
@@ -5128,7 +5189,7 @@ function showOnboarding() {
         </button>`).join('')}
       </div>
     </div>
-    <button class="ob-start" id="obStart" onclick="completeOnboarding()">Los geht's! 🚀</button>
+    <button class="ob-start" id="obStart" onclick="completeOnboarding()">Empezar a aprender →</button>
   </div></div>`;
   window._obLang = 'es';
   window._obLevel = 'A1';
@@ -5156,7 +5217,7 @@ function completeOnboarding() {
   saveData();
   document.getElementById('onboarding').innerHTML = '';
   document.getElementById('mainApp').style.display = '';
-  document.getElementById('appTitle').textContent = '🇩🇪 Deutsch ' + getActiveLevel();
+  setAppTitle(getActiveLevel());
   state.cat = Object.keys(getActiveVocab())[0];
   updateUILanguage();
   renderLevelBar();
@@ -5166,24 +5227,46 @@ function completeOnboarding() {
   switchTab('home');
 }
 
+// Keep the brand intact when the learning level or language changes.
+function setAppTitle(level) {
+  const el=document.getElementById('brandLevel'); if(el) el.textContent=level;
+  document.getElementById('appTitle').setAttribute('aria-label','Deutsch '+level);
+}
+function toggleSidebar() {
+  const collapsed=document.body.classList.toggle('nav-collapsed');
+  try { localStorage.setItem('deutschSidebar',collapsed?'collapsed':'expanded'); } catch {}
+  updateSidebarToggle(collapsed);
+}
+function updateSidebarToggle(collapsed) {
+  const button=document.getElementById('sidebarToggle');
+  button.setAttribute('aria-expanded',String(!collapsed));
+  button.setAttribute('aria-label',collapsed?'Fijar menú abierto':'Ocultar menú');
+  button.title=collapsed?'Fijar menú abierto':'Ocultar menú';
+  button.querySelector('use').setAttribute('href','/lernspiel/ui-icons.svg#'+(collapsed?'expand':'collapse'));
+}
+try { if(localStorage.getItem('deutschSidebar')==='collapsed') { document.body.classList.add('nav-collapsed'); updateSidebarToggle(true); } } catch {}
+document.addEventListener('keydown',event=>{if(event.key==='Escape' && settingsOpen) { settingsOpen=false; renderSettings(); document.querySelector('.preferences-btn').focus(); }});
 // SETTINGS
 let settingsOpen = false;
 function toggleSettings() {
   settingsOpen = !settingsOpen;
   renderSettings();
+  if(settingsOpen) document.getElementById('setName').focus();
 }
 
 function renderSettings() {
   const el = document.getElementById('settingsPanel');
+  document.querySelector('.preferences-btn').setAttribute('aria-expanded',String(settingsOpen));
+  document.querySelector('.app-sidebar').classList.toggle('settings-open',settingsOpen);
   if (!settingsOpen) { el.innerHTML = ''; return; }
   el.innerHTML = `<div class="settings-panel">
-    <div style="font-size:16px;font-weight:800;margin-bottom:12px">⚙️ ${t('settingsTitle')}</div>
+    <div style="font-size:16px;font-weight:800;margin-bottom:12px">${t('settingsTitle')} <button class="settings-close" onclick="toggleSettings()" aria-label="Cerrar preferencias">×</button></div>
     <div class="ob-field">
-      <label class="ob-label">${t('yourName')}</label>
-      <input class="ob-input" id="setName" type="text" value="${data.userName || ''}">
+      <label class="ob-label" for="setName">${t('yourName')}</label>
+      <input class="ob-input" id="setName" type="text" value="${safeText(data.userName || '')}">
     </div>
     <div class="ob-field">
-      <label class="ob-label">${t('nativeLang')}</label>
+      <label class="ob-label" for="setLang">${t('nativeLang')}</label>
       <select class="ob-select" id="setLang">
         <option value="es" ${data.lang==='es'?'selected':''}>🇪🇸 Español</option>
         <option value="en" ${data.lang==='en'?'selected':''}>🇬🇧 English</option>
@@ -5192,7 +5275,7 @@ function renderSettings() {
       </select>
     </div>
     <div class="ob-field">
-      <label class="ob-label">${t('level')}</label>
+      <label class="ob-label" for="setLevel">${t('level')}</label>
       <select class="ob-select" id="setLevel">
         ${AVAILABLE_LEVELS.map(l => `<option value="${l.id}" ${data.level===l.id?'selected':''} ${!l.available?'disabled':''}>${l.name} — ${l.available?l.desc:'🔒 bloqueado'}</option>`).join('')}
       </select>
@@ -5212,7 +5295,7 @@ function saveSettings() {
   settingsOpen = false;
   renderSettings();
   updateUILanguage();
-  document.getElementById('appTitle').textContent = '🇩🇪 Deutsch ' + getActiveLevel();
+  setAppTitle(getActiveLevel());
   renderLevelBar();
   renderLevelSelectBar();
   state.cat = Object.keys(getActiveVocab())[0];
@@ -5995,7 +6078,7 @@ function renderMemorySummary() {
     const alreadySaved = data.learnedWords.includes(w.de);
     return `<div class="memory-summary-word">
       <span class="msw-emoji">${w.emoji}</span>
-      <div><div class="msw-de">${w.de} <button class="speak-btn sm" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)">🔊</button></div><div class="msw-es">${w.es}</div></div>
+      <div><div class="msw-de">${w.de} <button class="speak-btn sm" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button></div><div class="msw-es">${w.es}</div></div>
       <button class="msw-btn ${alreadySaved ? 'saved' : ''}" onclick="markWordLearned('${escapeStr(w.de)}',this)" ${alreadySaved ? 'disabled' : ''}>${alreadySaved ? '✓ Aprendida' : 'Ya la sé ✓'}</button>
     </div>`;
   }).join('');
@@ -6053,7 +6136,7 @@ function renderLearnedWordsSection() {
         <span>${w.emoji}</span>
         <span style="font-weight:700;flex:1">${w.de}</span>
         <span style="color:var(--text-light)">${w.es}</span>
-        <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)">🔊</button>
+        <button class="speak-btn sm" onclick="speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
       </div>`
     ).join('')}</div>
   </div>`;
@@ -6247,7 +6330,7 @@ function searchDict() {
         <span style="font-size:20px">${w.emoji}</span>
         ${artClass ? `<span class="dr-article ${artClass}">${artLabel}</span>` : ''}
         <span class="dr-word">${w.de}</span>
-        <button class="speak-btn sm" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)">🔊</button>
+        <button class="speak-btn sm" onclick="event.stopPropagation();speakBtn('${escapeStr(w.de)}',this)" aria-label="Escuchar en alemán"><svg class="ui-icon" aria-hidden="true"><use href="/lernspiel/ui-icons.svg#audio"/></svg></button>
       </div>
       <div class="dr-es">🇪🇸 ${w.es}</div>
       ${w.pron ? `<div class="dr-pron">${w.pron}</div>` : ''}
@@ -6310,7 +6393,7 @@ function lessonRow(lesson,index){
   const done=data.completedLessons.includes(lesson.id);
   const started=(data.lessonPositions[lesson.id]||0)>0;
   return `<button type="button" class="lesson-card route-lesson ${done?'completed':''}" onclick="openLesson(${LESSONS.indexOf(lesson)})">
-    <span class="lc-num">${index+1}</span><span class="lc-icon" aria-hidden="true">${lesson.icon}</span>
+    <span class="lc-num">${index+1}</span>
     <span class="lc-info"><span class="lc-title">${safeText(lesson.title)}</span><span class="lc-desc">${safeText(lesson.desc)}</span></span>
     <span class="route-status">${done?'Completada':started?'Continuar':'Empezar'} →</span></button>`;
 }
@@ -6322,16 +6405,16 @@ function renderHomeTab(){
   const nextIndex=next?lessons.indexOf(next):0;
   const nearby=lessons.slice(nextIndex,nextIndex+3);
   el.innerHTML=`<div class="study-home">
-    <header class="study-heading"><p class="study-eyebrow">TU ESPACIO DE ALEMÁN · ${level}</p>
+    <header class="study-heading"><p class="study-eyebrow">Tu alemán · ${level}</p>
       <h1 class="home-greeting">Hola${data.userName?', '+safeText(data.userName):''}. Vamos paso a paso.</h1>
       <p>Aprende con las lecciones, practica lo que sabes y revisa tu avance.</p></header>
-    <section class="study-panel next-lesson"><p class="study-eyebrow">${next?continued?'RETOMA DONDE QUEDASTE':'TU SIGUIENTE PASO':'RUTA COMPLETADA'}</p>
+    <section class="study-panel next-lesson"><p class="study-eyebrow">${next?continued?'Retoma donde quedaste':'Tu siguiente lección':'Ruta completada'}</p>
       <h2>${next?safeText(next.title):'Pon a prueba tu '+level}</h2>
       <p>${next?safeText(next.desc):'Terminaste las lecciones de este nivel. Puedes repasarlas o hacer una evaluación.'}</p>
       ${next?`<p class="study-small">Lección ${nextIndex+1} de ${lessons.length}${continued?' · Continúa desde el último apartado':''}</p>`:''}
       <button class="home-action" onclick="openNextLesson()">${next?continued?'Continuar lección':'Empezar lección':'Ir a la evaluación'} →</button>
     </section>
-    <section class="study-panel practice-shortcuts"><p class="study-eyebrow">SI PREFIERES PRACTICAR</p><h2>Una ronda corta</h2>
+    <section class="study-panel practice-shortcuts"><p class="study-eyebrow">¿Un poco de práctica?</p><h2>Una ronda corta</h2>
       <p>10 preguntas de vocabulario. Cada respuesta cuenta y se guarda.</p>
       <button class="study-secondary" onclick="quickStart()">Practicar vocabulario</button>
       ${due?`<button class="study-link" onclick="quickStart('review')">Repasar ${due} palabras pendientes →</button>`:'<p class="study-small">No tienes repasos pendientes todavía.</p>'}
@@ -6370,7 +6453,7 @@ function initApp() {
   } else {
     document.getElementById('onboarding').innerHTML = '';
     document.getElementById('mainApp').style.display = '';
-    document.getElementById('appTitle').textContent = '🇩🇪 Deutsch ' + getActiveLevel();
+    setAppTitle(getActiveLevel());
     state.cat = Object.keys(getActiveVocab())[0];
     updateUILanguage();
     renderLevelBar();

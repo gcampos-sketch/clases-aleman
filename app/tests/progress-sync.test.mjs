@@ -80,3 +80,9 @@ test('first login preserves practiced guest progress when the account already ha
   const reopened=client(db,b.local);await reopened.sync.initialize();
   assert.equal(reopened.sync.status,'conflict');assert.equal(db.row.data.xp,10);
 });
+
+test('unfinished guest lessons are preserved when an existing cloud account differs',async()=>{
+ const db=backend(),a=client(db,storage({xp:30}));await a.sync.sync();
+ const b=client(db,storage({xp:0,lessonPositions:{pronouns:2}}));await b.sync.initialize();
+ assert.equal(b.sync.status,'conflict');assert.equal(b.sync.local().lessonPositions.pronouns,2);assert.equal(db.row.data.xp,30);
+});

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useSearch, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Rocket, Target, Pencil, Headphones, Scale, Shuffle, Layers } from "lucide-react";
+import { ArrowLeft, Target, Pencil, Headphones, Scale, Shuffle, Layers } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const FEATURES = [
@@ -123,7 +123,7 @@ export function AuthPage() {
             to="/"
             className="ds-focus inline-block text-xs font-bold tracking-[0.2em] text-primary uppercase"
           >
-            Deutsch Lernspiel
+            <span className="flex items-center gap-2 normal-case tracking-normal"><img src="/favicon.svg" alt="" width="28" height="28" />Deutsch</span>
           </Link>
 
           <h1 className="mt-10 text-3xl font-bold tracking-tight text-foreground">
@@ -233,20 +233,20 @@ export function AuthPage() {
           <div className="relative flex h-full flex-col justify-between p-10">
             <div className="flex items-center justify-between">
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold tracking-wider text-primary uppercase backdrop-blur-sm">
-                Nuevo enfoque
+                Tu alemán, a tu ritmo
               </span>
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
-                <Rocket className="h-5 w-5 text-primary" />
+                <img src="/favicon.svg" alt="" width="36" height="36" />
               </div>
             </div>
 
             <div className="space-y-6">
               <div className="auth-fade-in-up auth-delay-1">
                 <p className="text-3xl font-black leading-[1.1] tracking-tight text-white">
-                  Práctica diaria, no listas para memorizar.
+                  Continúa justo donde lo dejaste.
                 </p>
                 <p className="mt-2 text-sm font-medium text-white/60">
-                  Audio real, casos gramaticales y repaso inteligente en sesiones de 5 minutos.
+                  Entra con la misma cuenta desde cualquier computador para recuperar tus lecciones y ejercicios.
                 </p>
               </div>
 

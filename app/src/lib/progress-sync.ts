@@ -88,7 +88,7 @@ export class ProgressSync {
     } else if (remoteBase !== "{}" && remoteBase !== localBase) {
       const local = this.local();
       const hasActivity = ["xp", "totalAnswered", "totalSessions"].some(k => Number(local[k]) > 0) ||
-        ["wordStats", "srs", "lessonNotes", "completedLessons", "completedReadings", "completedWriting", "completedListening"]
+        ["wordStats", "srs", "lessonPositions", "lessonNotes", "completedLessons", "completedReadings", "completedWriting", "completedListening"]
           .some(k => local[k] && typeof local[k] === "object" && Object.keys(local[k] as object).length > 0);
       if (!saved && hasActivity) {
         this.base = { userId: this.userId, base: "{}", revision: null };

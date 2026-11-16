@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
+import { BrandLoader } from "@/components/brand-loader";
 import { supabase } from "@/integrations/supabase/client";
 
 import { ProgressSync, type SyncStatus, type Progress, parseProgress } from "@/lib/progress-sync";
@@ -51,6 +52,7 @@ function LearnPage() {
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("checking");
   const [iframeVersion, setIframeVersion] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const [frameLoaded, setFrameLoaded] = useState(false);
   const syncRef = useRef<ProgressSync | null>(null);
 
   useEffect(() => {
@@ -66,7 +68,7 @@ function LearnPage() {
           userId: user.id,
           storage: window.localStorage,
           onStatus: status => { if (!cancelled) setSyncStatus(status); },
-          onRemote: () => { if (!cancelled) setIframeVersion(v => v + 1); },
+          onRemote: () => { if (!cancelled) { setFrameLoaded(false); setIframeVersion(v => v + 1); } },
           store: {
             read: async () => {
               const { data, error } = await supabase.from("learning_progress")
@@ -158,7 +160,7 @@ function LearnPage() {
             to="/"
             className="ds-focus rounded text-xs font-bold tracking-widest text-primary uppercase transition-opacity hover:opacity-80"
           >
-            Deutsch
+            <span className="flex items-center gap-2 normal-case tracking-normal"><img src="/favicon.svg" alt="" width="24" height="24" />Deutsch</span>
           </Link>
           <span className="text-xs text-muted-foreground" role="status" aria-live="polite">
             {signedIn ? syncLabel : "Avance guardado solo en este dispositivo"}
@@ -210,19 +212,19 @@ function LearnPage() {
           <button className="ds-focus rounded bg-primary px-3 py-2 text-primary-foreground" onClick={() => void syncRef.current?.resolve("local")}>Guardar el de este computador</button>
         </div>
       )}
-      <div className="min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1">
+        {(!ready || !frameLoaded) && <div className="absolute inset-0 z-10"><BrandLoader label={ready ? "Abriendo tus lecciones…" : "Recuperando tu avance…"} /></div>}
         {ready ? (
           <iframe
             key={iframeVersion}
             src="/lernspiel/index.html"
             title="Deutsch Lernspiel"
+            onLoad={() => setFrameLoaded(true)}
             className="h-full w-full border-0"
             allow="clipboard-write; microphone"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-            Cargando…
-          </div>
+          null
         )}
       </div>
     </div>

@@ -7,10 +7,14 @@ const TTS = {
   cache: new Map(),
   rate() { return this.RATES[this.speedMode] || 1; },
   init() {
-    this.capabilities = fetch('/api/tts?capabilities=1')
-      .then(r => r.ok ? r.json() : { enabled: false })
-      .then(c => { this.cloudEnabled = c.enabled === true; })
-      .catch(() => { this.cloudEnabled = false; });
+    // A sleeping server must never block the browser's own voice indefinitely.
+    const controller = new AbortController();
+    let timer;
+    this.capabilities = Promise.race([
+      fetch('/api/tts?capabilities=1', {signal:controller.signal})
+        .then(r => r.ok ? r.json() : {enabled:false}).catch(() => ({enabled:false})),
+      new Promise(resolve => { timer=setTimeout(() => { controller.abort(); resolve({enabled:false}); },1200); }),
+    ]).then(c => { this.cloudEnabled=c.enabled===true; }).finally(() => clearTimeout(timer));
     // Kick off voice discovery before the first click (voices load asynchronously).
     if (window.speechSynthesis) window.speechSynthesis.getVoices();
   },
@@ -50,8 +54,8 @@ const TTS = {
     const words = text.trim().split(/\s+/).length;
     return words <= 3 ? 'word' : words > 25 ? 'passage' : 'sentence';
   },
-  ttsUrl(text) {
-    return '/api/tts?' + new URLSearchParams({text, rate: String(this.rate()),
+  ttsUrl(text, rate = this.rate()) {
+    return '/api/tts?' + new URLSearchParams({text, rate: String(rate),
       style: this.styleFor(text), speed: this.speedMode, voice: 'ballad'});
   },
   prefetch(text) {
@@ -64,7 +68,7 @@ const TTS = {
   },
   isCurrent(item) { return !!item && this.current === item && item.generation === this.generation; },
   async speakCloud(text, _rate, onEnd) {
-    const item = {text, onEnd, generation:this.generation, fallback:false, engine:"loading"};
+    const item = {text, onEnd, generation:this.generation, fallback:false, engine:"loading", rate:_rate === 0.6 ? 0.6 : this.rate()};
     this.current = item; this.playing = true; this.paused = false;
     if (this.cloudEnabled === null) await this.capabilities;
     if (!this.isCurrent(item)) return;
@@ -72,7 +76,7 @@ const TTS = {
     item.engine = 'cloud';
     this.audio.onended = () => this.finish(item);
     this.audio.onerror = () => this.fallbackSpeak(item);
-    this.audio.preload = 'auto'; this.audio.src = this.ttsUrl(text);
+    this.audio.preload = 'auto'; this.audio.src = this.ttsUrl(text, item.rate);
     // The server already synthesizes at the requested speed. Do not apply it twice.
     this.audio.playbackRate = 1;
     try { if (!this.paused) await this.audio.play(); } catch { this.fallbackSpeak(item); }
@@ -82,15 +86,26 @@ const TTS = {
     item.fallback = true; item.engine = "browser";
     this.audio.onended = null; this.audio.onerror = null; this.audio.pause();
     if (!window.speechSynthesis) { this.fail(item); return; }
-    const utterance = new SpeechSynthesisUtterance(item.text);
+    // Short utterances avoid Chromium's long-passage speech stalls.
+    item.chunks = item.text.match(/[^.!?;\n]+[.!?;]?|[.!?;]/g)?.flatMap(sentence => {
+      const words=sentence.trim().split(/\s+/), chunks=[]; let part='';
+      for(const word of words) { if(part.length+word.length>180) { chunks.push(part); part=''; } part+=(part?' ':'')+word; }
+      if(part) chunks.push(part); return chunks;
+    }) || [item.text];
+    this.speakBrowserChunk(item);
+  },
+  speakBrowserChunk(item) {
+    if(!this.isCurrent(item)) return;
+    const utterance = new SpeechSynthesisUtterance(item.chunks.shift());
     item.utterance = utterance;
-    utterance.lang = 'de-DE'; utterance.rate = this.rate(); utterance.pitch = 1;
+    utterance.lang = 'de-DE'; utterance.rate = item.rate; utterance.pitch = 1;
     const voice = getDeVoice();
     if (voice) utterance.voice = voice;
-    utterance.onend = () => this.finish(item);
-    utterance.onerror = e => {
-      this.fail(item);
+    utterance.onend = () => {
+      if(!this.isCurrent(item)) return;
+      if(item.chunks.length) this.speakBrowserChunk(item); else this.finish(item);
     };
+    utterance.onerror = () => this.fail(item);
     window.speechSynthesis.speak(utterance);
     if (this.paused) window.speechSynthesis.pause();
   },
@@ -98,6 +113,7 @@ const TTS = {
     if (!this.isCurrent(item)) return;
     this.current = null; this.playing = false; this.paused = false;
     if (item.onEnd) item.onEnd();
+    if (this.current || this.generation !== item.generation) return;
     if (this.queue.length) {
       const next = this.queue.shift();
       this.speakCloud(next.text, next.rate);

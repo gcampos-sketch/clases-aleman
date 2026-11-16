@@ -384,3 +384,14 @@
   background: rgba(255, 213, 64, 0.12);
 }
 
+
+.brand-loading { display:flex; height:100%; min-height:240px; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--foreground); background:radial-gradient(ellipse at 35% 25%,#344c6655,transparent 60%),linear-gradient(135deg,#111820,#1d2a3b 55%,#2c4056); }
+.brand-loading strong { font-size:22px; letter-spacing:-.7px; }
+.brand-loading > span { font-size:13px; opacity:.8; }
+.brand-loading-orbit { padding:16px; margin-bottom:8px; }
+.brand-loading-orbit img { border-radius:15px; animation:deutsch-breathe 1.8s ease-in-out infinite; }
+.brand-loading-track { width:128px; height:3px; background:#ffffff20; border-radius:4px; overflow:hidden; margin-top:8px; }
+.brand-loading-track i { display:block; height:100%; width:40%; background:#ffd540; animation:deutsch-travel 1.5s ease-in-out infinite; }
+@keyframes deutsch-breathe { 0%,100% { transform:translateY(0) rotate(-3deg); box-shadow:0 10px 35px #ffd54012; } 50% { transform:translateY(-7px) rotate(3deg); box-shadow:0 14px 40px #ffd54030; } }
+@keyframes deutsch-travel { 0% { transform:translateX(-100%); } 100% { transform:translateX(350%); } }
+@media (prefers-reduced-motion:reduce) { .brand-loading-orbit img,.brand-loading-track i { animation:none; } }

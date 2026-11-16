@@ -14,7 +14,7 @@ function setup(enabled=false) {
     window:{speechSynthesis:synth},localStorage:{getItem:()=>null,setItem(){}},
     fetch:async()=>({ok:true,json:async()=>({enabled})}),getDeVoice:()=>({lang:'de-DE'}),
     document:{querySelectorAll:()=>[],getElementById:()=>null,createElement:()=>({setAttribute(){},style:{},remove(){}}),body:{appendChild(){}}},
-    URLSearchParams,setTimeout:()=>{},console});
+    URLSearchParams,AbortController,setTimeout:()=>{},clearTimeout:()=>{},console});
   vm.runInContext(source+';globalThis.testTTS=TTS;',context);
   return {tts:context.testTTS,utterances,calls};
 }
@@ -51,4 +51,23 @@ test('cloud speed is applied once, browser speed follows selected mode',async()=
 test('stopping before capability detection cannot start delayed audio',async()=>{
   const {tts,utterances}=setup();tts.speak('Hallo',1);tts.stop();await tts.capabilities;
   await Promise.resolve();assert.equal(utterances.length,0);
+});
+
+test('long browser passages are chunked, complete once and can be cancelled between chunks',async()=>{
+ const {tts,utterances}=setup();await tts.capabilities;let ended=0;
+ const text='Das ist ein langer deutscher Satz mit vielen Wörtern. '.repeat(15);
+ tts.speak(text,1,()=>ended++);
+ for(let i=0;i<utterances.length;i++) { assert.ok(utterances[i].text.length<=180); utterances[i].onend(); }
+ assert.ok(utterances.length>1);assert.equal(ended,1);assert.equal(tts.playing,false);
+ tts.speak(text);const last=utterances.at(-1);tts.stop();const count=utterances.length;last.onend();assert.equal(utterances.length,count);
+});
+test('completion callback starting another clip does not finish the new clip',async()=>{
+ const {tts,utterances}=setup();await tts.capabilities;
+ tts.speak('eins',1,()=>tts.speak('zwei'));utterances[0].onend();
+ assert.equal(tts.playing,true);assert.equal(tts.current.text,'zwei');utterances[1].onend();assert.equal(tts.playing,false);
+});
+
+test('the explicit slow pronunciation button is slower than normal playback',async()=>{
+ const {tts,utterances}=setup();await tts.capabilities;
+ tts.speak('Hallo',0.6);assert.equal(utterances[0].rate,0.6);tts.speak('Hallo',0.85);assert.equal(utterances[1].rate,1);
 });
