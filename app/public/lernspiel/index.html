@@ -858,7 +858,7 @@ button:focus-visible, summary:focus-visible { outline:2px solid var(--brand); ou
 
 </style>
 </head>
-<body>
+<body class="nav-collapsed">
 <div id="onboarding"></div>
 <div class="app" id="mainApp" style="display:none">
  <aside class="app-sidebar" aria-label="Navegación de aprendizaje">
@@ -5238,7 +5238,7 @@ function setAppTitle(level) {
 }
 function toggleSidebar() {
   const collapsed=document.body.classList.toggle('nav-collapsed');
-  try { localStorage.setItem('deutschSidebar',collapsed?'collapsed':'expanded'); } catch {}
+  try { localStorage.setItem('deutschSidebar:v2',collapsed?'collapsed':'expanded'); } catch {}
   updateSidebarToggle(collapsed);
 }
 function updateSidebarToggle(collapsed) {
@@ -5248,7 +5248,10 @@ function updateSidebarToggle(collapsed) {
   button.title=collapsed?'Fijar menú abierto':'Ocultar menú';
   button.querySelector('use').setAttribute('href','/lernspiel/ui-icons.svg#'+(collapsed?'expand':'collapse'));
 }
-try { if(localStorage.getItem('deutschSidebar')==='collapsed') { document.body.classList.add('nav-collapsed'); updateSidebarToggle(true); } } catch {}
+let sidebarCollapsed=true;
+try { sidebarCollapsed=localStorage.getItem('deutschSidebar:v2')!=='expanded'; } catch {}
+document.body.classList.toggle('nav-collapsed',sidebarCollapsed);
+updateSidebarToggle(sidebarCollapsed);
 document.addEventListener('keydown',event=>{if(event.key==='Escape' && settingsOpen) { settingsOpen=false; renderSettings(); document.querySelector('.preferences-btn').focus(); }});
 // SETTINGS
 let settingsOpen = false;
