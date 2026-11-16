@@ -225,7 +225,7 @@ export function AuthPage() {
 
       {/* Panel derecho: vitrina de métodos de práctica */}
       <aside className="relative hidden overflow-hidden lg:block">
-        <div className="absolute inset-4 overflow-hidden rounded-3xl bg-[#0f0f10]">
+        <div className="absolute inset-4 overflow-hidden rounded-3xl bg-card">
           <div className="auth-glow auth-glow-a" />
           <div className="auth-glow auth-glow-b" />
           <div className="auth-glow auth-glow-c" />
