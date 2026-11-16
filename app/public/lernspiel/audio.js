@@ -7,6 +7,10 @@ const TTS = {
   cache: new Map(),
   rate() { return this.RATES[this.speedMode] || 1; },
   init() {
+    if(window.DEUTSCH_RUNTIME?.browserAudioOnly) {
+      this.cloudEnabled=false;this.capabilities=Promise.resolve();
+      window.speechSynthesis?.getVoices();return;
+    }
     // A sleeping server must never block the browser's own voice indefinitely.
     const controller = new AbortController();
     let timer;

@@ -42,7 +42,7 @@ export const Route = createFileRoute("/")({
 });
 
 
-function LearnPage() {
+export function LearnPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [ready, setReady] = useState(false);

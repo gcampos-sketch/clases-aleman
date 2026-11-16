@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useSearch, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Target, Pencil, Headphones, Scale, Shuffle, Layers } from "lucide-react";
+import { ArrowLeft, CloudCheck, Target, Pencil, Headphones, Scale, Shuffle, Layers } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const FEATURES = [
@@ -226,9 +226,6 @@ export function AuthPage() {
       {/* Panel derecho: vitrina de métodos de práctica */}
       <aside className="relative hidden overflow-hidden lg:block">
         <div className="absolute inset-4 overflow-hidden rounded-3xl bg-card">
-          <div className="auth-glow auth-glow-a" />
-          <div className="auth-glow auth-glow-b" />
-          <div className="auth-glow auth-glow-c" />
 
           <div className="relative flex h-full flex-col justify-between p-10">
             <div className="flex items-center justify-between">
@@ -242,7 +239,7 @@ export function AuthPage() {
 
             <div className="space-y-6">
               <div className="auth-fade-in-up auth-delay-1">
-                <p className="text-3xl font-black leading-[1.1] tracking-tight text-white">
+                <p className="text-3xl font-semibold leading-[1.1] tracking-tight text-white">
                   Continúa justo donde lo dejaste.
                 </p>
                 <p className="mt-2 text-sm font-medium text-white/60">
@@ -273,11 +270,11 @@ export function AuthPage() {
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
-                      3
+                      <CloudCheck className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-white">Lecciones nuevas esta semana</p>
-                      <p className="text-xs text-white/60">Caso genitivo, narrativas y más audio real.</p>
+                      <p className="text-sm font-semibold text-white">Avance entre computadores</p>
+                      <p className="text-xs text-white/60">Usa la misma cuenta para continuar desde otro lugar.</p>
                     </div>
                   </div>
                 </div>

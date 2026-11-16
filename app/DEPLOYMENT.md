@@ -35,3 +35,15 @@ El progreso local pertenece a cada origen. El avance guardado en otro dominio no
 - El audio limita la espera de detección del servidor a 1,2 segundos y divide pasajes largos en fragmentos; el botón de pronunciación lenta aplica realmente su velocidad.
 - Verificación real: evento de inicio y fin de voz alemana Anna, de-DE; lectura autenticada del avance contra la base existente; recuperación de la misma versión mediante ProgressSync con almacenamiento vacío. No se crearon cuentas ni se añadieron puntos de prueba.
 - Mantener publicación de cada corrección y comprobar el despliegue antes de informarlo como publicado. El repositorio público de este servicio no activó los despliegues anteriores pese al indicador autoDeploy: comprobar la lista y publicar manualmente si no aparece un despliegue nuevo.
+
+
+## Interfaz estática
+
+Gonzalo eligió publicar un enlace nuevo sin arranque en frío. La interfaz usa el mismo proyecto Supabase, autenticación y tabla learning_progress; no depende del servidor Node para abrir ni para pronunciar alemán.
+
+- Compilación: `cd app && npm ci --include=dev && npm run build:static`
+- Directorio público: `app/dist-static`
+- Audio: `runtime-config.js` se genera con `browserAudioOnly:true`; no consulta el servidor para capacidades ni síntesis.
+- Entradas físicas para `/auth/` y las cuatro páginas de contenido permiten abrir y recargar enlaces en el CDN sin una regla global de reescritura.
+- El dominio nuevo requiere entrar a la misma cuenta para recuperar el avance; los datos locales de invitado siguen perteneciendo a su dominio original.
+- No publicar `.env`. Solo se incluyen URL y clave publicable de Supabase como variables VITE_ de compilación.

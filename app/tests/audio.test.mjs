@@ -3,16 +3,16 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import fs from 'node:fs';
 const source=fs.readFileSync(new URL('../public/lernspiel/audio.js',import.meta.url),'utf8');
-function setup(enabled=false) {
-  const utterances=[],calls={pause:0,resume:0,cancel:0,play:0};
+function setup(enabled=false,browserOnly=false) {
+  const utterances=[],calls={pause:0,resume:0,cancel:0,play:0,fetch:0};
   const synth={getVoices:()=>[],speak:u=>utterances.push(u),cancel:()=>calls.cancel++,pause:()=>calls.pause++,resume:()=>calls.resume++};
   class Audio {
     pause(){} removeAttribute(){} load(){}
     play(){calls.play++;return this.playResult??Promise.resolve()}
   }
   const context=vm.createContext({Audio,SpeechSynthesisUtterance:class{constructor(text){this.text=text}},
-    window:{speechSynthesis:synth},localStorage:{getItem:()=>null,setItem(){}},
-    fetch:async()=>({ok:true,json:async()=>({enabled})}),getDeVoice:()=>({lang:'de-DE'}),
+    window:{speechSynthesis:synth,DEUTSCH_RUNTIME:{browserAudioOnly:browserOnly}},localStorage:{getItem:()=>null,setItem(){}},
+    fetch:async()=>{calls.fetch++;return {ok:true,json:async()=>({enabled})}},getDeVoice:()=>({lang:'de-DE'}),
     document:{querySelectorAll:()=>[],getElementById:()=>null,createElement:()=>({setAttribute(){},style:{},remove(){}}),body:{appendChild(){}}},
     URLSearchParams,AbortController,setTimeout:()=>{},clearTimeout:()=>{},console});
   vm.runInContext(source+';globalThis.testTTS=TTS;',context);
@@ -70,4 +70,9 @@ test('completion callback starting another clip does not finish the new clip',as
 test('the explicit slow pronunciation button is slower than normal playback',async()=>{
  const {tts,utterances}=setup();await tts.capabilities;
  tts.speak('Hallo',0.6);assert.equal(utterances[0].rate,0.6);tts.speak('Hallo',0.85);assert.equal(utterances[1].rate,1);tts.speakSequence(['Guten Tag'],0.7);assert.equal(utterances[2].rate,0.7);
+});
+
+test('static audio plays without contacting a sleeping server',async()=>{
+ const {tts,utterances,calls}=setup(false,true);await tts.capabilities;
+ tts.speak('Guten Tag');assert.equal(calls.fetch,0);assert.equal(utterances.length,1);utterances[0].onend();assert.equal(tts.playing,false);
 });
